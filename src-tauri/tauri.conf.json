@@ -13,6 +13,7 @@
     "withGlobalTauri": true,
     "windows": [
       {
+        "url": "http://localhost:1420",
         "label": "index",
         "title": "UKMCL",
         "width": 950,
