@@ -4,6 +4,10 @@ void main() {
   runApp(const MainApp());
 }
 
+const appName = 'UKMCL';
+const appVersion = '0.0.0-experimental+0';
+var new1 = '';
+
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
@@ -12,9 +16,20 @@ class MainApp extends StatelessWidget {
     return const MaterialApp(
       home: Scaffold(
         body: Center(
-          child: Text('Hello World!'),
+          child: Text('Welcome to $appName! We hope you enjoy our app.'),
         ),
       ),
     );
   }
 }
+
+// class Row1 extends StatefulWidget {
+//   const Row1({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Center (
+      
+//     )
+//   }
+// }

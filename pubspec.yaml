@@ -1,8 +1,8 @@
 name: ukmcl
 description: "A new Flutter project."
 publish_to: 'none'
-version: 0.0.0-experimental
-homepage: https://github.com/TheUnknownGroup/UKMCL
+version: 0.0.0-experimental+0
+repository: https://github.com/TheUnknownGroup/UKMCL
 
 environment:
   sdk: ^3.6.0
@@ -20,3 +20,8 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+
+platforms:
+  windows:
+  linux:
+  macos:
