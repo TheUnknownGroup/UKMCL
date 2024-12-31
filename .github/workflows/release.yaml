@@ -1,0 +1,71 @@
+name: Build Flutter desktop apps
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    build:
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                os: [ubuntu-latest, macos-latest. windows-latest]
+
+        steps:
+            - uses: actions/checkout@v3
+            - name: Set up Flutter
+              uses: subosito/flutter-action@v2
+              with:
+                flutter-version: "stable"
+
+            - name: Install Dependencies
+              run: flutter pub get
+
+            - name: Build
+              run: |
+                if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
+                    flutter build linux
+                elif [[ "${{matrix.os }}" == "macos-latest" ]]; then
+                    flutter build macos
+                elif [[ "${{matrix.os }}" == "windows-latest" ]]; then
+                    flutter build windows
+                fi
+            
+            - name: Upload Artifacts
+              uses: actions/upload-artifact@v3
+              with:
+                name: build-${{ matrix.os }}
+                path: |
+                    build/windows/runner/Release/*.exe
+                    build/macos/Build/Products/Release/*.app
+                    build/linux/runner/*.AppImage
+    release:
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - name: Download Build Artifacts
+              uses: actions/download-artifact@v3
+              with:
+                path: ./artifacts
+
+            - name: Create Github Release
+              uses: actions/create-release@v1
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                tag_name: v0.0.0-experimental+0
+                release_name: UKMCL v0.0.0 Experimental
+                body: |
+                    This is the first release of the Minecraft Launcher: UKMCL using Github Actions and created using Flutter
+                draft: true
+                prerelease: true
+
+            - name: Upload Release Assets
+              uses: actions/upload-release-asset@v1
+              with:
+                upload_url: ${{ steps.create-release.outputs.upload_url }}
+                asset_path: ./artifacts
+                asset_name: ${{ matrix.os }}-build.zip
+                asset_content_type: applization/zip
