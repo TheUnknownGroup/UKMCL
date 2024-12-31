@@ -45,15 +45,18 @@ jobs:
             - name: Install Dependencies
               run: flutter pub get
 
-            - name: Build
-              run: |
-                if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
-                    flutter build linux
-                elif [[ "${{matrix.os }}" == "macos-latest" ]]; then
-                    flutter build macos
-                elif [[ "${{matrix.os }}" == "windows-latest" ]]; then
-                    flutter build windows
-                fi
+            - name: Build Windows App
+              if: matrix.os == 'windows-latest'
+              shell: pwsh
+              run: flutter build windows
+
+            - name: Build Linux App
+              if: matrix.os == 'ubuntu-latest'
+              run: flutter build linux
+
+            - name: Build macOS App
+              if: matrix.os == 'macos-latest'
+              run: flutter build macos
             
             - name: Upload Artifacts
               uses: actions/upload-artifact@v3
