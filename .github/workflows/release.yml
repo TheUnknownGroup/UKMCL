@@ -8,8 +8,6 @@ on:
 jobs:
     build:
         runs-on: ${{ matrix.os }}
-        permissions:
-          contents: write
         strategy:
             matrix:
                 os: [ubuntu-latest, macos-latest, windows-latest]
@@ -69,6 +67,8 @@ jobs:
                     build/macos/Build/Products/Release/*.app
                     build/linux/runner/*.AppImage
     release:
+        permissions:
+          contents: write
         needs: build
         runs-on: ubuntu-latest
         steps:
