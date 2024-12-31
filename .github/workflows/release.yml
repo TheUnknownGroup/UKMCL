@@ -86,7 +86,7 @@ jobs:
                 body: |
                     This is the first release of the Minecraft Launcher: UKMCL using Github Actions and created using Flutter
                 draft: true
-                prerelease: true
+                prerelease: false
 
             - name: Upload Release Assets
               uses: actions/upload-release-asset@v1
