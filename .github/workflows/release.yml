@@ -32,7 +32,7 @@ jobs:
           flutter build linux
           
       - name: Upload File(s)
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: UKMCL-linux-v0.0.0-experimental+0
           path: build/linux/x64/release/bundle
@@ -61,7 +61,7 @@ jobs:
           makensis ${{ github.workspace }}/out/install.nsi
 
       - name: Upload File(s)
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: UKMCL-Windows-en_US
           path: ${{ github.workspace }}/build/windows/runner/Release/UKMCL-Windows-en_US-v0-0-0-experimental+0.exe
@@ -90,7 +90,7 @@ jobs:
           "UKMCL-macOS-Installer.dmg"
 
       - name: Upload File(s)
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with: 
           name: UKMCL-macOS-en_US
           path: build/macos/Build/Products/UKMCL-macOS-Installer.dmg
@@ -114,6 +114,8 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: true
           draft: true
+          automatic_release_tag: v0.0.0-experimental+0
+          title: UKMCL v0.0.0-Experimental 
 
 
 
