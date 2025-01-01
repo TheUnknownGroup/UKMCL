@@ -72,8 +72,8 @@ jobs:
           VERSION: "0.0.0"
           NUM: "+0"
           EXP: "experimental"
-          TAG: "v$VERSION$NUM"
-          EXP_TAG: "v$TAG-$EXP$NUM"
+          TAG: "v${{ vars.VERSION }}${{ vars.NUM }}"
+          EXP_TAG: "v${{ vars.TAG }}-${{ vars.EXP }}${{ vars.NUM }}"
 
         permissions:
           contents: write
@@ -95,7 +95,11 @@ jobs:
                 automatic_release_tag: "${{ env.EXP_TAG }}"
                 title: "${{ env.NAME }} ${{ env.EXP_TAG }}"
                 files:
-                  ./artifacts
+                  ukmcl.exe
+                  ukmcl.AppImage
+                  ukmcl.deb
+                  ukmcl.zip
+                  ukmcl.dmg
             # - name: Create Github Release
             #   uses: actions/create-release@v1
             #   env:
