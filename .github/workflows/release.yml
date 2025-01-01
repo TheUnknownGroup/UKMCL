@@ -5,14 +5,6 @@ on:
         branches:
             - main
 
-env:
-  NAME: 'UKMCL'
-  VERSION: '0.0.0'
-  NUM: '+0'
-  EXP: 'experimental'
-  TAG: 'v${{ github.env.VERSION }}${{ github.env.NUM }}'
-  EXP_TAG: 'v${{ github.env.TAG}}-${{ github.env.EXP }}${{ github.env.NUM }}'
-
 jobs:
     build:
         runs-on: ${{ matrix.os }}
@@ -75,6 +67,14 @@ jobs:
                     build/macos/Build/Products/Release/*.app
                     build/linux/runner/*.AppImage
     release:
+        env:
+          NAME: 'UKMCL'
+          VERSION: '0.0.0'
+          NUM: '+0'
+          EXP: 'experimental'
+          TAG: 'v${{ github.env.VERSION }}${{ github.env.NUM}}'
+          EXP_TAG: 'v${{ github.env.TAG }}-${{ github.env.EXP }}${{ github.env.NUM }}'
+
         permissions:
           contents: write
         needs: build
