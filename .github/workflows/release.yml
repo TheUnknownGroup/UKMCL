@@ -92,8 +92,8 @@ jobs:
                 repo_token: "${{ secrets.GITHUB_TOKEN }}"
                 prerelease: true
                 draft: true
-                automatic_release_tag: ${{ github.env.EXP_TAG }}
-                title: ${{ github.env.NAME }} ${{ github.env.EXP_TAG }}
+                automatic_release_tag: "${{ github.env.EXP_TAG }}"
+                title: "${{ github.env.NAME }} ${{ github.env.EXP_TAG }}"
                 files:
                   ./artifacts
             # - name: Create Github Release
