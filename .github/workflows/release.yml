@@ -5,6 +5,14 @@ on:
         branches:
             - main
 
+env:
+  NAME: 'UKMCL'
+  VERSION: '0.0.0'
+  NUM: '+0'
+  EXP: 'experimental'
+  TAG: 'v${{ github.env.VERSION }}${{ github.env.NUM }}'
+  EXP_TAG: 'v${{ github.env.TAG}}-${{ github.env.EXP }}${{ github.env.NUM }}'
+
 jobs:
     build:
         runs-on: ${{ matrix.os }}
@@ -78,22 +86,32 @@ jobs:
               with:
                 path: ./artifacts
 
-            - name: Create Github Release
-              uses: actions/create-release@v1
-              env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - name: Create Release & Upload
+              uses: "marvinpinto/action-automatic-releases@latest"
               with:
-                tag_name: v0.0.0-experimental+0
-                release_name: UKMCL v0.0.0 Experimental
-                body: |
-                    This is the first release of the Minecraft Launcher: UKMCL using Github Actions and created using Flutter
-                draft: false
-                prerelease: false
+                repo_token: "${{ secrets.GITHUB_TOKEN }}"
+                prerelease: true
+                draft: true
+                automatic_release_tag: ${{ github.env.EXP_TAG }}
+                title: ${{ github.env.NAME }} ${{ github.env.EXP_TAG }}
+                files:
+                  ./artifacts
+            # - name: Create Github Release
+            #   uses: actions/create-release@v1
+            #   env:
+            #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            #   with:
+            #     tag_name: v0.0.0-experimental+0
+            #     release_name: UKMCL v0.0.0 Experimental
+            #     body: |
+            #         This is the first release of the Minecraft Launcher: UKMCL using Github Actions and created using Flutter
+            #     draft: false
+            #     prerelease: false
 
-            - name: Upload Release Assets
-              uses: actions/upload-release-asset@v1
-              with:
-                upload_url: ${{ steps.create-release.outputs.upload_url }}
-                asset_path: ./artifacts
-                asset_name: ${{ matrix.os }}-build.zip
-                asset_content_type: applization/zip
+            # - name: Upload Release Assets
+            #   uses: actions/upload-release-asset@v1
+            #   with:
+            #     upload_url: ${{ steps.create-release.outputs.upload_url }}
+            #     asset_path: ./artifacts
+            #     asset_name: ${{ matrix.os }}-build.zip
+            #     asset_content_type: applization/zip
