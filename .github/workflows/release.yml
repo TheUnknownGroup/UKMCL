@@ -68,12 +68,12 @@ jobs:
                     build/linux/runner/*.AppImage
     release:
         env:
-          NAME: 'UKMCL'
-          VERSION: '0.0.0'
-          NUM: '+0'
-          EXP: 'experimental'
-          TAG: 'v${{ github.env.VERSION }}${{ github.env.NUM}}'
-          EXP_TAG: 'v${{ github.env.TAG }}-${{ github.env.EXP }}${{ github.env.NUM }}'
+          NAME: "UKMCL"
+          VERSION: "0.0.0"
+          NUM: "+0"
+          EXP: "experimental"
+          TAG: "v$VERSION$NUM"
+          EXP_TAG: "v$TAG-$EXP$NUM"
 
         permissions:
           contents: write
@@ -92,8 +92,8 @@ jobs:
                 repo_token: "${{ secrets.GITHUB_TOKEN }}"
                 prerelease: true
                 draft: true
-                automatic_release_tag: "${{ github.env.EXP_TAG }}"
-                title: "${{ github.env.NAME }} ${{ github.env.EXP_TAG }}"
+                automatic_release_tag: "${{ env.EXP_TAG }}"
+                title: "${{ env.NAME }} ${{ env.EXP_TAG }}"
                 files:
                   ./artifacts
             # - name: Create Github Release
