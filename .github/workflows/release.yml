@@ -46,22 +46,22 @@ jobs:
           $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\*\bin\Hostx64\x64"
 
       - name: Build Linux
-        if: ${{ matrix.platform }} == 'ubuntu-latest'
+        if: matrix.platform == 'ubuntu-latest'
         run: flutter build linux
 
       - name: Build Windows
-        if: ${{ matrix.platform }} == 'windows-latest'
+        if: matrix.platform == 'windows-latest'
         shell: pwsh
         run: flutter build windows
 
       - name: Build macOS
-        if: ${{ matrix.platform }} == 'macos-latest'
+        if: matrix.platform == 'macos-latest'
         run: |
           flutter pub get
-          flutter build windows
+          flutter build macos
 
       - name: Package Installer - Linux
-        if: ${{ matrix.platform }} == 'ubuntu-latest'
+        if: matrix.platform == 'ubuntu-latest'
         run: |
           mkdir -p ukmcl/DEBIAN ukmcl/usr/bin
           echo "Package: ukmcl
