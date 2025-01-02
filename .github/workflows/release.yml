@@ -7,7 +7,6 @@ on:
 
 jobs:
   build: 
-
     permissions:
       contents: write
 
@@ -137,6 +136,16 @@ jobs:
           name: UKMCL-macOS-Installer-en_US
           path: build/macos/Build/Products/Release
 
+  release:
+    needs: ["build"]
+    if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.2.0
+      - uses: dart-lang/setup-dart@v1.7.0
+
+      - name: Download Files
+        uses: actions/download-artifact@v4
 
       - name: Upload Files
         uses: "marvinpinto/action-automatic-releases@v1.2.1"
