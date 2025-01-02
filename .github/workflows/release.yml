@@ -52,7 +52,7 @@ jobs:
       - name: Build Windows
         if: matrix.platform == 'windows-latest'
         shell: pwsh
-        run: flutter build windows
+        run: flutter build windows --release
 
       - name: Build macOS
         if: matrix.platform == 'macos-latest'
@@ -87,8 +87,8 @@ jobs:
         run: |
           choco install nsis -y
           echo '
-            OutFile "UKMCL-Windows-en_US.exe"
-            InstallDir "$PROGRAMFILEs\UKMCL"
+            OutFile "UKMCL-Installer.exe"
+            InstallDir "$PROGRAMFILES\\UKMCL"
             RequestExecutionLevel admin
             Page directory
             Page instfiles
@@ -135,7 +135,7 @@ jobs:
         uses: actions/upload-artifact@v4.5.0
         with:
           name: UKMCL-macOS-Installer-en_US
-          path: build/macos/Build/Products/UKMCL-macOS-Installer-en_US.dmg
+          path: build/macos/Build/Products/Release
 
 
       - name: Upload Files
@@ -147,8 +147,8 @@ jobs:
           automatic_release_tag: "v0.0.0-experimental+0"
           title: "UKMCL v0.0.0 Experimental"
           files: |
+            UKMCL-Linux-Installer-en_US.zip
             UKMCL-Linux-Installer-en_US.deb
-            UKMCL-Installer.exe
             UKMCL-Windows-Installer-en_US.exe
             UKMCL-macOS-Installer-en_US.dmg
 
