@@ -45,22 +45,26 @@ jobs:
           $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\IDE"
           $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\*\bin\Hostx64\x64"
 
-      - name: Build App
+      - name: Build Linux
+        if: ${{ matrix.platform }} == 'ubuntu-latest'
+        run: flutter build linux
+
+      - name: Build Windows
+        if: ${{ matrix.platform }} == 'windows-latest'
+        shell: pwsh
+        run: flutter build windows
+
+      - name: Build macOS
+        if: ${{ matrix.platform }} == 'macos-latest'
         run: |
-          if [ "${{ matrix.platform }}" == "ubuntu-latest" ]; then
-            flutter build linux
-          elif [ "${{ matrix.platform }}" == "windows-latest" ]; then
-            flutter build windows
-          elif [ "${{ matrix.platform }}" == "macos-latest" ]; then
-            flutter pub get
-            flutter build macos
-          fi
+          flutter pub get
+          flutter build windows
 
       - name: Package Installer - Linux
+        if: ${{ matrix.platform }} == 'ubuntu-latest'
         run: |
-          if [ "${{ matrix.platform }}" == "ubuntu-latest" ]; then
-            mkdir -p ukmcl/DEBIAN ukmcl/usr/bin
-            echo "Package: ukmcl
+          mkdir -p ukmcl/DEBIAN ukmcl/usr/bin
+          echo "Package: ukmcl
           Version: 0.0.0
           Section: utils
           Priority: optional
@@ -68,10 +72,9 @@ jobs:
           Maintainer: TheGremlinX <owner@thegremlinx.xyz>
           Description: 
             This is the Minecraft Launcher for and by the Unknown Group." > ukmcl/DEBIAN/control
-            cp -r build/linux/x64/release/bundle/* ukmcl/usr/bin
-            dpkg-deb --build ukmcl
-            mv ukmcl.deb UKMCL-Linux-Installer-en_US.deb
-          fi
+          cp -r build/linux/x64/release/bundle/* ukmcl/usr/bin
+          dpkg-deb --build ukmcl
+          mv ukmcl.deb UKMCL-Linux-Installer-en_US.deb
 
       - name: Upload Artifact - Linux
         uses: actions/upload-artifact@v4.5.0
@@ -80,32 +83,31 @@ jobs:
           path: build/linux/x64/release/bundle
 
       - name: Package Installer - Windows
+        if: ${{ matrix.platform }} == 'windows-latest'
         run: |
-          if [ "${{ matrix.platform }}" == "windows-latest" ]; then
-            choco install nsis -y
-            echo '
-              OutFile "UKMCL-Windows-en_US.exe"
-              InstallDir "$PROGRAMFILEs\UKMCL"
-              RequestExecutionLevel admin
-              Page directory
-              Page instfiles
-              Section "Install"
-                SetOutPath "$INSTDIR"
-                File /r "build\\windows\\runner\\Release\\*"
-                CreateShortCut "$DESKTOP\\UKMCL.lnk" "$INSTDIR\\UKMCL.exe"
-                CreateShortCut "$SYPROGRAMS\\UKMCL\\UKMCL.lnk" "$INSTDIR\\UKMCL.exe"
-              SectionEnd
-              Section "Uninstall"
-                Delete "$INSTDIR\\*.*"
-                RMDir "INSTDIR"
-                Delete "$DESKTOP\\UKMCL.lnk"
-                Delete "$SYPROGRAMS\\UKMCL\\UKMCL.lnk"
-                RMDir "$SYPROGRAMS\\UKMCL"
-              SectionEnd
-            ' > installer.nsi
-            makensis installer.nsi
-            mv UKMCL-Installer.exe UKMCL-Windows-Installer-en_US.exe
-          fi
+          choco install nsis -y
+          echo '
+            OutFile "UKMCL-Windows-en_US.exe"
+            InstallDir "$PROGRAMFILEs\UKMCL"
+            RequestExecutionLevel admin
+            Page directory
+            Page instfiles
+            Section "Install"
+              SetOutPath "$INSTDIR"
+              File /r "build\\windows\\runner\\Release\\*"
+              CreateShortCut "$DESKTOP\\UKMCL.lnk" "$INSTDIR\\UKMCL.exe"
+              CreateShortCut "$SYPROGRAMS\\UKMCL\\UKMCL.lnk" "$INSTDIR\\UKMCL.exe"
+            SectionEnd
+            Section "Uninstall"
+              Delete "$INSTDIR\\*.*"
+              RMDir "INSTDIR"
+              Delete "$DESKTOP\\UKMCL.lnk"
+              Delete "$SYPROGRAMS\\UKMCL\\UKMCL.lnk"
+              RMDir "$SYPROGRAMS\\UKMCL"
+            SectionEnd
+          ' > installer.nsi
+          makensis installer.nsi
+          mv UKMCL-Installer.exe UKMCL-Windows-Installer-en_US.exe
 
       - name: Upload Artifact - Windows
         uses: actions/upload-artifact@v4.5.0
@@ -114,21 +116,20 @@ jobs:
           path: build/windows/runner/Release
     
       - name: Packager Installer - macOS
+        if: ${{ matrix.platform }} == 'macos-latest'
         run: |
-          if [ "${{ matrix.platform }}" == "macos-latest" ]; then
-            brew install create-dmg
-            create-dmg \
-              --volname "UKMCL Installer" \
-              --window-pos 0.5 0.5 \
-              --window-size 950 530 \
-              --icon-size 100 \
-              --icon "UKMCL.app" 200 190 \
-              --hide-extension "UKMCL.app" \
-              --app-drop-link 600 185 \
-              "UKMCL.dmg" \
-              "build/macos/Build/Products/Release/"
-            mv UKMCL.dmg UKMCL-macOS-Installer-en_US.dmg
-          fi
+          brew install create-dmg
+          create-dmg \
+            --volname "UKMCL Installer" \
+            --window-pos 0.5 0.5 \
+            --window-size 950 530 \
+            --icon-size 100 \
+            --icon "UKMCL.app" 200 190 \
+            --hide-extension "UKMCL.app" \
+            --app-drop-link 600 185 \
+            "UKMCL.dmg" \
+            "build/macos/Build/Products/Release/"
+          mv UKMCL.dmg UKMCL-macOS-Installer-en_US.dmg
 
       - name: Upload Artifact - macOS
         uses: actions/upload-artifact@v4.5.0
