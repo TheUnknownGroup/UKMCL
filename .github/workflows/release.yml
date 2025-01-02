@@ -147,7 +147,6 @@ jobs:
           automatic_release_tag: "v0.0.0-experimental+0"
           title: "UKMCL v0.0.0 Experimental"
           files: |
-            UKMCL-Linux-Installer-en_US.zip
             UKMCL-Linux-Installer-en_US.deb
             UKMCL-Windows-Installer-en_US.exe
             UKMCL-macOS-Installer-en_US.dmg
