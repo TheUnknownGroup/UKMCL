@@ -6,15 +6,14 @@ on:
       - main
 
 jobs:
-  build: 
+  build:
+    if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
     permissions:
       contents: write
 
     strategy:
       matrix:
         platform: [ubuntu-latest, windows-latest, macos-latest]
-
-    if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -86,24 +85,24 @@ jobs:
         run: |
           choco install nsis -y
           echo '
-            OutFile "UKMCL-Installer.exe"
-            InstallDir "$PROGRAMFILES\UKMCL"
-            RequestExecutionLevel admin
-            Page directory
-            Page instfiles
-            Section "Install"
-              SetOutPath "$INSTDIR"
-              File /r "build\\windows\\runner\\Release\\*"
-              CreateShortCut "$DESKTOP\\UKMCL.lnk" "$INSTDIR\\UKMCL.exe"
-              CreateShortCut "$SYPROGRAMS\\UKMCL\\UKMCL.lnk" "$INSTDIR\\UKMCL.exe"
-            SectionEnd
-            Section "Uninstall"
-              Delete "$INSTDIR\\*.*"
-              RMDir "$INSTDIR"
-              Delete "$DESKTOP\\UKMCL.lnk"
-              Delete "$SYPROGRAMS\\UKMCL\\UKMCL.lnk"
-              RMDir "$SYPROGRAMS\\UKMCL"
-            SectionEnd
+          OutFile "UKMCL-Installer.exe"
+          InstallDir "$PROGRAMFILES\UKMCL"
+          RequestExecutionLevel admin
+          Page directory
+          Page instfiles
+          Section "Install"
+            SetOutPath "$INSTDIR"
+            File /r "build\windows\runner\Release\ukmcl.exe"
+            CreateShortCut "$DESKTOP\UKMCL.lnk" "$INSTDIR\UKMCL.exe"
+            CreateShortCut "$SYPROGRAMS\UKMCL\UKMCL.lnk" "$INSTDIR\UKMCL.exe"
+          SectionEnd
+          Section "Uninstall"
+            Delete "$INSTDIR\*.*"
+            RMDir "$INSTDIR"
+            Delete "$DESKTOP\UKMCL.lnk"
+            Delete "$SYPROGRAMS\UKMCL\UKMCL.lnk"
+            RMDir "$SYPROGRAMS\UKMCL"
+          SectionEnd
           ' > installer.nsi
           makensis installer.nsi
           mv UKMCL-Installer.exe UKMCL-Windows-Installer-en_US.exe
@@ -137,8 +136,8 @@ jobs:
           path: build/macos/Build/Products/Release
 
   release:
-    needs: ["build"]
     if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
+    needs: ["build"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.2.0
