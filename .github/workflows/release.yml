@@ -67,7 +67,7 @@ jobs:
             Architecture: amd64
             Maintainer: TheGremlinX <owner@thegremlinx.xyz>
             Description: This is the Minecraft Launcher for and by the Unknown Group" > ukmcl/DEBIAN/control
-            cp build/linux/x64/release/bundle/* ukmcl/usr/bin
+            cp -r build/linux/x64/release/bundle/* ukmcl/usr/bin
             dpkg-deb --build ukmcl
             mv ukmcl.deb UKMCL-Linux-Installer-en_US.deb
           fi
