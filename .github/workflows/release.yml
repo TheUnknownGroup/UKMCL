@@ -83,7 +83,7 @@ jobs:
           path: build/linux/x64/release/bundle
 
       - name: Package Installer - Windows
-        if: ${{ matrix.platform }} == 'windows-latest'
+        if: matrix.platform == 'windows-latest'
         run: |
           choco install nsis -y
           echo '
@@ -116,7 +116,7 @@ jobs:
           path: build/windows/runner/Release
     
       - name: Packager Installer - macOS
-        if: ${{ matrix.platform }} == 'macos-latest'
+        if: matrix.platform == 'macos-latest'
         run: |
           brew install create-dmg
           create-dmg \
