@@ -5,119 +5,104 @@ on:
     branches:
       - main
 
-  workflow_dispatch:
-
 jobs:
-  build-linux:
+  build: 
     permissions:
       contents: write
-
-    if: ${{ !contains(github.event.head_commit.message,'[skip]') }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up Flutter 
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: "3.27.0"
-
-      - name: Install Dependendcies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ninja-build clang cmake libgth-3-dev
-
-      - name: Build
-        run: |
-          flutter build linux
-          
-      - name: Upload File(s)
-        uses: actions/upload-artifact@v4
-        with:
-          name: UKMCL-linux-v0.0.0-experimental+0
-          path: build/linux/x64/release/bundle
-
-  build-windows:
-    if: ${{ !contains(github.event.head_commit.message,'[skip]') }}
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up Flutter 
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: "3.27.0"
-
-      - name: Build
-        run: |
-          flutter build windows
-
-      - name: Install NSIS
-        run: |
-          choco install nsis -y
-      
-      - name: Create Installer
-        run: |
-          makensis ${{ github.workspace }}/out/install.nsi
-
-      - name: Upload File(s)
-        uses: actions/upload-artifact@v4
-        with:
-          name: UKMCL-Windows-en_US
-          path: ${{ github.workspace }}/build/windows/runner/Release/UKMCL-Windows-en_US-v0-0-0-experimental+0.exe
-
-  build-macos:
-    if: ${{ !contains(github.event.head_commit.message,'[skip]') }}
-    runs-on: macos-latest
+    strategy:
+      matrix:
+        platform: [ubuntu-latest, windows-latest, macos-latest]
+    if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
+    runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v2
-
-      - name: Set up Flutter 
+      
+      - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.27.0"
 
-      - name: Build
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Build App
         run: |
-          flutter build macos
-          cp assets/icon.icns
-          brew install create-dmg
-          create-dmg \
-          --volname "UKMCL Installer" \
-          --volicon "icon.icns" \
-          --window-pos 0.5 0.5 \
-          --window-size 950 530 \
-          "UKMCL-macOS-Installer.dmg"
+          if [ "${{ matrix.platform }}" == "ubuntu-latest" ]; then
+            flutter build linux
+          elif [ "${{ matrix.platform }}" == "windows-latest" ]; then
+            flutter build windows
+          elif [ "${{ matrix.platform }}" == "macos-latest" ]; then
+            flutter build macos
+          fi
 
-      - name: Upload File(s)
-        uses: actions/upload-artifact@v4
-        with: 
-          name: UKMCL-macOS-en_US
-          path: build/macos/Build/Products/UKMCL-macOS-Installer.dmg
+      - name: Package Installer
+        run: |
+          if [ "${{ matrix.platform }}" == "ubuntu-latest" ]; then
+            mkdir -p ukmcl/DEBIAN ukmcl/usr/bin
+            echo "Package: ukmcl
+            Version: 0.0.0-experimental+0
+            Section: utils
+            Priority: optional
+            Architecture: amd64
+            Maintainer: TheGremlinX <owner@thegremlinx.xyz>
+            Description: This is the Minecraft Launcher for and by the Unknown Group" > ukmcl/DEBIAN/control
+            cp build/linux/x64/release/bundle/* ukmcl/usr/bin
+            dpkg-deb --build ukmcl
+            mv ukmcl.deb UKMCL-Linux-Installer-en_US.deb
+          elif [ "${{ matrix.platform }}" == "windows-latest" ]; then
+            choco install nsis -y
+            echo '
+              OutFile "UKMCL-Windows-en_US.exe"
+              InstallDir "$PROGRAMFILEs\UKMCL"
+              RequestExecutionLevel admin
+              Page directory
+              Page instfiles
+              Section "Install"
+                SetOutPath "$INSTDIR"
+                File /r "build\\windows\\runner\\Release\\*"
+                CreateShortCut "$DESKTOP\\UKMCL.lnk" "$INSTDIR\\UKMCL.exe"
+                CreateShortCut "$SYPROGRAMS\\UKMCL\\UKMCL.lnk" "$INSTDIR\\UKMCL.exe"
+              SectionEnd
+              Section "Uninstall"
+                Delete "$INSTDIR\\*.*"
+                RMDir "INSTDIR"
+                Delete "$DESKTOP\\UKMCL.lnk"
+                Delete "$SYPROGRAMS\\UKMCL\\UKMCL.lnk"
+                RMDir "$SYPROGRAMS\\UKMCL"
+              SectionEnd
+            ' > installer.nsi
+            makensis installer.nsi
+            mv UKMCL-Installer.exe UKMCL-Windows-Installer-en_US.exe
+          elif [ "${{ matrix.platform }}" == "macos-latest" ]; then
+            brew install create-dmg
+            create-dmg \
+              --volname "UKMCL Installer" \
+              --window-pos 0.5 0.5 \
+              --window-size 950 530 \
+              --icon-size 100 \
+              --icon "UKMCL.app" 200 190 \
+              --hide-extension "UKMCL.app" \
+              --app-drop-link 600 185 \
+              "UKMCL.dmg" \
+              "build/macos/Build/Products/Release/"
+            mv UKMCL.dmg UKMCL-macOS-Installer-en_US.dmg
+          fi
 
-
-  release:
-    needs: ["build-linux", "build-windows", "build-macos"]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up Dart
-        uses: dart-lang/setup-dart@v1.7.0
-      
-      - name: Download files
-        uses: actions/download-artifact@v2
-
-      - name: Upload release
-        uses: marvinpinto/action-automatic-releases@latest
+      - name: Upload Files
+        uses: "marvinpinto/action-automatic-releases@v1.2.1"
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           prerelease: true
           draft: true
-          automatic_release_tag: v0.0.0-experimental+0
-          title: UKMCL v0.0.0-Experimental 
+          automatic_release_tag: "v0.0.0-experimental+0"
+          title: "UKMCL v0.0.0 Experimental"
+          files: |
+            UKMCL-Linux-Installer-en_US.deb
+            UKMCL-Installer.exe
+            UKMCL-Windows-Installer-en_US.exe
+            UKMCL-macOS-Installer-en_US.dmg
 
-
+        
 
 # name: Build Flutter desktop apps
 
