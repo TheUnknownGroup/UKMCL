@@ -63,7 +63,7 @@ jobs:
           if [ "${{ matrix.platform }}" == "ubuntu-latest" ]; then
             mkdir -p ukmcl/DEBIAN ukmcl/usr/bin
             echo "Package: ukmcl
-            Version: 0.0.0-experimental+0
+            Version: 0.0.0
             Section: utils
             Priority: optional
             Architecture: amd64
@@ -72,8 +72,9 @@ jobs:
             cp build/linux/x64/release/bundle/* ukmcl/usr/bin
             dpkg-deb --build ukmcl
             mv ukmcl.deb UKMCL-Linux-Installer-en_US.deb
+          fi
 
-      - name: Upload Artifact
+      - name: Upload Artifact - Linux
         uses: actions/upload-artifact@v4.5.0
         with:
           name: UKMCL-Linux-Installer-en_US
@@ -81,7 +82,7 @@ jobs:
 
       - name: Package Installer - Windows
         run: |
-          elif [ "${{ matrix.platform }}" == "windows-latest" ]; then
+          if [ "${{ matrix.platform }}" == "windows-latest" ]; then
             choco install nsis -y
             echo '
               OutFile "UKMCL-Windows-en_US.exe"
@@ -105,8 +106,9 @@ jobs:
             ' > installer.nsi
             makensis installer.nsi
             mv UKMCL-Installer.exe UKMCL-Windows-Installer-en_US.exe
+          fi
 
-      - name: Upload Artifact
+      - name: Upload Artifact - Windows
         uses: actions/upload-artifact@v4.5.0
         with:
           name: UKMCL-Windows-Installer-en_US
@@ -114,7 +116,7 @@ jobs:
     
       - name: Packager Installer - macOS
         run: |
-          elif [ "${{ matrix.platform }}" == "macos-latest" ]; then
+          if [ "${{ matrix.platform }}" == "macos-latest" ]; then
             brew install create-dmg
             create-dmg \
               --volname "UKMCL Installer" \
@@ -129,7 +131,7 @@ jobs:
             mv UKMCL.dmg UKMCL-macOS-Installer-en_US.dmg
           fi
 
-      - name: Upload Artifact
+      - name: Upload Artifact - macOS
         uses: actions/upload-artifact@v4.5.0
         with:
           name: UKMCL-macOS-Installer-en_US
