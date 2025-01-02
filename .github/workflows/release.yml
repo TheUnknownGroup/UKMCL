@@ -7,12 +7,16 @@ on:
 
 jobs:
   build: 
+
     permissions:
       contents: write
+
     strategy:
       matrix:
         platform: [ubuntu-latest, windows-latest, macos-latest]
+
     if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
+
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4.2.0
@@ -40,10 +44,6 @@ jobs:
           $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin"
           $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\IDE"
           $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\*\bin\Hostx64\x64"
-
-      - name: Install Dependencies - macOS
-        if: matrix.platform == 'macos-latest'
-        run: xcode-select --install
 
       - name: Build App
         run: |
