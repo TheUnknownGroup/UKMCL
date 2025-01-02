@@ -45,9 +45,6 @@ jobs:
         if: matrix.platform == 'macos-latest'
         run: xcode-select --install
 
-      - name: Install Dependency
-        run: flutter pub get
-
       - name: Build App
         run: |
           if [ "${{ matrix.platform }}" == "ubuntu-latest" ]; then
@@ -55,6 +52,7 @@ jobs:
           elif [ "${{ matrix.platform }}" == "windows-latest" ]; then
             flutter build windows
           elif [ "${{ matrix.platform }}" == "macos-latest" ]; then
+            flutter pub get
             flutter build macos
           fi
 
