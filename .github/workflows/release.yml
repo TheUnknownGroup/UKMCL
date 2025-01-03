@@ -145,7 +145,7 @@ jobs:
         if: matrix.platform == 'macos-latest'
         uses: actions/upload-artifact@v4
         with:
-          name: UKMCL-macOS-Installer-en_US/dmg
+          name: UKMCL-macOS-Installer-en_US.dmg
           path: build/macos/Build/Products/Release
 
   release:
