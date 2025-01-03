@@ -71,6 +71,7 @@ jobs:
       - name: Package Installer - Linux
         if: matrix.platform == 'ubuntu-latest'
         run: |
+          cd build/linux/x64/release
           mkdir -p ukmcl/DEBIAN ukmcl/usr/bin
           echo "Package: ukmcl
           Version: 0.0.0
@@ -80,7 +81,7 @@ jobs:
           Maintainer: TheGremlinX <owner@thegremlinx.xyz>
           Description: 
             This is the Minecraft Launcher for and by the Unknown Group." > ukmcl/DEBIAN/control
-          cp -r build/linux/x64/release/bundle/* ukmcl/usr/bin
+          cp -r bundle/* ukmcl/usr/bin
           dpkg-deb --build ukmcl
           mv ukmcl.deb UKMCL-Linux-Installer-en_US.deb
 
@@ -89,7 +90,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: UKMCL-Linux-Installer
-          path: build/linux/x64/release/bundle/UKMCL-Linux-Installer-en_US.deb
+          path: build/linux/x64/release/bundle
 
       - name: Package Installer - Windows
         if: matrix.platform == 'windows-latest'
@@ -139,16 +140,16 @@ jobs:
             --icon "UKMCL.app" 200 190 \
             --hide-extension "UKMCL.app" \
             --app-drop-link 600 185 \
-            "UKMCL.dmg" \
+            "UKMCL-Installer.dmg" \
             "Release/"
-          mv UKMCL.dmg UKMCL-macOS-Installer-en_US.dmg
+          mv UKMCL-Installer.dmg UKMCL-macOS-Installer-en_US.dmg
 
       - name: Upload Artifacts - macOS
         if: matrix.platform == 'macos-latest'
         uses: actions/upload-artifact@v4
         with:
           name: UKMCL-macOS-Installer
-          path: build/macos/Build/Products/Release/UKMCL-macOS-Installer-en_US.dmg
+          path: build/macos/Build/Products/UKMCL-macOS-Installer-en_US.dmg
 
   release:
     permissions:
@@ -163,6 +164,25 @@ jobs:
 
       - name: Download Files
         uses: actions/download-artifact@v4
+
+      - name: Upload Artfacts - Linux
+        uses: actions/upload-artifact@v4.5.0
+        with:
+          name: UKMCL-Linux-Installer
+          path: build/linux/x64/release/bundle
+
+      - name: Upload Artfacts - Windows
+        uses: actions/upload-artifact@v4.5.0
+        with:
+          name: UKMCL-Linux-Installer
+          path: build/windows/x64/runner/Release/UKMCL-Windows-Installer-en_US.exe
+
+      - name: Upload Artfacts - macOS
+        uses: actions/upload-artifact@v4.5.0
+        with:
+          name: UKMCL-Linux-Installer
+          path: build/macos/Build/Products/UKMCL-macOS-Installer-en_US.dmg
+
 
       - name: Create Release
         uses: "marvinpinto/action-automatic-releases@v1.2.0"
