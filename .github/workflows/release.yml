@@ -169,19 +169,19 @@ jobs:
         uses: actions/upload-artifact@v4.5.0
         with:
           name: UKMCL-Linux-Installer
-          path: build/linux/x64/release/bundle
+          path: home/runner/work/UKMCL/UKMCL/UKMCL-Linux-Installer
 
       - name: Upload Artfacts - Windows
         uses: actions/upload-artifact@v4.5.0
         with:
           name: UKMCL-Linux-Installer
-          path: build/windows/x64/runner/Release/UKMCL-Windows-Installer-en_US.exe
+          path: home/runner/work/UKMCL/UKMCL/UKMCL-Windows-Installer
 
       - name: Upload Artfacts - macOS
         uses: actions/upload-artifact@v4.5.0
         with:
           name: UKMCL-Linux-Installer
-          path: build/macos/Build/Products/UKMCL-macOS-Installer-en_US.dmg
+          path: home/runner/work/UKMCL/UKMCL/UKMCL-macOS-Installer
 
 
       - name: Create Release
