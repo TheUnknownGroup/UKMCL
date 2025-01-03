@@ -130,7 +130,7 @@ jobs:
   release:
     permissions:
       contents: write
-      
+
     if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
     needs: ["build"]
     runs-on: ubuntu-latest
@@ -140,14 +140,19 @@ jobs:
 
       - name: Download Files
         uses: actions/download-artifact@v4
+        with:
+          path: |
+            build/linux/x64/release/bundle/*.deb
+            build/windows/x64/runner/Release/*.exe
+            build/acos/Build/Products/Release/*.dmg
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4.5.0
         with:
           path: |
-            build/linux/x64/release/bundle/
-            build/windows/x64/runner/Release/
-            build/acos/Build/Products/Release/
+            build/linux/x64/release/bundle/*.deb
+            build/windows/x64/runner/Release/*.exe
+            build/acos/Build/Products/Release/*.dmg
 
       - name: Create Release
         uses: "marvinpinto/action-automatic-releases@v1.2.0"
