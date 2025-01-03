@@ -89,7 +89,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: UKMCL-Linux-Installer
-          path: build/linux/x64/release/bundle/UKMCL-Linux-Installer-en_US.deb
+          path: build/linux/x64/release/bundle
 
       - name: Package Installer - Windows
         if: matrix.platform == 'windows-latest'
@@ -124,7 +124,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: UKMCL-Windows-Installer
-          path: build/windows/x64/runner/Release/UKMCL-Windows-Installer-en_US.exe
+          path: build/windows/x64/runner/Release
     
       - name: Packager Installer - macOS
         if: matrix.platform == 'macos-latest'
@@ -148,7 +148,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: UKMCL-macOS-Installer
-          path: build/macos/Build/Products/Release/UKMCL-macOS-Installer-en_US.dmg
+          path: build/macos/Build/Products/Release
 
   release:
     permissions:
@@ -163,14 +163,19 @@ jobs:
 
       - name: Download Artifacts
         uses: actions/download-artifact@v4
+        with:
+          path: |
+            *.deb
+            *.exe
+            *.dmg
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4.5.0
         with:
           path: |
-            UKMCL-Windows-Installer
-            UKMCL-Linux-Installer
-            UKMCL-macOS-Installer
+            *.deb
+            *.exe
+            *.dmg
 
       - name: Create Release
         uses: "marvinpinto/action-automatic-releases@v1.2.0"
