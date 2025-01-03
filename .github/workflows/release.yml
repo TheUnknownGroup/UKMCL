@@ -84,44 +84,32 @@ jobs:
           dpkg-deb --build ukmcl
           mv ukmcl.deb UKMCL-Linux-Installer-en_US.deb
 
-      - name: Upload Artifact - Linux
-        uses: actions/upload-artifact@v4.5.0
-        with:
-          name: UKMCL-Linux-Installer-en_US
-          path: build/linux/x64/release/bundle
-
-      # - name: Package Installer - Windows
-      #   if: matrix.platform == 'windows-latest'
-      #   run: |
-      #     choco install nsis -y
-      #     echo '
-      #     OutFile "UKMCL-Installer.exe"
-      #     InstallDir "$PROGRAMFILES\\UKMCL"
-      #     RequestExecutionLevel admin
-      #     Page directory
-      #     Page instfiles
-      #     Section "Install"
-      #       SetOutPath "$INSTDIR"
-      #       File /r "build\\windows\\runner\\Release\\ukmcl.exe"
-      #       CreateShortCut "$DESKTOP\\UKMCL.lnk" "$INSTDIR\\ukmcl.exe"
-      #       CreateShortCut "$SYPROGRAMS\\UKMCL\\UKMCL.lnk" "$INSTDIR\\ukmcl.exe"
-      #     SectionEnd
-      #     Section "Uninstall"
-      #       Delete "$INSTDIR\\*.*"
-      #       RMDir "$INSTDIR"
-      #       Delete "$DESKTOP\\UKMCL.lnk"
-      #       Delete "$SYPROGRAMS\\UKMCL\\UKMCL.lnk"
-      #       RMDir "$SYPROGRAMS\\UKMCL"
-      #     SectionEnd
-      #     ' > installer.nsi
-      #     makensis installer.nsi
-      #     mv UKMCL-Installer.exe UKMCL-Windows-Installer-en_US.exe
-
-      # - name: Upload Artifact - Windows
-      #   uses: actions/upload-artifact@v4.5.0
-      #   with:
-      #     name: UKMCL-Windows-Installer-en_US
-      #     path: build/windows/runner/Release
+      - name: Package Installer - Windows
+        if: matrix.platform == 'windows-latest'
+        run: |
+          choco install nsis -y
+          echo '
+          OutFile "UKMCL-Installer.exe"
+          InstallDir "$PROGRAMFILES\\UKMCL"
+          RequestExecutionLevel admin
+          Page directory
+          Page instfiles
+          Section "Install"
+            SetOutPath "$INSTDIR"
+            File /r "build\\windows\\x64\\runner\\Release\\ukmcl.exe"
+            CreateShortCut "$DESKTOP\\UKMCL.lnk" "$INSTDIR\\ukmcl.exe"
+            CreateShortCut "$SYPROGRAMS\\UKMCL\\UKMCL.lnk" "$INSTDIR\\ukmcl.exe"
+          SectionEnd
+          Section "Uninstall"
+            Delete "$INSTDIR\\*.*"
+            RMDir "$INSTDIR"
+            Delete "$DESKTOP\\UKMCL.lnk"
+            Delete "$SYPROGRAMS\\UKMCL\\UKMCL.lnk"
+            RMDir "$SYPROGRAMS\\UKMCL"
+          SectionEnd
+          ' > installer.nsi
+          makensis installer.nsi
+          mv UKMCL-Installer.exe UKMCL-Windows-Installer-en_US.exe
     
       - name: Packager Installer - macOS
         if: matrix.platform == 'macos-latest'
@@ -139,12 +127,6 @@ jobs:
             "build/macos/Build/Products/Release/"
           mv UKMCL.dmg UKMCL-macOS-Installer-en_US.dmg
 
-      - name: Upload Artifact - macOS
-        uses: actions/upload-artifact@v4.5.0
-        with:
-          name: UKMCL-macOS-Installer-en_US
-          path: build/macos/Build/Products/Release
-
   release:
     if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
     needs: ["build"]
@@ -156,18 +138,23 @@ jobs:
       - name: Download Files
         uses: actions/download-artifact@v4
 
-      - name: Upload Files
-        uses: "marvinpinto/action-automatic-releases@v1.2.1"
+      - name: Create Release
+        uses: actions/create-release@v1
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          prerelease: true
+          tag_name: v0.0.0-experimental
+          release_name: UKMCL v0.0.0 Experimental
+          body: |
+            First Version that serves as a test
           draft: true
-          automatic_release_tag: "v0.0.0-experimental+0"
-          title: "UKMCL v0.0.0 Experimental"
-          files: |
-            UKMCL-Linux-Installer-en_US.deb
-            UKMCL-Windows-Installer-en_US.exe
-            UKMCL-macOS-Installer-en_US.dmg
+          prerelease: true
+          
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4.5.0
+        with:
+          path: |
+            build/linux/x64/release/bundle/
+            build/windows/x64/runner/Release/
+            build/acos/Build/Products/Release/
 
         
 
