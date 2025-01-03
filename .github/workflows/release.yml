@@ -86,22 +86,22 @@ jobs:
           choco install nsis -y
           echo '
           OutFile "UKMCL-Installer.exe"
-          InstallDir "$PROGRAMFILES\UKMCL"
+          InstallDir "$PROGRAMFILES\\UKMCL"
           RequestExecutionLevel admin
           Page directory
           Page instfiles
           Section "Install"
             SetOutPath "$INSTDIR"
-            File /r "build\windows\runner\Release\*.exe"
-            CreateShortCut "$DESKTOP\UKMCL.lnk" "$INSTDIR\UKMCL.exe"
-            CreateShortCut "$SYPROGRAMS\UKMCL\UKMCL.lnk" "$INSTDIR\UKMCL.exe"
+            File /r "build\\windows\\runner\\Release\\ukmcl.exe"
+            CreateShortCut "$DESKTOP\\UKMCL.lnk" "$INSTDIR\\ukmcl.exe"
+            CreateShortCut "$SYPROGRAMS\\UKMCL\\UKMCL.lnk" "$INSTDIR\\ukmcl.exe"
           SectionEnd
           Section "Uninstall"
-            Delete "$INSTDIR\*.*"
+            Delete "$INSTDIR\\*.*"
             RMDir "$INSTDIR"
-            Delete "$DESKTOP\UKMCL.lnk"
-            Delete "$SYPROGRAMS\UKMCL\UKMCL.lnk"
-            RMDir "$SYPROGRAMS\UKMCL"
+            Delete "$DESKTOP\\UKMCL.lnk"
+            Delete "$SYPROGRAMS\\UKMCL\\UKMCL.lnk"
+            RMDir "$SYPROGRAMS\\UKMCL"
           SectionEnd
           ' > installer.nsi
           makensis installer.nsi
