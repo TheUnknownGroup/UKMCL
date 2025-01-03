@@ -50,7 +50,11 @@ jobs:
       - name: Build Windows
         if: matrix.platform == 'windows-latest'
         shell: pwsh
-        run: flutter build windows --release
+        run: |
+          flutter config --enable-windows-desktop
+          flutter create .
+          flutter pub get
+          flutter build windows --release
 
       - name: Debug Build
         if: matrix.platform == 'windows-latest'
