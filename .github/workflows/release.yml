@@ -138,16 +138,6 @@ jobs:
       - name: Download Files
         uses: actions/download-artifact@v4
 
-      - name: Create Release
-        uses: actions/create-release@v1
-        with:
-          tag_name: v0.0.0-experimental
-          release_name: UKMCL v0.0.0 Experimental
-          body: |
-            First Version that serves as a test
-          draft: true
-          prerelease: true
-          
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4.5.0
         with:
@@ -155,6 +145,16 @@ jobs:
             build/linux/x64/release/bundle/
             build/windows/x64/runner/Release/
             build/acos/Build/Products/Release/
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        with:
+          tag_name: "v0.0.0-experimental"
+          release_name: "UKMCL v0.0.0 Experimental"
+          body: |
+            First Version that serves as a test
+          draft: true
+          prerelease: true
 
         
 
