@@ -88,12 +88,13 @@ jobs:
         if: matrix.platform == 'ubuntu-latest'
         uses: actions/upload-artifact@v4
         with:
-          name: UKMCL-Linux-Installer-en_US.deb
-          path: build/linux/x64/release/bundle/*.deb
+          name: UKMCL-Linux-Installer
+          path: build/linux/x64/release/bundle/UKMCL-Linux-Installer-en_US.deb
 
       - name: Package Installer - Windows
         if: matrix.platform == 'windows-latest'
         run: |
+          cd build/windows/x64/runner/Release
           choco install nsis -y
           echo '
           OutFile "UKMCL-Installer.exe"
@@ -103,7 +104,7 @@ jobs:
           Page instfiles
           Section "Install"
             SetOutPath "$INSTDIR"
-            File /r "build\\windows\\x64\\runner\\Release\\ukmcl.exe"
+            File /r "ukmcl.exe"
             CreateShortCut "$DESKTOP\\UKMCL.lnk" "$INSTDIR\\ukmcl.exe"
             CreateShortCut "$SYPROGRAMS\\UKMCL\\UKMCL.lnk" "$INSTDIR\\ukmcl.exe"
           SectionEnd
@@ -122,12 +123,13 @@ jobs:
         if: matrix.platform == 'windows-latest'
         uses: actions/upload-artifact@v4
         with:
-          name: UKMCL-Windows-Installer-en_US.exe
-          path: build/windows/x64/runner/Release/*.exe
+          name: UKMCL-Windows-Installer
+          path: build/windows/x64/runner/Release/UKMCL-Windows-Installer-en_US.exe
     
       - name: Packager Installer - macOS
         if: matrix.platform == 'macos-latest'
         run: |
+          cd build/macos/Build/Products
           brew install create-dmg
           create-dmg \
             --volname "UKMCL Installer" \
@@ -138,15 +140,15 @@ jobs:
             --hide-extension "UKMCL.app" \
             --app-drop-link 600 185 \
             "UKMCL.dmg" \
-            "build/macos/Build/Products/Release/"
+            "Release/"
           mv UKMCL.dmg UKMCL-macOS-Installer-en_US.dmg
 
       - name: Upload Artifacts - macOS
         if: matrix.platform == 'macos-latest'
         uses: actions/upload-artifact@v4
         with:
-          name: UKMCL-macOS-Installer-en_US.dmg
-          path: build/macos/Build/Products/Release/*.dmg
+          name: UKMCL-macOS-Installer
+          path: build/macos/Build/Products/Release/UKMCL-macOS-Installer-en_US.dmg
 
   release:
     permissions:
