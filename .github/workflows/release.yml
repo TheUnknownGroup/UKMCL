@@ -127,17 +127,6 @@ jobs:
             "build/macos/Build/Products/Release/"
           mv UKMCL.dmg UKMCL-macOS-Installer-en_US.dmg
 
-  release:
-    permissions:
-      contents: write
-
-    if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
-    needs: ["build"]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4.2.0
-      - uses: dart-lang/setup-dart@v1.7.0
-
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -150,17 +139,16 @@ jobs:
             build/windows/x64/runner/Release/UKMCL-Windows-Installer-en_US.exe
             build/macos/Build/Products/Release/UKMCL-macOS-Installer-en_US.dmg
 
-      - name: Download Artifacts
-        uses: actions/download-artifact@v4 
-        with:
-          name: |
-            UKMCL-Linux-Installer-en_US
-            UKMCL-Windows-Installer-en_US
-            UKMCL-macOS-Installer-en_US
-          path: |
-            build/linux/x64/release/bundle/UKMCL-Linux-Installer-en_US.deb
-            build/windows/x64/runner/Release/UKMCL-Windows-Installer-en_US.exe
-            build/macos/Build/Products/Release/UKMCL-macOS-Installer-en_US.dmg
+  release:
+    permissions:
+      contents: write
+
+    if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
+    needs: ["build"]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.2.0
+      - uses: dart-lang/setup-dart@v1.7.0
 
       - name: Create Release
         uses: "marvinpinto/action-automatic-releases@v1.2.0"
