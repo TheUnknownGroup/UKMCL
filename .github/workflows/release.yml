@@ -168,9 +168,9 @@ jobs:
         uses: actions/upload-artifact@v4.5.0
         with:
           path: |
-            UKMCL-Windows-Installer-en_US.deb
-            UKMCL-Linux-Installer-en_US.exe
-            UKMCL-macOS-Installer-en_US.dmg
+            UKMCL-Windows-Installer
+            UKMCL-Linux-Installer
+            UKMCL-macOS-Installer
 
       - name: Create Release
         uses: "marvinpinto/action-automatic-releases@v1.2.0"
