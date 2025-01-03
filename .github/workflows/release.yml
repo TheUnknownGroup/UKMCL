@@ -138,24 +138,6 @@ jobs:
       - uses: actions/checkout@v4.2.0
       - uses: dart-lang/setup-dart@v1.7.0
 
-      - name: Download Artifact - Linux
-        uses: actions/download-artifact@v4
-        with:
-          name: UKMCL-Linux-Installer-en_US
-          path: build/linux/x64/release/bundle/UKMCL-Linux-Installer-en_US.deb
-
-      - name: Download Artifact - Windows
-        uses: actions/download-artifact@v4
-        with:
-          name: UKMCL-Windows-Installer-en_US
-          path: build/windows/x64/runner/Release/UKMCL-Windows-Installer-en_US.exe
-
-      - name: Download Artifact - macOS
-        uses: actions/download-artifact@v4
-        with:
-          name: UKMCL-macOS-Installer-en_US
-          path: build/acos/Build/Products/Release/UKMCL-macOS-Installer-en_US.dmg
-
       - name: Upload Artifact - Linux
         uses: actions/upload-artifact@v4.5.0
         with:
@@ -170,6 +152,24 @@ jobs:
 
       - name: Upload Artifact - macOS
         uses: actions/upload-artifact@v4.5.0
+        with:
+          name: UKMCL-macOS-Installer-en_US
+          path: build/acos/Build/Products/Release/UKMCL-macOS-Installer-en_US.dmg
+
+      - name: Download Artifact - Linux
+        uses: actions/download-artifact@v4
+        with:
+          name: UKMCL-Linux-Installer-en_US
+          path: build/linux/x64/release/bundle/UKMCL-Linux-Installer-en_US.deb
+
+      - name: Download Artifact - Windows
+        uses: actions/download-artifact@v4
+        with:
+          name: UKMCL-Windows-Installer-en_US
+          path: build/windows/x64/runner/Release/UKMCL-Windows-Installer-en_US.exe
+
+      - name: Download Artifact - macOS
+        uses: actions/download-artifact@v4
         with:
           name: UKMCL-macOS-Installer-en_US
           path: build/acos/Build/Products/Release/UKMCL-macOS-Installer-en_US.dmg
