@@ -60,7 +60,7 @@ jobs:
         if: matrix.platform == 'windows-latest'
         run: |
           echo "Listing build output: "
-          dir build\windows\runner\Release\
+          dir build\windows\x64\runner\Release\
 
       - name: Build macOS
         if: matrix.platform == 'macos-latest'
