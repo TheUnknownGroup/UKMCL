@@ -96,7 +96,6 @@ jobs:
         run: |
           cd build/windows/x64/runner/Release
           choco install nsis -y
-
           echo '
           OutFile "UKMCL-Installer.exe"
           InstallDir "$PROGRAMFILES\\UKMCL"
@@ -109,14 +108,6 @@ jobs:
             CreateShortCut "$DESKTOP\\UKMCL.lnk" "$INSTDIR\\ukmcl.exe"
             CreateShortCut "$SMPROGRAMS\\UKMCL\\UKMCL.lnk" "$INSTDIR\\ukmcl.exe"
           SectionEnd
-          ' > installer.nsi
-
-          echo '
-          OutFile "UKMCL-Uninstaller.exe"
-          InstallDir "$PROGRAMFILES\\UKMCL"
-          RequestExecutionLevel admin
-          Page directory
-          Page instfiles
           Section "Uninstall"
             Delete "$INSTDIR\\*.*"
             RMDir "$INSTDIR"
@@ -124,11 +115,8 @@ jobs:
             Delete "$SMPROGRAMS\\UKMCL\\UKMCL.lnk"
             RMDir "$SMPROGRAMS\\UKMCL"
           SectionEnd
-          ' > uninstaller.nsi
-
+          ' > installer.nsi
           makensis installer.nsi
-          makensis uninstaller.nsi
-          mv UKMCL-Uninstaller.exe UKMCL-Windows-Uninstaller.exe
           mv UKMCL-Installer.exe UKMCL-Windows-Installer-en_US.exe
           
       - name: Upload Artifacts - Windows
