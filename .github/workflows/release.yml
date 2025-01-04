@@ -81,7 +81,8 @@ jobs:
           Description: 
             This is the Minecraft Launcher for and by the Unknown Group." > ukmcl/DEBIAN/control
           cp -r build/linux/x64/release/bundle/* ukmcl/usr/bin
-          dpkg-deb --build ukmcl UKMCL-Linux-Installer-en_US.deb
+          dpkg-deb --build ukmcl ./UKMCL-Linux-Installer-en_US.deb
+          ls -lh UKMCL-Linux-Installer-en_US.deb
 
       - name: Upload Artifacts - Linux
         if: matrix.platform == 'ubuntu-latest'
