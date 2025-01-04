@@ -104,7 +104,7 @@ jobs:
           Page instfiles
           Section "Install"
             SetOutPath "$INSTDIR"
-            File /r "build\\windows\\x64\\runner\\Release"
+            File /r "ukmcl.exe"
             CreateShortCut "$DESKTOP\\UKMCL.lnk" "$INSTDIR\\ukmcl.exe"
             CreateShortCut "$SMPROGRAMS\\UKMCL\\UKMCL.lnk" "$INSTDIR\\ukmcl.exe"
           SectionEnd
