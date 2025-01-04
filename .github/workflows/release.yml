@@ -45,7 +45,7 @@ jobs:
 
       - name: Build Linux
         if: matrix.platform == 'ubuntu-latest'
-        run: flutter build linux
+        run: flutter build linux --release
 
       - name: Build Windows
         if: matrix.platform == 'windows-latest'
@@ -71,7 +71,6 @@ jobs:
       - name: Package Installer - Linux
         if: matrix.platform == 'ubuntu-latest'
         run: |
-          cd build/linux/x64/release
           mkdir -p ukmcl/DEBIAN ukmcl/usr/bin
           echo "Package: ukmcl
           Version: 0.0.0
@@ -81,7 +80,7 @@ jobs:
           Maintainer: TheGremlinX <owner@thegremlinx.xyz>
           Description: 
             This is the Minecraft Launcher for and by the Unknown Group." > ukmcl/DEBIAN/control
-          cp -r bundle/* ukmcl/usr/bin
+          cp -r build/linux/x64/release/bundle/* ukmcl/usr/bin
           dpkg-deb --build ukmcl
           mv ukmcl.deb UKMCL-Linux-Installer-en_US.deb
 
@@ -89,7 +88,7 @@ jobs:
         if: matrix.platform == 'ubuntu-latest'
         uses: actions/upload-artifact@v4
         with:
-          name: UKMCL-Linux-Installer
+          name: linux-installer
           path: build/linux/x64/release/bundle
 
       - name: Package Installer - Windows
@@ -124,7 +123,7 @@ jobs:
         if: matrix.platform == 'windows-latest'
         uses: actions/upload-artifact@v4
         with:
-          name: UKMCL-Windows-Installer
+          name: windows-installer
           path: build/windows/x64/runner/Release
     
       - name: Packager Installer - macOS
@@ -148,7 +147,7 @@ jobs:
         if: matrix.platform == 'macos-latest'
         uses: actions/upload-artifact@v4
         with:
-          name: UKMCL-macOS-Installer
+          name: macos-installer
           path: build/macos/Build/Products
 
   release:
@@ -156,7 +155,7 @@ jobs:
       contents: write
 
     if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
-    needs: ["build"]
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.2.0
@@ -164,22 +163,12 @@ jobs:
 
       - name: Download Files
         uses: actions/download-artifact@v4
+        with:
+          path: ./installers
 
       - name: Verify
         run: |
-          ls -R .
-          if (!(Test-Path -Path "UKMCL-Windows-Installer-en_US.exe")) {
-            echo "ERROR: Windows installer not found"
-            exit 1
-          }
-          if (!(Test-Path -Path "UKMCL-Linux-Installer-en_US.deb")) {
-            echo "ERROR: Linux installer not found!"
-            exit 1
-          }
-          if (!(Test-Path -Path "UKMCL-MacOS-Installer-en_US.dmg")) {
-            echo "ERROR: MacOS installer not found!"
-            exit 1
-          }
+          ls -R ./installers
 
       - name: Create Release
         uses: "marvinpinto/action-automatic-releases@v1.2.0"
@@ -190,9 +179,9 @@ jobs:
           prerelease: true
           draft: true
           files: |
-            UKMCL-Linux-Installer-en_US.deb
-            UKMCL-Windows-Installer-en_US.exe
-            UKMCL-macOS-Installer-en_US.dmg        
+            installers/linux-installer/UKMCL-Linux-Installer-en_US.deb
+            installers/windows-installer/UKMCL-Windows-Installer-en_US.exe
+            installers/macos-installer/UKMCL-macOS-Installer-en_US.dmg        
 
 # name: Build Flutter desktop apps
 
