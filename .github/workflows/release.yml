@@ -107,14 +107,14 @@ jobs:
             SetOutPath "$INSTDIR"
             File /r "ukmcl.exe"
             CreateShortCut "$DESKTOP\\UKMCL.lnk" "$INSTDIR\\ukmcl.exe"
-            CreateShortCut "$SYPROGRAMS\\UKMCL\\UKMCL.lnk" "$INSTDIR\\ukmcl.exe"
+            CreateShortCut "$SMPROGRAMS\\UKMCL\\UKMCL.lnk" "$INSTDIR\\ukmcl.exe"
           SectionEnd
           Section "Uninstall"
             Delete "$INSTDIR\\*.*"
             RMDir "$INSTDIR"
             Delete "$DESKTOP\\UKMCL.lnk"
-            Delete "$SYPROGRAMS\\UKMCL\\UKMCL.lnk"
-            RMDir "$SYPROGRAMS\\UKMCL"
+            Delete "$SMPROGRAMS\\UKMCL\\UKMCL.lnk"
+            RMDir "$SMPROGRAMS\\UKMCL"
           SectionEnd
           ' > installer.nsi
           makensis installer.nsi
@@ -125,7 +125,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: UKMCL-Windows-Installer
-          path: build/windows/x64/runner/Release/UKMCL-Windows-Installer-en_US.exe
+          path: build/windows/x64/runner/Release
     
       - name: Packager Installer - macOS
         if: matrix.platform == 'macos-latest'
@@ -149,7 +149,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: UKMCL-macOS-Installer
-          path: build/macos/Build/Products/UKMCL-macOS-Installer-en_US.dmg
+          path: build/macos/Build/Products
 
   release:
     permissions:
@@ -164,25 +164,6 @@ jobs:
 
       - name: Download Files
         uses: actions/download-artifact@v4
-
-      - name: Upload Artfacts - Linux
-        uses: actions/upload-artifact@v4.5.0
-        with:
-          name: UKMCL-Linux-Installer
-          path: home/runner/work/UKMCL/UKMCL/UKMCL-Linux-Installer
-
-      - name: Upload Artfacts - Windows
-        uses: actions/upload-artifact@v4.5.0
-        with:
-          name: UKMCL-Linux-Installer
-          path: home/runner/work/UKMCL/UKMCL/UKMCL-Windows-Installer
-
-      - name: Upload Artfacts - macOS
-        uses: actions/upload-artifact@v4.5.0
-        with:
-          name: UKMCL-Linux-Installer
-          path: home/runner/work/UKMCL/UKMCL/UKMCL-macOS-Installer
-
 
       - name: Create Release
         uses: "marvinpinto/action-automatic-releases@v1.2.0"
