@@ -153,18 +153,17 @@ jobs:
 
       - name: Download Files
         uses: actions/download-artifact@v4
-        with:
-          path: ./installers
+      
+      - name: Verify
+        run: |
+          ls -R
+
       - run: chmod +x linux-installer
       - name: Package Installer - Linux
         if: matrix.platform == 'ubuntu-latest'
         run: |
           cp -r linux-installer packageing/deb/opt/UKMCL/Binary
           fakeroot dpkg-deb --build packageing/deb "UKMCL-Linux-Installer-en_US.deb"
-      
-      - name: Verify
-        run: |
-          ls -R ./installers
 
       - name: Create Release
         uses: "marvinpinto/action-automatic-releases@v1.2.0"
