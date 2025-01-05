@@ -70,35 +70,58 @@ jobs:
       
       - name: Package Installer - Windows
         run: |
-          cd build/windows/x64/runner/Release
-          choco install nsis -y
-          echo '
-          OutFile "UKMCL-Installer.exe"
-          InstallDir "$PROGRAMFILES\\UKMCL"
-          RequestExecutionLevel admin
-          Page directory
-          Page instfiles
-          Section "Install"
-            SetOutPath "$INSTDIR"
-            File /r "ukmcl.exe"
-            CreateShortCut "$DESKTOP\\UKMCL.lnk" "$INSTDIR\\ukmcl.exe"
-            CreateShortCut "$SMPROGRAMS\\UKMCL\\UKMCL.lnk" "$INSTDIR\\ukmcl.exe"
-          SectionEnd
-          Section "Uninstall"
-            Delete "$INSTDIR\\*.*"
-            RMDir "$INSTDIR"
-            Delete "$DESKTOP\\UKMCL.lnk"
-            Delete "$SMPROGRAMS\\UKMCL\\UKMCL.lnk"
-            RMDir "$SMPROGRAMS\\UKMCL"
-          SectionEnd
-          ' > installer.nsi
-          makensis installer.nsi
-          mv UKMCL-Installer.exe UKMCL-Windows-Installer-en_US.exe
+          cd ${{ github.workspace }}/packaging/exe
+
+          copy -r "${{ github.workspace }}/build/windows/x64/runner/Release"
+
+          copy C:\Windows\System32\msvcp140.dll ./Release
+          copy C:\Windows\System32\vcruntime140.dll ./Release
+          copy C:\Windows\System32\vcruntime140_1.dll ./Release
+
+          copy ./icon.ico ./Release
+
+          Remove-item alias:curl
+          curl https://mlaan2.home.xs4all.nl/ispack/innosetup-6.2.1.exe --output innosetup.exe
+          Start-Process .\innosetup.exe /VERYSILENT -Wait
+
+          cd "C:\Program Files (x86)\Inno Setup 6"
+          iscc "${{ github.workspace }}/packaging/exe/installer.iss"
           
+      # cd build/windows/x64/runner/Release
+      #     choco install nsis -y
+      #     echo '
+      #     OutFile "UKMCL-Installer.exe"
+      #     InstallDir "$PROGRAMFILES\\UKMCL"
+      #     RequestExecutionLevel admin
+      #     Page directory
+      #     Page instfiles
+      #     Section "Install"
+      #       SetOutPath "$INSTDIR"
+      #       File /r "ukmcl.exe"
+      #       CreateShortCut "$DESKTOP\\UKMCL.lnk" "$INSTDIR\\ukmcl.exe"
+      #       CreateShortCut "$SMPROGRAMS\\UKMCL\\UKMCL.lnk" "$INSTDIR\\ukmcl.exe"
+      #     SectionEnd
+      #     Section "Uninstall"
+      #       Delete "$INSTDIR\\*.*"
+      #       RMDir "$INSTDIR"
+      #       Delete "$DESKTOP\\UKMCL.lnk"
+      #       Delete "$SMPROGRAMS\\UKMCL\\UKMCL.lnk"
+      #       RMDir "$SMPROGRAMS\\UKMCL"
+      #     SectionEnd
+      #     ' > installer.nsi
+      #     makensis installer.nsi
+      #     mv UKMCL-Installer.exe UKMCL-Windows-Installer-en_US.exe
+
       - name: Upload Artifacts - Windows
         uses: actions/upload-artifact@v4
         with:
           name: windows-installer
+          path: build/windows/x64/runner/Release/UKMCL-Windows-Installer-en_US.exe
+
+      - name: Upload Artifacts - Windows (zip)
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-installer-zip
           path: build/windows/x64/runner/Release
 
   build-macOS:
@@ -170,12 +193,27 @@ jobs:
         run: |
           ls -R
 
-      - run: chmod +x linux-installer
+      - run: chmod +x linux-installer/ukmcl
+
+      - name: Zip Linux
+        uses: thedoctor0/zip-release@main
+        with:
+          type: "zip"
+          filename: "UKMCL-Linux-Installer-en_US.zip"
+          path: linux-installer
+
+      - name: Zip Windows
+        uses: thedoctor0/zip-release@main
+        with:
+          type: "zip"
+          filename: "UKMCL-Windows-Installer-en_US.zip"
+          path: windows-installer-zip
+
       - name: Package Installer - Linux
         if: matrix.platform == 'ubuntu-latest'
         run: |
-          cp -r linux-installer packageing/deb/opt/UKMCL
-          fakeroot dpkg-deb --build packageing/deb "UKMCL-Linux-Installer-en_US.deb"
+          cp -r linux-installer packaging/deb/opt/UKMCL/Binary
+          fakeroot dpkg-deb --build packaging/deb "UKMCL-Linux-Installer-en_US.deb"
 
       - name: Create Release
         uses: "marvinpinto/action-automatic-releases@v1.2.0"
@@ -186,7 +224,9 @@ jobs:
           prerelease: true
           draft: true
           files: |
-            linux-installer/UKMCL-Linux-Installer-en_US.deb
+            UKMCL-Linux-Installer-en_US.deb
+            UKMCL-Linux-Installer-en_US.zip
+            UKMCL-Windows-Installer-en_US.zip
             windows-installer/UKMCL-Windows-Installer-en_US.exe
             macos-installer/UKMCL-macOS-Installer-en_US.dmg        
 

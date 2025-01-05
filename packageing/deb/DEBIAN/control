@@ -1,7 +1,0 @@
-Package: ukmcl
-Version: 0.0.0
-Section: utils
-Priority: optional
-Architecture: amd64
-Maintainer: TheGremlinX <owner@thegremlinx.xyz>
-Description: This is the Minecraft Launcher for and by the Unknown Group.
