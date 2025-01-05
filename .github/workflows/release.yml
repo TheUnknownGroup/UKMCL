@@ -155,7 +155,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: ./installers
-      - run: chmod -x linux-installer
+      - run: chmod +x linux-installer
       - name: Package Installer - Linux
         if: matrix.platform == 'ubuntu-latest'
         run: |
