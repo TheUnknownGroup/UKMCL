@@ -115,13 +115,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: windows-installer
-          path: build/windows/x64/runner/Release/UKMCL-Windows-Installer-en_US.exe
+          path: ${{ github.workspace }}/packaging/exe/UKMCL-Windows-Installer-en_US.exe
 
       - name: Upload Artifacts - Windows (zip)
         uses: actions/upload-artifact@v4
         with:
           name: windows-installer-zip
-          path: build/windows/x64/runner/Release
+          path: ${{ github.workspace }}/packaging/exe/Release
 
   build-macOS:
     if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
@@ -211,7 +211,8 @@ jobs:
       - name: Package Installer - Linux
         if: matrix.platform == 'ubuntu-latest'
         run: |
-          cp -r linux-installer packaging/deb/opt/UKMCL/Binary
+          cp -r linux-installer ${{ github.workspace }}/packaging/deb/opt/UKMCL/Binary
+          sed -i 's/0.0.0'
           fakeroot dpkg-deb --build packaging/deb "UKMCL-Linux-Installer-en_US.deb"
 
       - name: Create Release
