@@ -80,13 +80,12 @@ jobs:
 
           copy ./icon.ico ./Release
 
-          Remove-item alias:curl
           curl https://mlaan2.home.xs4all.nl/ispack/innosetup-6.2.1.exe --output innosetup.exe
           Start-Process .\innosetup.exe /VERYSILENT -Wait
 
           cd "C:\Program Files (x86)\Inno Setup 6"
           iscc "${{ github.workspace }}/packaging/exe/installer.iss"
-          
+
       # cd build/windows/x64/runner/Release
       #     choco install nsis -y
       #     echo '
