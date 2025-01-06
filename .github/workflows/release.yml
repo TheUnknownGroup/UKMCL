@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+  workflow_dispatch:
+      
+env:
+  version: v${{ secrets.VERSION }}-experimental+0
 jobs:
   build-Linux:
     if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
@@ -207,7 +211,7 @@ jobs:
       - name: Package Installer - Linux
         run: |
           cp -r linux-installer packaging/deb/opt/UKMCL/Binary
-          sed -i 's/0.0.0'
+          sed -i 's/${VERSION}/${{ env.version }}/g' packaging/deb/DEBIAN/control
           fakeroot dpkg-deb --build packaging/deb "UKMCL-Linux-Installer-en_US.deb"
 
       - name: Create Release
@@ -215,7 +219,7 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           title: "UKMCL"
-          automatic_release_tag: "v0.0.0-experimental+0"
+          automatic_release_tag: "${{ env.version }}"
           prerelease: true
           draft: true
           files: |

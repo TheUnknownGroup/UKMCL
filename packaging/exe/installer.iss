@@ -2,7 +2,7 @@
 #define Publisher "TheUnknownGroup - devonk15"
 #define URL "https://github.com/TheUnknownGroup/UKMCL"
 #define ExeName "ukmcl.exe
-#define Version "v0.0.0"
+#define Version "v${{ secrets.VERSION }}"
 
 #define PackagingDir "./Release"
 #define BaseFilename "UKMCL-Windows-Installer-en_US"
