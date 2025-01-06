@@ -5,7 +5,6 @@ void main() {
 }
 
 const appName = 'UKMCL';
-const appVersion = '0.0.0-experimental+0';
 var new1 = '';
 
 class MainApp extends StatelessWidget {

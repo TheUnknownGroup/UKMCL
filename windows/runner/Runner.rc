@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "ukmcl" "\0"
+            VALUE "CompanyName", "xyz.thegremlinx" "\0"
+            VALUE "FileDescription", "UKMCL" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "ukmcl" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "ukmcl.exe" "\0"
-            VALUE "ProductName", "ukmcl" "\0"
+            VALUE "InternalName", "UKMCL" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2024 xyz.thegremlinx. All rights reserved." "\0"
+            VALUE "OriginalFilename", "UKMCL.exe" "\0"
+            VALUE "ProductName", "UKMCL" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
