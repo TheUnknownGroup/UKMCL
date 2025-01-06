@@ -1,7 +1,7 @@
 #define Name "UKMCL"
 #define Publisher "TheUnknownGroup - devonk15"
 #define URL "https://github.com/TheUnknownGroup/UKMCL"
-#define ExeName "ukmcl.exe
+#define ExeName "UKMCL.exe
 #define Version "v${{ secrets.VERSION }}"
 
 #define PackagingDir "./Release"

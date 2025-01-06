@@ -8,7 +8,8 @@ on:
   workflow_dispatch:
       
 env:
-  version: v${{ secrets.VERSION }}-experimental+0
+  ver-exp: v${{ secrets.VERSION }}-experimental+${{ github.run_number }}
+  ver: v${{ secrets.VERSION }}+${{ github.run_number }}
 jobs:
   build-Linux:
     if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
@@ -211,15 +212,15 @@ jobs:
       - name: Package Installer - Linux
         run: |
           cp -r linux-installer packaging/deb/opt/UKMCL/Binary
-          sed -i 's/${VERSION}/${{ env.version }}/g' packaging/deb/DEBIAN/control
+          sed -i 's/${VERSION}/${{ env.ver-exp }}/g' packaging/deb/DEBIAN/control
           fakeroot dpkg-deb --build packaging/deb "UKMCL-Linux-Installer-en_US.deb"
 
       - name: Create Release
         uses: "marvinpinto/action-automatic-releases@v1.2.0"
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          title: "UKMCL"
-          automatic_release_tag: "${{ env.version }}"
+          title: "UKMCL ${{ env.ver-exp }}"
+          automatic_release_tag: "${{ env.ver-exp }}"
           prerelease: true
           draft: true
           files: |
