@@ -193,7 +193,7 @@ jobs:
         run: |
           ls -R
 
-      - run: chmod +x linux-installer/UKCML
+      - run: chmod +x linux-installer/UKMCL
 
       - name: Zip Linux
         uses: thedoctor0/zip-release@main
