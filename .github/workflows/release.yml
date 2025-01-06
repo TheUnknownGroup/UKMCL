@@ -171,10 +171,6 @@ jobs:
     permissions:
       contents: write
 
-    strategy:
-      matrix:
-        platform: [ubuntu-latest]
-
     if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
 
     needs: [ build-Linux, build-Windows, build-macOS]
@@ -209,9 +205,8 @@ jobs:
           path: windows-installer-zip
 
       - name: Package Installer - Linux
-        if: matrix.platform == 'ubuntu-latest'
         run: |
-          cp -r linux-installer ${{ github.workspace }}/packaging/deb/opt/UKMCL/Binary
+          cp -r linux-installer packaging/deb/opt/UKMCL/Binary
           sed -i 's/0.0.0'
           fakeroot dpkg-deb --build packaging/deb "UKMCL-Linux-Installer-en_US.deb"
 
