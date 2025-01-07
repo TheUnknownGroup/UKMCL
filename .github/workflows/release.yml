@@ -1,4 +1,4 @@
-name: Build UKMCL
+name: Build UKMCL v0.0.0-experimental
 
 on:
   push:
@@ -91,31 +91,6 @@ jobs:
           cd "C:\Program Files (x86)\Inno Setup 6"
           iscc "${{ github.workspace }}/packaging/exe/installer.iss"
 
-      # cd build/windows/x64/runner/Release
-      #     choco install nsis -y
-      #     echo '
-      #     OutFile "UKMCL-Installer.exe"
-      #     InstallDir "$PROGRAMFILES\\UKMCL"
-      #     RequestExecutionLevel admin
-      #     Page directory
-      #     Page instfiles
-      #     Section "Install"
-      #       SetOutPath "$INSTDIR"
-      #       File /r "ukmcl.exe"
-      #       CreateShortCut "$DESKTOP\\UKMCL.lnk" "$INSTDIR\\ukmcl.exe"
-      #       CreateShortCut "$SMPROGRAMS\\UKMCL\\UKMCL.lnk" "$INSTDIR\\ukmcl.exe"
-      #     SectionEnd
-      #     Section "Uninstall"
-      #       Delete "$INSTDIR\\*.*"
-      #       RMDir "$INSTDIR"
-      #       Delete "$DESKTOP\\UKMCL.lnk"
-      #       Delete "$SMPROGRAMS\\UKMCL\\UKMCL.lnk"
-      #       RMDir "$SMPROGRAMS\\UKMCL"
-      #     SectionEnd
-      #     ' > installer.nsi
-      #     makensis installer.nsi
-      #     mv UKMCL-Installer.exe UKMCL-Windows-Installer-en_US.exe
-
       - name: Upload Artifacts - Windows
         uses: actions/upload-artifact@v4
         with:
@@ -188,10 +163,6 @@ jobs:
 
       - name: Download Files
         uses: actions/download-artifact@v4
-      
-      - name: Verify
-        run: |
-          ls -R
 
       - run: chmod +x linux-installer/UKMCL
 
@@ -228,126 +199,4 @@ jobs:
             UKMCL-Linux-Installer-en_US.zip
             UKMCL-Windows-Installer-en_US.zip
             windows-installer/UKMCL-Windows-Installer-en_US.exe
-            macos-installer/UKMCL-macOS-Installer-en_US.dmg        
-
-# name: Build Flutter desktop apps
-
-# on:
-#     push:
-#         branches:
-#             - main
-
-# jobs:
-#     build:
-#         runs-on: ${{ matrix.os }}
-#         strategy:
-#             matrix:
-#                 os: [ubuntu-latest, macos-latest, windows-latest]
-
-#         steps:
-#             - uses: actions/checkout@v3
-#             - name: Set up Flutter
-#               uses: subosito/flutter-action@v2
-#               with:
-#                 flutter-version: "3.27.0"
-
-#             - name: Install Linux Build Dependencies
-#               if: matrix.os == 'ubuntu-latest'
-#               run: |
-#                 sudo apt-get update
-#                 sudo apt-get install -y ninja-build clang cmake libgtk-3-dev
-
-#             # - name: Install Xcode Command Line Tools
-#             #   if: matrix.os == 'macos-latest'
-#             #   run: xcode-select --install
-
-#             - name: Install Windows Build Tools
-#               if: matrix.os == 'windows-latest'
-#               run: |
-#                 choco install visualstudio2019buildtools -y
-#                 choco install visualstudio2019-workload-vctools -y
-
-#             - name: Set up Environment for Windows Build Tools
-#               if: matrix.os == 'windows-latest'
-#               run: |
-#                 $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin"
-#                 $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\IDE"
-#                 $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\*\bin\Hostx64\x64"
-
-#             - name: Install Dependencies
-#               run: flutter pub get
-
-#             - name: Build Windows App
-#               if: matrix.os == 'windows-latest'
-#               shell: pwsh
-#               run: flutter build windows
-
-#             - name: Build Linux App
-#               if: matrix.os == 'ubuntu-latest'
-#               run: flutter build linux
-
-#             - name: Build macOS App
-#               if: matrix.os == 'macos-latest'
-#               run: flutter build macos
-            
-#             - name: Upload Artifacts
-#               uses: actions/upload-artifact@v3
-#               with:
-#                 name: build-${{ matrix.os }}
-#                 path: |
-#                     build/windows/runner/Release/*.exe
-#                     build/macos/Build/Products/Release/*.app
-#                     build/linux/runner/*.AppImage
-#     release:
-#         env:
-#           NAME: "UKMCL"
-#           VERSION: "0.0.0"
-#           NUM: "+0"
-#           EXP: "experimental"
-#           TAG: "v${{ vars.VERSION }}${{ vars.NUM }}"
-#           EXP_TAG: "v${{ vars.TAG }}-${{ vars.EXP }}${{ vars.NUM }}"
-
-#         permissions:
-#           contents: write
-#         needs: build
-#         runs-on: ubuntu-latest
-#         steps:
-#             - uses: actions/checkout@v3
-#             - name: Download Build Artifacts
-#               uses: actions/download-artifact@v3
-#               with:
-#                 path: ./artifacts
-
-#             - name: Create Release & Upload
-#               uses: "marvinpinto/action-automatic-releases@latest"
-#               with:
-#                 repo_token: "${{ secrets.GITHUB_TOKEN }}"
-#                 prerelease: true
-#                 draft: true
-#                 automatic_release_tag: "${{ env.EXP_TAG }}"
-#                 title: "${{ env.NAME }} ${{ env.EXP_TAG }}"
-#                 files:
-#                   ukmcl.exe
-#                   ukmcl.AppImage
-#                   ukmcl.deb
-#                   ukmcl.zip
-#                   ukmcl.dmg
-#             # - name: Create Github Release
-#             #   uses: actions/create-release@v1
-#             #   env:
-#             #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#             #   with:
-#             #     tag_name: v0.0.0-experimental+0
-#             #     release_name: UKMCL v0.0.0 Experimental
-#             #     body: |
-#             #         This is the first release of the Minecraft Launcher: UKMCL using Github Actions and created using Flutter
-#             #     draft: false
-#             #     prerelease: false
-
-#             # - name: Upload Release Assets
-#             #   uses: actions/upload-release-asset@v1
-#             #   with:
-#             #     upload_url: ${{ steps.create-release.outputs.upload_url }}
-#             #     asset_path: ./artifacts
-#             #     asset_name: ${{ matrix.os }}-build.zip
-#             #     asset_content_type: applization/zip
+            macos-installer/UKMCL-macOS-Installer-en_US.dmg 
