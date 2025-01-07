@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(const MainApp());
-}
+import 'dart:io';
+import 'package:window_size/window_size.dart';
 
 const appName = 'UKMCL';
-var new1 = '';
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    setWindowTitle(appName);
+    setWindowMinSize(Size(950, 550));
+    setWindowMaxSize(Size(950, 550));
+  }
+  runApp(const MainApp());
+}
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       home: Scaffold(
         body: Center(
-          child: Text('Welcome to $appName! We hope you enjoy our app.'),
+          child: Text('Hello, world!'),
         ),
       ),
     );
