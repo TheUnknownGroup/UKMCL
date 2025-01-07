@@ -1,4 +1,4 @@
-name: Build UKMCL v0.0.0-experimental
+name: Build v0.0.0-experimental
 
 on:
   push:
@@ -8,8 +8,8 @@ on:
   workflow_dispatch:
       
 env:
-  ver-exp: v${{ secrets.VERSION }}-experimental+${{ github.run_number }}
-  ver: v${{ secrets.VERSION }}+${{ github.run_number }}
+  ver-exp: v${{ secrets.VERSION }}-experimental+0
+  ver: v${{ secrets.VERSION }}+0
 jobs:
   build-Linux:
     if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
