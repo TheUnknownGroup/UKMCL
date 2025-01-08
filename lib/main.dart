@@ -5,37 +5,39 @@ import 'package:window_size/window_size.dart';
 const appName = 'UKMCL';
 
 void main() {
+  runApp(const MyApp());
+  
   WidgetsFlutterBinding.ensureInitialized();
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     setWindowTitle(appName);
     setWindowMinSize(Size(950, 550));
     setWindowMaxSize(Size(950, 550));
   }
-  runApp(const MainApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello, world!'),
-        ),
-      ),
+      home: const MyPage(),
     );
   }
 }
 
-// class Row1 extends StatefulWidget {
-//   const Row1({super.key});
+class MyPage extends StatelessWidget {
+  const MyPage({super.key});
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Center (
-      
-//     )
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        
+      ),
+      body: const Center(
+        child: Text('Welcome!'),
+      ),
+    );
+  }
+}
