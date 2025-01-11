@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:window_size/window_size.dart';
+import 'package:ukmcl/pages/homepage.dart';
 
 const appName = 'UKMCL';
 
@@ -20,24 +21,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const MyPage(),
-    );
-  }
-}
-
-class MyPage extends StatelessWidget {
-  const MyPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        
-      ),
-      body: const Center(
-        child: Text('Welcome!'),
-      ),
+    return const MaterialApp(
+      home: HomePage(),
     );
   }
 }
