@@ -100,7 +100,7 @@ jobs:
 
 
   buildMac:
-    if: ${{ contains(github.event.head_commit.message, '[sing]') }}
+    if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
 
     permissions:
       contents: write
@@ -154,7 +154,7 @@ jobs:
       contents: write
       id-token: write
 
-    needs: [ buildWin, buildLin ]
+    needs: [ buildWin, buildLin, buildMac ]
 
     runs-on: ubuntu-latest
     steps:
