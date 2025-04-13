@@ -81,15 +81,15 @@ jobs:
 
       - name: build installer
         run: |
-          cd packaging/deb
+          cd packaging
           mkdir -p usr/local/bin
           cd usr
           mkdir -p share
           mkdir -p share/UKMCL
           cd ${{ github.workspace }}
-          cp build/libs/*.jar packaging/deb/usr/share/UKMCL/
-          sed -i 's/${VERSION}/${{ env.ver-exp }}/g' packaging/deb/DEBIAN/control
-          fakeroot dpkg-deb --build packging/deb "UKMCL-Linux-Installer-en_US.deb"
+          cp build/libs/*.jar packaging/usr/share/UKMCL/
+          sed -i 's/${VERSION}/${{ env.ver-exp }}/g' packaging/DEBIAN/control
+          fakeroot dpkg-deb --build packaging "UKMCL-Linux-Installer-en_US.deb"
 
       - name: upload installer
         uses: actions/upload-artifact@v4
