@@ -115,13 +115,13 @@ jobs:
           verify: true
           verify-cert-identity: https://github.com/TheUnknownGroup/UKMCL/.github/workflows/build.yml@refs/heads/main
           verify-oidc-issuer: https://token.actions.githubusercontent.com
-          upload-signing-artifacts: true
+#          upload-signing-artifacts: true
 
       - name: upload exe
         uses: actions/upload-artifact@v4
         with:
           name: sign-exe
-          path: signing-artifacts-sign/
+          path: exe/
 
 
   release:
