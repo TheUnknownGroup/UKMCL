@@ -76,13 +76,13 @@ jobs:
       - uses: actions/checkout@v4
 
   sign:
-    if: ${{ contains(github.event.head_commit.message, '[sing]') }}
+    if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
 
     permissions:
       contents: write
       id-token: write
 
-    needs: [ buildWin, buildLin, buildMac ]
+    needs: [ buildWin ]
 
     runs-on: ubuntu-latest
     steps:
@@ -110,12 +110,19 @@ jobs:
         with:
           inputs: | 
             exe/*.exe
-            deb/*.deb
-            dmg/*.dmg
+#            deb/*.deb
+#            dmg/*.dmg
           verify: true
           verify-cert-identity: https://github.com/TheUnknownGroup/UKMCL/.github/workflows/build.yml@refs/heads/main
           verify-oidc-issuer: https://token.actions.githubusercontent.com
-          upload-signing-artifacts: true
+#          upload-signing-artifacts: true
+
+      - name: upload exe
+        uses: actions/upload-artifact@v4
+        with:
+          name: exe
+          path: signing-artifacts-sign/
+
 
   release:
     if: ${{ contains(github.event.head_commit.message, '[real]') }}
@@ -141,4 +148,4 @@ jobs:
           draft: true
           generate_release_notes: true
           files: |
-            signing-artifacts-sign/*.exe
+            exe/*.exe
