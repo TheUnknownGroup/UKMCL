@@ -135,7 +135,7 @@ jobs:
             --input build/libs \
             --dest output \
             --name "UKMCL-Installer" \
-            --main-jar ${{ env.jar_ver }}.jar \
+            --main-jar ${{ env.jar_ver }} \
             --main-class UkmclMain \
             --icon ${{ github.workspace }}/assets/icon.icns \
             --java-options "-Xmx2G"
