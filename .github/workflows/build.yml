@@ -130,16 +130,15 @@ jobs:
       - name: build installer
         run: |
           mkdir -p output
-          jpackage \
-            -t dmg \
-            --app-version "1.0.0" \
-            --input build/libs \
-            --dest output \
-            --name "UKMCL-MacOS-Installer" \
-            --main-jar ${{ env.jar_ver }} \
-            --main-class UkmclMain \
-            --icon ${{ github.workspace }}/assets/icon.icns \
-            --java-options "-Xmx2G"
+          brew install create-dmg
+          create-dmg \
+            --volname "UKMCL Installer" \
+            --volicon "${{ github.workspace }}/assets/icon.icns" \
+            --window-pos 200 120 \
+            --window-size 950 530 \
+            --icon-size 100 \
+            "UKMCL-Installer.dmg"
+          mv UKMCL-Installer.dmg UKMCL-macOS-Installer-en_US+0.0.0.dmg
 
       - name: upload
         uses: actions/upload-artifact@v4
