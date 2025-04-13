@@ -88,6 +88,7 @@ jobs:
           mkdir -p share/UKMCL
           cd ${{ github.workspace }}
           cp -r build/libs packaging/deb/opt/UKMCL/Binary
+          cd ${{ github.workspace }}
           sed -i 's/${VERSION}/${{ env.ver-exp }}/g' packaging/deb/DEBIAN/control
           fakeroot dpkg-deb --build packging/deb "UKMCL-Linux-Installer-en_US.deb"
 
