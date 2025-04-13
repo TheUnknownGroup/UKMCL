@@ -137,8 +137,8 @@ jobs:
             --window-pos 200 120 \
             --window-size 950 530 \
             --icon-size 100 \
-            --icon "${{ env.jar_var }}" 200 190 \
-            --hide-extension "${{ env.jar_ver }}" \
+            --icon "UKMCL-0.0.0+build.1.jar" 200 190 \
+            --hide-extension "UKMCL-0.0.0+build.1.jar" \
             --app-drop-link 600 185 \
             "UKMCL-Installer.dmg" \
             "src/"
