@@ -53,6 +53,28 @@ jobs:
           name: exe
           path: build/libs/
 
+  buildLin:
+    if: ${{ contains(github.event.head_commit.message, '[sing]') }}
+
+    permissions:
+      contents: write
+      id-token: write
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+  buildMac:
+    if: ${{ contains(github.event.head_commit.message, '[sing]') }}
+
+    permissions:
+      contents: write
+      id-token: write
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
   sign:
     if: ${{ contains(github.event.head_commit.message, '[sing]') }}
 
@@ -60,7 +82,7 @@ jobs:
       contents: write
       id-token: write
 
-    needs: [ build-win, build-lin, build-mac ]
+    needs: [ buildWin, buildLin, buildMac ]
 
     runs-on: ubuntu-latest
     steps:
@@ -101,7 +123,7 @@ jobs:
     permissions:
       contents: write
 
-    needs: [ build-win ]
+    needs: [ sign ]
 
     runs-on: ubuntu-latest
     steps:
