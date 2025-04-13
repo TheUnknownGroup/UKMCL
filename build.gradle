@@ -1,0 +1,65 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '2.1.10'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'edu.sc.seis.launch4j' version '3.0.6'
+}
+
+group = project.group
+version = project.version
+
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
+    mavenLocal()
+    google()
+    maven { url 'https://s01.oss.sonatype.org' }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+    maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
+    maven { url 'https://jitpack.io' }
+}
+
+launch4j {
+    mainClassName = "UkmclMain"
+    outputDir = "libs/"
+    outfile = "UKMCL-0.0.0.exe"
+    copyright = "MIT"
+    xmlFileName = "${projectDir}/exe/UKMCL.xml"
+    windowTitle = "UKMCL"
+    companyName = "TheUnknownGroup"
+    jreMinVersion = project.target
+}
+
+dependencies {
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+}
+
+application {
+    mainClass = 'UkmclMain'
+}
+
+javafx {
+    version = project.target
+    modules = ['javafx.controls', 'javafx.fxml']
+}
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it)}
+    }
+    manifest {
+        attributes 'Main-Class': 'xyz.theunknowngroup.ElementaMain'
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+kotlin {
+    jvmToolchain(19)
+}

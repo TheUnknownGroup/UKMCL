@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch4jConfig>
+    <dontWrapJar>false</dontWrapJar>
+    <headerType>gui</headerType>
+    <errTitle>Need Java? Go to your local coffee shop.</errTitle>
+    <cmdLine></cmdLine>
+    <chdir>.</chdir>
+    <priority>normal</priority>
+    <downloadUrl>https://adoptium.net/temurin/releases/?package=jre&amp;version=19&amp;os=any&amp;arch=x64</downloadUrl>
+    <supportUrl>https://github.com/TheUnknownGroup/UKMCL</supportUrl>
+    <stayAlive>false</stayAlive>
+    <restartOnCrash>false</restartOnCrash>
+    <manifest></manifest>
+    <icon></icon>
+    <jre>
+        <path>%JAVA_HOME%;%PATH%</path>
+    </jre>
+</launch4jConfig>
