@@ -134,7 +134,7 @@ jobs:
             --type dmg \
             --input build/libs \
             --dest output \
-            --name UKMCL Installer \
+            --name "UKMCL Installer" \
             --main-jar ${{ env.jar_ver }} \
             --main-class UkmclMain \
             --icon ${{ github.workspace }}/assets/icon.icns \
