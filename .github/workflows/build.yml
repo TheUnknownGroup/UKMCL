@@ -140,7 +140,7 @@ jobs:
             --icon ${{ github.workspace }}/assets/icon.icns \
             --java-options "-Xmx2G"
           
-#          mv UKMCL-Installer-1.0.dmg UKMCL-macOS-Installer-en_US+0.0.0.dmg
+          mv output/UKMCL-Installer-1.0.dmg output/UKMCL-macOS-Installer-en_US+0.0.0.dmg
 
       - name: upload
         uses: actions/upload-artifact@v4
