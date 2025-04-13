@@ -13,14 +13,12 @@ env:
   py_ver: "3.13.2"
 
 jobs:
-  build-win:
+  buildWin:
     if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
 
     permissions:
       contents: write
       id-token: write
-
-    needs: [ build-exe-win ]
 
     runs-on: ubuntu-latest
     steps:
