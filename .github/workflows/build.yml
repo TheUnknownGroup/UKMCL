@@ -189,7 +189,6 @@ jobs:
           verify: true
           verify-cert-identity: https://github.com/TheUnknownGroup/UKMCL/.github/workflows/build.yml@refs/heads/main
           verify-oidc-issuer: https://token.actions.githubusercontent.com
-#          upload-signing-artifacts: true
 
       - name: upload exe
         uses: actions/upload-artifact@v4
@@ -202,7 +201,7 @@ jobs:
 
 
   release:
-    if: ${{ contains(github.event.head_commit.message, '[real]') }}
+    if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
 
     permissions:
       contents: write
