@@ -8,8 +8,9 @@ on:
 
 env:
   java_ver: "19.0.2"
-  ver: 0.0.0-experimental
-  tag: "0.0.0-experimental+build.1"
+  ver: 0.0.0-experimental+0
+  ver-exp: 0.0.0-experimental+0
+  tag: "0.0.0-experimental+0"
   py_ver: "3.13.2"
 
 jobs:
@@ -35,9 +36,6 @@ jobs:
           architecture: "x64"
           check-latest: true
 
-      - name: java ver
-        run: java -version
-
       - name: make gradle wrapper executable
         run: chmod +x ./gradlew
 
@@ -54,7 +52,7 @@ jobs:
           path: build/libs/
 
   buildLin:
-    if: ${{ contains(github.event.head_commit.message, '[sing]') }}
+    if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
 
     permissions:
       contents: write
@@ -63,6 +61,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: validate gradle wrapper
+        uses: gradle/actions/wrapper-validation@v4
+
+      - name: setup jdk
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.java_ver }}
+          distribution: "temurin"
+          architecture: "x64"
+          check-latest: true
+
+      - name: make gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: build
+        run: ./gradlew build
+
+      - name: build installer
+        run: |
+          cp -r build/libs/ packaging/deb/opt/UKMCL/Binary
+          sed -i 's/${VERSION}/${{ env.ver-exp }}/g' packaging/deb/DEBIAN/control
+          fakeroot dpkg-deb --build packging/deb "UKMCL-Linux-Installer-en_US.deb"
+
+      - name: upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: deb
+          path: UKMCL-Linux-Installer-en_US.deb
+
 
   buildMac:
     if: ${{ contains(github.event.head_commit.message, '[sing]') }}
@@ -110,7 +138,7 @@ jobs:
         with:
           inputs: | 
             exe/*.exe
-#            deb/*.deb
+            deb/*.deb
 #            dmg/*.dmg
           verify: true
           verify-cert-identity: https://github.com/TheUnknownGroup/UKMCL/.github/workflows/build.yml@refs/heads/main
@@ -121,7 +149,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: sign-exe
-          path: exe/
+          path: |
+            exe/*.exe
+            deb/*.deb
 
 
   release:
@@ -148,4 +178,4 @@ jobs:
           draft: true
           generate_release_notes: true
           files: |
-            exe/*.exe
+            sign-exe/
