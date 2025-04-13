@@ -132,7 +132,7 @@ jobs:
           mkdir -p output
           jpackage \
             -t dmg \
-            --app-version "0.0.0" \
+            --app-version "1.0.0" \
             --input build/libs \
             --dest output \
             --name "UKMCL-MacOS-Installer" \
