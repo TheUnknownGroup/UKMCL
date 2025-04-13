@@ -131,10 +131,11 @@ jobs:
         run: |
           mkdir -p output
           jpackage \
-            --type dmg \
+            -t dmg \
+            --app-version "en_US" \
             --input build/libs \
             --dest output \
-            --name "UKMCL Installer" \
+            --name "UKMCL-MacOS-Installer" \
             --main-jar ${{ env.jar_ver }} \
             --main-class UkmclMain \
             --icon ${{ github.workspace }}/assets/icon.icns \
