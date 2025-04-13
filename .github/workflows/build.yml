@@ -90,7 +90,7 @@ jobs:
           cd ${{ github.workspace }}
           cp build/libs/*.jar packaging/usr/share/UKMCL/
           sed -i 's/${VERSION}/${{ env.ver-exp }}/g' packaging/DEBIAN/control
-          fakeroot dpkg-deb --build packaging "UKMCL-Linux-Installer-en_US.deb"
+          fakeroot dpkg-deb --build packaging "UKMCL-Linux-Installer-en_US+0.0.0.deb"
 
       - name: upload installer
         uses: actions/upload-artifact@v4
@@ -132,7 +132,7 @@ jobs:
           mkdir -p output
           jpackage \
             -t dmg \
-            --app-version "en_US" \
+            --app-version "0.0.0" \
             --input build/libs \
             --dest output \
             --name "UKMCL-MacOS-Installer" \
