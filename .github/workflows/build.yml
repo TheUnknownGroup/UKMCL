@@ -141,7 +141,7 @@ jobs:
             --java-options "-Xmx2G"
 
       - name: upload
-        uses: actions/upload-artfact@v4
+        uses: actions/upload-artifact@v4
         with:
           name: dmg
           path: output/*.dmg
