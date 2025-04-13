@@ -96,7 +96,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: deb
-          path: UKMCL-Linux-Installer-en_US.deb
+          path: UKMCL-Linux-Installer-en_US+0.0.0.deb
 
 
   buildMac:
