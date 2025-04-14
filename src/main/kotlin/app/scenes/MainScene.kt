@@ -26,11 +26,8 @@ fun startPage(stage: Stage): Scene {
         hgap = 10.0
         vgap = 2.0
         padding = Insets(20.0)
-
-        style = """
-            -fx-background-image: url('$back');
-            -fx-background-repeat: no-repeat;
-        """.trimIndent()
+        id = "mainLay"
+        style = "-fx-background-image: url('$back');"
     }
     // Setting the scene
     val scene = Scene(layout, w, h).apply {
