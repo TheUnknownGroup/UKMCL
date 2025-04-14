@@ -63,3 +63,9 @@ test {
 kotlin {
     jvmToolchain(19)
 }
+
+processResources {
+    from('assets') {
+        into 'assets'
+    }
+}
