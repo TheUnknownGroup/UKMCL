@@ -25,7 +25,7 @@ launch4j {
     outputDir = "libs/"
     outfile = "UKMCL-Windows-Installer-en_US+0.0.0.exe"
     copyright = "MIT"
-    xmlFileName = "${projectDir}/exe/UKMCL.xml"
+    xmlFileName = "../exe/UKMCL.xml"
     windowTitle = "UKMCL"
     companyName = "TheUnknownGroup"
     jreMinVersion = project.target
