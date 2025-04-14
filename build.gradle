@@ -23,7 +23,7 @@ repositories {
 launch4j {
     mainClassName = "UkmclMain"
     outputDir = "libs/"
-    outfile = "UKMCL-Windows-Installer-en_US+0.0.0.exe"
+    outfile = "UKMCL-Windows-Installer-en_US+${file_ver}.exe"
     copyright = "MIT"
     xmlFileName = "../exe/UKMCL.xml"
     windowTitle = "UKMCL"

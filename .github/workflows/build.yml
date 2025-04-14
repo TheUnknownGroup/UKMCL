@@ -10,7 +10,8 @@ env:
   java_ver: "19.0.2"
   ver: 0.0.0-experimental+0-beta.1
   py_ver: "3.13.2"
-  jar_ver: UKMCL-0.0.0+build.1.jar
+  jar_ver: UKMCL.jar
+  file_ver: "0.0.0"
 
 jobs:
   buildWin:
@@ -88,13 +89,13 @@ jobs:
           cd ${{ github.workspace }}
           cp build/libs/*.jar packaging/usr/share/UKMCL/
           sed -i 's/${VERSION}/${{ env.ver }}/g' packaging/DEBIAN/control
-          fakeroot dpkg-deb --build packaging "UKMCL-Linux-Installer-en_US+0.0.0.deb"
+          fakeroot dpkg-deb --build packaging "UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb"
 
       - name: upload installer
         uses: actions/upload-artifact@v4
         with:
           name: deb
-          path: UKMCL-Linux-Installer-en_US+0.0.0.deb
+          path: UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb
 
 
   buildMac:
@@ -138,7 +139,7 @@ jobs:
             --icon ${{ github.workspace }}/assets/icon.icns \
             --java-options "-Xmx2G"
           
-          mv output/UKMCL-Installer-1.0.dmg output/UKMCL-macOS-Installer-en_US+0.0.0.dmg
+          mv output/UKMCL-Installer-1.0.dmg output/UKMCL-macOS-Installer-en_US+${{ env.file_ver }}.dmg
 
       - name: upload
         uses: actions/upload-artifact@v4
