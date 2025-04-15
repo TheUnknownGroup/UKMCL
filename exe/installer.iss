@@ -31,8 +31,8 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}";
 
 [Files]
-Source: "{#PackagingDir}\*"; DestDir: "{app}"
-Source: "${{ github.workspace }}\assets\*"; DestDir "{app}\assets"; Flags: recursesubdirs createallsubdirs
+Source: "{#PackagingDir}\*"; DestDir: "{app}"; Flags: ignoreversion
+Source: "${{ github.workspace }}\assets\*"; DestDir: "{app}\assets"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{autoprograms}\{#Name}"; Filename: "{app}\{#ExeName}"
