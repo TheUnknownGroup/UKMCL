@@ -11,24 +11,17 @@ version = project.version
 
 repositories {
     mavenCentral()
-    gradlePluginPortal()
-    mavenLocal()
-    google()
-    maven { url 'https://s01.oss.sonatype.org' }
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
-    maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
-    maven { url 'https://jitpack.io' }
 }
 
 launch4j {
-    mainClassName = "UkmclMain"
+    mainClassName = "xyz.theunknowngroup.UkmclMainKt"
     outputDir = "libs/"
-    outfile = "UKMCL-Windows-Installer-en_US+${file_ver}.exe"
+    outfile = "UKMCL-Windows-en_US+${file_ver}.exe"
     copyright = "MIT"
-    xmlFileName = "../exe/UKMCL.xml"
-    windowTitle = "UKMCL"
     companyName = "TheUnknownGroup"
-    jreMinVersion = project.target
+    windowTitle = "UKMCL"
+    xmlFileName = "${projectDir}/exe/ukmcl.xml"
+    icon = "${projectDir}/assets/icon.ico"
 }
 
 dependencies {
@@ -38,7 +31,7 @@ dependencies {
 }
 
 application {
-    mainClass = 'UkmclMain'
+    mainClass = 'xyz.theunknowngroup.UkmclMainKt'
 }
 
 javafx {
@@ -52,7 +45,9 @@ jar {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it)}
     }
     manifest {
-        attributes 'Main-Class': 'xyz.theunknowngroup.ElementaMain'
+        attributes (
+            'Main-Class': 'xyz.theunknowngroup.UkmclMainKt'
+        )
     }
 }
 

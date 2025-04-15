@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <errTitle>Need Java? Go to your local coffee shop.</errTitle>
+  <cmdLine></cmdLine>
+  <chdir></chdir>
+  <priority>normal</priority>
+  <downloadUrl>https://adoptium.net/temurin/releases/?package=jre&amp;amp;version=19&amp;amp;os=any&amp;amp;arch=x64</downloadUrl>
+  <supportUrl>https://github.com/TheUnknownGroup/UKMCL</supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <manifest></manifest>
+  <icon></icon>
+  <classPath>
+    <cp>lib/annotations-13.0.jar</cp>
+    <cp>lib/javafx-base-19.0.2.jar</cp>
+    <cp>lib/javafx-base-19.0.2-win.jar</cp>
+    <cp>lib/javafx-controls-19.0.2.jar</cp>
+    <cp>lib/javafx-controls-19.0.2-win.jar</cp>
+    <cp>lib/javafx-fxml-19.0.2-win.jar</cp>
+    <cp>lib/javafx-graphics-19.0.2.jar</cp>
+    <cp>lib/javafx-graphics-19.0.2-win.jar</cp>
+    <cp>lib/kotlin-stdlib-2.1.10.jar</cp>
+  </classPath>
+  <jre>
+    <path>%JAVA_HOME%;%PATH%</path>
+    <requiresJdk>true</requiresJdk>
+    <requires64Bit>false</requires64Bit>
+    <minVersion>19.0.2</minVersion>
+    <maxVersion>21.0.6</maxVersion>
+  </jre>
+</launch4jConfig>
