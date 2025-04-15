@@ -11,7 +11,7 @@
   <stayAlive>false</stayAlive>
   <restartOnCrash>false</restartOnCrash>
   <manifest></manifest>
-  <icon></icon>
+  <icon>icon.ico</icon>
   <classPath>
     <cp>lib/annotations-13.0.jar</cp>
     <cp>lib/javafx-base-19.0.2.jar</cp>

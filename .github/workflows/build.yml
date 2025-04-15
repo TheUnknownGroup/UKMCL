@@ -62,8 +62,6 @@ jobs:
           
           copy -r "${{ github.workspace }}/build/libs/*.exe"
           
-          copy ${{ github.workspace }}/assets/icon.ico ./
-          
           curl https://mlaan2.home.xs4all.nl/ispack/innosetup-6.2.1.exe --output innosetup.exe
           Start-Process .\innosetup.exe /VERYSILENT -Wait
           
@@ -74,7 +72,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: exe
-          path: ${{ github.workspace }}/exe/*.exe
+          path: ${{ github.workspace }}/exe/UKMCL-Windows-Installer-en_US.exe
 
   buildLin:
     if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
