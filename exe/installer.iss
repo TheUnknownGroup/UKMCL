@@ -7,8 +7,6 @@
 #define PackagingDir "${{ github.workspace }}\build\libs"
 #define BaseFilename "UKMCL-Windows-Installer-en_US"
 
-#define Icon "${{ github.workspace }}/assets/icon.ico"
-
 [Setup]
 AppName={#Name}
 AppVersion={#Version}
@@ -24,7 +22,7 @@ OutputBaseFilename={#BaseFilename}
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
-SetupIconFile={#Icon}
+SetupIconFile="${{ github.workspace }}/assets/icon.ico"
 VersionInfoCompany={#Publisher}
 VersionInfoDescription="This is the Minecraft Launcher for and by the Unknown Group."
 
