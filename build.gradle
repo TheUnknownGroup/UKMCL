@@ -21,7 +21,6 @@ launch4j {
     companyName = "TheUnknownGroup"
     windowTitle = "UKMCL"
     xmlFileName = "${projectDir}/exe/ukmcl.xml"
-    icon = "${projectDir}/assets/icon.ico"
 }
 
 dependencies {
