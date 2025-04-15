@@ -2,7 +2,7 @@ Package: ukmcl
 Version: 0.0.0
 Section: games
 Priority: optional
-Depends: openjdk-19-jre
+Depends: openjdk-19-jdk-headless | java-sdk-headless (>= 19)
 Homepage: https://web.thegremlinx.xyz/
 Architecture: amd64
 Maintainer: TheGremlinX <owner@thegremlinx.xyz>
