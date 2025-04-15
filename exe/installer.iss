@@ -22,7 +22,7 @@ OutputBaseFilename={#BaseFilename}
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
-SetupIconFile="${{ github.workspace }}/assets/icon.ico"
+SetupIconFile="icon.ico"
 VersionInfoCompany={#Publisher}
 VersionInfoDescription="This is the Minecraft Launcher for and by the Unknown Group."
 
