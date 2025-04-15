@@ -7,7 +7,6 @@
 #define PackagingDir "./"
 #define BaseFilename "UKMCL-Windows-Installer-en_US"
 
-
 [Setup]
 AppName={#Name}
 AppVersion={#Version}
@@ -33,7 +32,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 
 [Files]
 Source: "{#PackagingDir}\*"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\assets\*"; DestDir: "{app}\assets"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "assets\*"; DestDir: "{app}\assets"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{autoprograms}\{#Name}"; Filename: "{app}\{#ExeName}"
