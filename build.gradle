@@ -20,7 +20,7 @@ launch4j {
     copyright = "MIT"
     companyName = "TheUnknownGroup"
     windowTitle = "UKMCL"
-    xmlFileName = "${projectDir}/exe/ukmcl.xml"
+    xmlFileName = "${projectDir}/xml/ukmcl.xml"
 }
 
 dependencies {

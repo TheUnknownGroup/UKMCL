@@ -1,8 +1,8 @@
 #define Name "UKMCL"
 #define Publisher "TheUnknownGroup - devonk15"
 #define URL "https://github.com/TheUnknownGroup/UKMCL"
-#define ExeName "UKMCL-Windows-en_US+${{ env.file_ver }}.exe"
-#define Version "v${{ env.file_ver }}"
+#define ExeName "UKMCL-Windows-en_US+0.0.0.exe"
+#define Version "v0.0.0"
 
 #define PackagingDir "./"
 #define BaseFilename "UKMCL-Windows-Installer-en_US"
@@ -39,7 +39,6 @@ Name: "{autodesktop}\{#Name}"; Filename: "{app}\{#ExeName}"; Tasks: desktopicon
 
 [InstallDelete]
 Type: files; Name: "{app}\*.exe"
-Type: files; Name: "{app}\assets"
 
 [Run]
 Filename: "{app}\{#ExeName}"; Description: "{cm:LaunchProgram,{#StringChange(Name, '&', '&&')}}"; Flags: nowait postinstall
