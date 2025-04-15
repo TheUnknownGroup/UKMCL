@@ -4,7 +4,7 @@
 #define ExeName "UKMCL-Windows-en_US+${{ env.file_ver }}.exe"
 #define Version "v${{ env.file_ver }}"
 
-#define PackagingDir "${{ github.workspace }}\build\libs"
+#define PackagingDir "./"
 #define BaseFilename "UKMCL-Windows-Installer-en_US"
 
 [Setup]
