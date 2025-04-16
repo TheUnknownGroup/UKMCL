@@ -1,0 +1,52 @@
+name: Publish to site
+
+on:
+  release:
+    types: [published]
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+env:
+  ver: 0.0.0-experimental+0-beta.10
+  file_ver: 0.0.0
+
+jobs:
+  deploy:
+    if: ${{ !contains(github.event.head_commit.message, '[site]') }}
+
+    permissions:
+      contents: write
+      id-token: write
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: download files
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir downloads
+          cd downloads
+          
+          gh release download --repo TheUnknownGroup/UKMCL --tag ${{ env.ver }} --pattern "UKMCL-Windows-Installer-en_US.exe"
+          gh release download --repo TheUnknownGroup/UKMCL --tag ${{ env.ver }} --pattern "UKMCL-macOS-en_US+${{ env.file_ver }}.dmg"
+          gh release download --repo TheUnknownGroup/UKMCL --tag ${{ env.ver }} --pattern "UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb"
+
+      - name: copy
+        run: |
+          mkdir out
+          cp download/*.exe out/
+          cp download/*.deb out/
+          cp download/*.dmg out/
+          
+#      - name: gen version-lin.json
+#        run: |
+#          mkdir launcher
+#
+#      - name: clone
+#        run: |
+#          git clone

@@ -1,0 +1,31 @@
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout site repo
+        uses: actions/checkout@v3
+
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF##*/}" >> $GITHUB_ENV
+
+      - name: Generate version.json
+        run: |
+          echo "{" > launcher/version.json
+          echo "  \"version\": \"${VERSION/v/}\"," >> launcher/version.json
+          echo "  \"changelog\": \"Auto update from GitHub tag.\"," >> launcher/version.json
+          echo "  \"download_url\": \"https://yourwebsite.com/launcher/launcher-${VERSION/v/}.exe\"" >> launcher/version.json
+          echo "}" >> launcher/version.json
+
+      - name: Commit and push version.json
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add launcher/version.json
+          git commit -m "Update launcher version to ${VERSION/v/}"
+          git push
+
+      - name: Upload launcher to GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: launcher/launcher-${{ env.VERSION }}.exe
