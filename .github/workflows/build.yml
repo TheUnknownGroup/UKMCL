@@ -8,7 +8,7 @@ on:
 
 env:
   java_ver: "19.0.2"
-  ver: 0.0.0-experimental+0-beta.4
+  ver: 0.0.0-experimental+0-beta.5
   py_ver: "3.13.2"
   jar_ver: UKMCL-0.0.0.jar
   file_ver: "0.0.0"
