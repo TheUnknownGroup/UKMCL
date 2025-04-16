@@ -42,6 +42,9 @@ jobs:
           cp downloads/*.exe output/
           cp downloads/*.deb output/
           cp downloads/*.dmg output/
+
+      - name: clone repo
+        run: |
           git clone https://github.com/TheUnknownGroup/theunknowngroup.github.io.git repo
           cd repo/src/pages/
           mkdir out
@@ -50,5 +53,24 @@ jobs:
           cp output/*.exe repo/src/pages/out/
           cp output/*.deb repo/src/pages/out/
           cp output/*.dmg repo/src/pages/out/
+
+      - name: make version-lin.json
+        run: |
           echo '{ "version": "${{ env.ver }}", "changelog": "https://github.com/TheUnknownGroup/UKMCL/blob/main/changelog.md", "download_url": "https://web.thegremlinx.xyz/out/UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb"' > version-lin.json
           cp version-lin.json repo/src/pages/launcher
+
+      - name: make version-win.json
+        run: |
+          echo '{ "version": "${{ env.ver }}", "changelog": "https://github.com/TheUnknownGroup/UKMCL/blob/main/changelog.md", "download_url": "https://web.thegremlinx.xyz/out/UKMCL-Windows-Installer-en_US.exe"' > version-win.json
+          cp version-win.json repo/src/pages/launcher      
+
+      - name: make version-mac.json
+        run: |
+          echo '{ "version": "${{ env.ver }}", "changelog": "https://github.com/TheUnknownGroup/UKMCL/blob/main/changelog.md", "download_url": "https://web.thegremlinx.xyz/out/UKMCL-macOS-en_US+${{ env.file_ver }}.dmg"' > version-mac.json
+          cp version-mac.json repo/src/pages/launcher
+          
+      - name: test upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: test
+          path: repo/src/pages/launcher
