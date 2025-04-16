@@ -38,17 +38,19 @@ jobs:
 
       - name: copy
         run: |
-          mkdir out
-          cp downloads/*.exe out/
-          cp downloads/*.deb out/
-          cp downloads/*.dmg out/
+          mkdir output
+          cp downloads/*.exe output/
+          cp downloads/*.deb output/
+          cp downloads/*.dmg output/
           git clone https://github.com/TheUnknownGroup/theunknowngroup.github.io.git repo
           cd repo/src/pages/
           mkdir out
           mkdir launcher
           cd ${{ github.workspace }}
-          cp out/ repo/src/pages/out/
-          
+          cp output/*.exe repo/src/pages/out/
+          cp output/*.deb repo/src/pages/out/
+          cp output/*.dmg repo/src/pages/out/
+
       - name: upload
         uses: actions/upload-artifact@v4
         with:
