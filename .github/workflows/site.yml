@@ -39,7 +39,7 @@ jobs:
 
       - name: copy
         run: |
-          git clone https://github.com/TheUnknownGroup/theunknowngroup.github.io.git repo
+          git clone https://x-access-token:${{ secrets.WEBSITE_TOKEN }}@github.com/TheUnknownGroup/theunknowngroup.github.io.git repo
           cd repo
           mkdir out
           mkdir launcher
@@ -66,8 +66,8 @@ jobs:
       - name: push to repo
         run: |
           cd repo
-          git config user.name "devonk15"
-          git config user.email "kaylordevon5@gmail.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add out/UKMCL-Windows-Installer-en_US.exe
           git add out/UKMCL-macOS-en_US+${{ env.file_ver }}.dmg
           git add out/UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb
