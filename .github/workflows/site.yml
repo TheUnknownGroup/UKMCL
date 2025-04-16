@@ -47,8 +47,9 @@ jobs:
         run: |
           mkdir launcher
           echo '{ "version": "${{ env.ver }}", "changelog": "https://github.com/TheUnknownGroup/UKMCL/changelog.md", "download_url": "https://web.thegremlinx.xyz/out/UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb"' > launcher/version-lin.json
-#
-#      - name: clone
-#        run: |
-#          git clone https://github.com/TheUnknownGroup/UKMCL.git repo
-#          cp launcher/version-lin.json
+
+      - name: clone
+        run: |
+          git clone https://github.com/TheUnknownGroup/UKMCL.git repo
+          cp launcher/version-lin.json repo/src/pages/launcher
+          cp out/ repo/src/pages/
