@@ -1,0 +1,5 @@
+#!/bin/bash
+sudo rm -r /usr/share/applications/ukmcl.desktop
+sudo rm -r /usr/share/metainfo/ukmcl.metainfo.xml
+sudo rm -r /opt/UKMCL
+sudo rm -r /usr/share/UKMCL
