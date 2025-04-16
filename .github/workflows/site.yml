@@ -41,9 +41,10 @@ jobs:
         with:
           name: test
           path: |
-            download/*.exe
-            download/*.deb
-            download/*.dmg
+            downloads/*.exe
+            downloads/*.deb
+            downloads/*.dmg
+          retention-days: 1
 
 #      - name: copy
 #        run: |
