@@ -34,8 +34,8 @@ jobs:
           cd downloads
           
           gh release download --repo TheUnknownGroup/UKMCL ${{ env.ver }} --pattern "UKMCL-Windows-Installer-en_US.exe"
-          gh release download --repo TheUnknownGroup/UKMCL ${{ env.ver }} --pattern ""
-          gh release download --repo TheUnknownGroup/UKMCL ${{ env.ver }} --pattern ""
+          gh release download --repo TheUnknownGroup/UKMCL ${{ env.ver }} --pattern "UKMCL-macOS-en_US+${{ env.file_ver }}.dmg"
+          gh release download --repo TheUnknownGroup/UKMCL ${{ env.ver }} --pattern "UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb"
 
       - name: copy
         run: |
