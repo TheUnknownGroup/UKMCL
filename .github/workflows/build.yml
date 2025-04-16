@@ -8,7 +8,7 @@ on:
 
 env:
   java_ver: "19.0.2"
-  ver: 0.0.0-experimental+0-beta.3
+  ver: 0.0.0-experimental+0-beta.4
   py_ver: "3.13.2"
   jar_ver: UKMCL-0.0.0.jar
   file_ver: "0.0.0"
@@ -111,8 +111,8 @@ jobs:
           cd usr
           mkdir -p share/UKMCL
           cd ${{ github.workspace }}
-          cp build/libs/*.jar packaging/usr/share/UKMCL/
-          sed -i 's/${VERSION}/${{ env.ver }}/g' packaging/DEBIAN/control
+          cp build/libs/*.jar packaging/deb/usr/share/UKMCL/
+          sed -i 's/${VERSION}/${{ env.ver }}/g' packaging/deb/DEBIAN/control
           fakeroot dpkg-deb --build packaging/deb "UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb"
       - name: upload installer
         uses: actions/upload-artifact@v4
