@@ -1,4 +1,0 @@
-#!/bin/bash
-echo "Install script is running.."
-sudo chmod +x /usr/local/bin/UKMCL
-sudo chmod +x /usr/local/bin/UKMCLDelete 
