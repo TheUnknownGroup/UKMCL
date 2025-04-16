@@ -36,22 +36,19 @@ jobs:
           gh release download --repo TheUnknownGroup/UKMCL ${{ env.ver }} --pattern "UKMCL-macOS-en_US+${{ env.file_ver }}.dmg"
           gh release download --repo TheUnknownGroup/UKMCL ${{ env.ver }} --pattern "UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb"
 
+      - name: copy
+        run: |
+          mkdir out
+          cp downloads/*.exe out/
+          cp downloads/*.deb out/
+          cp downloads/*.dmg out/
+          
       - name: upload
         uses: actions/upload-artifact@v4
         with:
           name: test
-          path: |
-            downloads/*.exe
-            downloads/*.deb
-            downloads/*.dmg
+          path: out/
           retention-days: 1
-
-#      - name: copy
-#        run: |
-#          mkdir out
-#          cp downloads/*.exe out/
-#          cp downloads/*.deb out/
-#          cp downloads/*.dmg out/
 #          mkdir launcher
 #          echo '{ "version": "${{ env.ver }}", "changelog": "https://github.com/TheUnknownGroup/UKMCL/blob/main/changelog.md", "download_url": "https://web.thegremlinx.xyz/out/UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb"' > launcher/version-lin.json
 #          git clone https://github.com/TheUnknownGroup/theunknowngroup.github.io.git repo
