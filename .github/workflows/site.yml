@@ -51,5 +51,9 @@ jobs:
       - name: clone
         run: |
           git clone https://github.com/TheUnknownGroup/UKMCL.git repo
+          cd repo/src/pages/
+          mkdir launcher
+          mkdir pages
+          cd ../../../
           cp launcher/version-lin.json repo/src/pages/launcher
           cp out/ repo/src/pages/
