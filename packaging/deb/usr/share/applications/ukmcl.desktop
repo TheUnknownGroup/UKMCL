@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=UKMCL
 Comment=This is the Minecraft Launcher for and by the Unknown Group.
-Exec=/usr/share/UKMCL/
+Exec=UKMCL
 Icon=/opt/UKMCL/icon.svg
 Terminal=false
 Type=Application

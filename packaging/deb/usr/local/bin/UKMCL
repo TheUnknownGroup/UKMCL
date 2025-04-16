@@ -1,2 +1,10 @@
 #!/bin/bash
+if [ ! -f "$HOME/.ukmcl_install" ]; then
+    echo "Running first time setup.."
+    sudo dpkg -i UKMCL-Linux-Installer-en_US+0.0.0.deb
+    sudo chmod +x /usr/share/postinst
+    postinst
+    touch "$HOME/.ukmcl_install"
+fi
+
 java -jar /usr/share/UKMCL/*.jar

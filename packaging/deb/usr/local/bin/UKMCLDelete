@@ -5,3 +5,4 @@ sudo rm -r /opt/UKMCL
 sudo rm -r /usr/share/UKMCL
 sudo rm -r /usr/local/bin/UKMCL
 sudo rm -r /usr/local/bin/UKMCLDelete
+sudo rm -r $HOME/.ukmcl_install
