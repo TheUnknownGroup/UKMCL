@@ -58,7 +58,7 @@ jobs:
 
       - name: build installer
         run: |
-          cd ${{ github.workspace }}/exe
+          cd ${{ github.workspace }}/packaging/exe
           
           copy -r "${{ github.workspace }}/build/libs/*.exe"
           
@@ -112,7 +112,7 @@ jobs:
           mkdir -p share/UKMCL
           cd ${{ github.workspace }}
           cp build/libs/*.jar packaging/deb/usr/share/UKMCL/
-          sed -i 's/${VERSION}/${{ env.ver }}/g' packaging/deb/DEBIAN/control
+          sed -i 's/${{ env.file_ver }}/${{ env.ver }}/g' packaging/deb/DEBIAN/control
           fakeroot dpkg-deb --build packaging/deb "UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb"
       - name: upload installer
         uses: actions/upload-artifact@v4
@@ -237,7 +237,9 @@ jobs:
       - name: download files
         uses: actions/download-artifact@v4
 
-      - run: chmod +x deb/
+      - run: chmod +x deb/UKMCL
+
+
 
       - name: create release
         uses: softprops/action-gh-release@v2
