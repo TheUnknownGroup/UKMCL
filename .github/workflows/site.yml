@@ -42,6 +42,12 @@ jobs:
           cp downloads/*.exe out/
           cp downloads/*.deb out/
           cp downloads/*.dmg out/
+          git clone https://github.com/TheUnknownGroup/theunknowngroup.github.io.git repo
+          cd repo/src/pages/
+          mkdir out
+          mkdir launcher
+          cd ${{ github.workspace }}
+          cp out/ repo/src/pages/out/
           
       - name: upload
         uses: actions/upload-artifact@v4
@@ -49,12 +55,5 @@ jobs:
           name: test
           path: out/
           retention-days: 1
-#          mkdir launcher
-#          echo '{ "version": "${{ env.ver }}", "changelog": "https://github.com/TheUnknownGroup/UKMCL/blob/main/changelog.md", "download_url": "https://web.thegremlinx.xyz/out/UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb"' > launcher/version-lin.json
-#          git clone https://github.com/TheUnknownGroup/theunknowngroup.github.io.git repo
-#          cd repo/src/pages/
-#          mkdir launcher
-#          mkdir pages
-#          cd ${{ github.workspace }}
-#          cp launcher/version-lin.json repo/src/pages/launcher
-#          cp out/ repo/src/pages/
+#          echo '{ "version": "${{ env.ver }}", "changelog": "https://github.com/TheUnknownGroup/UKMCL/blob/main/changelog.md", "download_url": "https://web.thegremlinx.xyz/out/UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb"' > version-lin.json
+#          cp version-lin.json repo/src/pages/launcher
