@@ -68,13 +68,13 @@ jobs:
           Start-Process .\innosetup.exe /VERYSILENT -Wait
           
           cd "C:\Program Files (x86)\Inno Setup 6"
-          iscc "${{ github.workspace }}/exe/installer.iss"
+          iscc "${{ github.workspace }}/packaging/exe/installer.iss"
 
       - name: upload exe
         uses: actions/upload-artifact@v4
         with:
           name: exe
-          path: ${{ github.workspace }}/exe/UKMCL-Windows-Installer-en_US.exe
+          path: ${{ github.workspace }}/packaging/exe/UKMCL-Windows-Installer-en_US.exe
 
   buildLin:
     if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
@@ -106,15 +106,14 @@ jobs:
 
       - name: build installer
         run: |
-          cd packaging
+          cd packaging/deb
           mkdir -p usr/local/bin
           cd usr
-          mkdir -p share
           mkdir -p share/UKMCL
           cd ${{ github.workspace }}
           cp build/libs/*.jar packaging/usr/share/UKMCL/
           sed -i 's/${VERSION}/${{ env.ver }}/g' packaging/DEBIAN/control
-          fakeroot dpkg-deb --build packaging "UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb"
+          fakeroot dpkg-deb --build packaging/deb "UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb"
       - name: upload installer
         uses: actions/upload-artifact@v4
         with:
@@ -237,6 +236,8 @@ jobs:
 
       - name: download files
         uses: actions/download-artifact@v4
+
+      - run: chmod +x deb/
 
       - name: create release
         uses: softprops/action-gh-release@v2

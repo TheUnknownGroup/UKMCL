@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+    <id>ukmcl</id>
+    <name>UKMCL</name>
+    <summary>This is the Minecraft Launcher for and by the Unknown Group.</summary>
+    <developer_name>devonk15</developer_name>
+    <metadata_license>MIT</metadata_license>
+    <project_license>MIT</project_license>
+    <url type="homepage">https://github.com/TheUnknownGroup/UKMCL</url>
+    <description>
+        <p>This is the Minecraft Launcher for and by the Unknown Group. <br>Source Code: https://github.com/TheUnknownGroup/UKMCL</p>
+    </description>
+
+    <releases>
+        <release version="0.0.0-experimental+0-beta.3" date="2025-04-15" />
+    </releases>
+
+    <launchable type="desktop-id">ukmcl.desktop</launchable>
+    <content_rating type="oars-1.1" />
+
+</component>
