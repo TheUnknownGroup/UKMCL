@@ -43,9 +43,9 @@ jobs:
           cd repo
           mkdir out
           mkdir launcher
-          cp downloads/*.exe out/
-          cp downloads/*.deb out/
-          cp downloads/*.dmg out/
+          cp ${{ github.workspace }}/downloads/*.exe out/
+          cp ${{ github.workspace }}/downloads/*.deb out/
+          cp ${{ github.workspace }}/downloads/*.dmg out/
 
       - name: make version-lin.json
         run: |
