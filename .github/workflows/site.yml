@@ -39,9 +39,9 @@ jobs:
       - name: copy
         run: |
           mkdir out
-          cp download/*.exe out/
-          cp download/*.deb out/
-          cp download/*.dmg out/
+          cp downloads/*.exe out/
+          cp downloads/*.deb out/
+          cp downloads/*.dmg out/
           
 #      - name: gen version-lin.json
 #        run: |
