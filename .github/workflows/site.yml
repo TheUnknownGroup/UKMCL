@@ -50,7 +50,7 @@ jobs:
 
       - name: clone
         run: |
-          git clone https://github.com/TheUnknownGroup/UKMCL.git repo
+          git clone https://github.com/TheUnknownGroup/theunknowngroup.github.io.git repo
           cd repo/src/pages/
           mkdir launcher
           mkdir pages
