@@ -65,7 +65,6 @@ jobs:
 
       - name: push to repo
         run: |
-          git clone https://github.com/TheUnknownGroup/theunknowngroup.github.io.git repo
           cd repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
