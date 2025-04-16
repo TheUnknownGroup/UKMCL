@@ -50,12 +50,5 @@ jobs:
           cp output/*.exe repo/src/pages/out/
           cp output/*.deb repo/src/pages/out/
           cp output/*.dmg repo/src/pages/out/
-
-      - name: upload
-        uses: actions/upload-artifact@v4
-        with:
-          name: test
-          path: out/
-          retention-days: 1
-#          echo '{ "version": "${{ env.ver }}", "changelog": "https://github.com/TheUnknownGroup/UKMCL/blob/main/changelog.md", "download_url": "https://web.thegremlinx.xyz/out/UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb"' > version-lin.json
-#          cp version-lin.json repo/src/pages/launcher
+          echo '{ "version": "${{ env.ver }}", "changelog": "https://github.com/TheUnknownGroup/UKMCL/blob/main/changelog.md", "download_url": "https://web.thegremlinx.xyz/out/UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb"' > version-lin.json
+          cp version-lin.json repo/src/pages/launcher
