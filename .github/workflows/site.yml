@@ -36,18 +36,27 @@ jobs:
           gh release download --repo TheUnknownGroup/UKMCL ${{ env.ver }} --pattern "UKMCL-macOS-en_US+${{ env.file_ver }}.dmg"
           gh release download --repo TheUnknownGroup/UKMCL ${{ env.ver }} --pattern "UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb"
 
-      - name: copy
-        run: |
-          mkdir out
-          cp downloads/*.exe out/
-          cp downloads/*.deb out/
-          cp downloads/*.dmg out/
-          mkdir launcher
-          echo '{ "version": "${{ env.ver }}", "changelog": "https://github.com/TheUnknownGroup/UKMCL/changelog.md", "download_url": "https://web.thegremlinx.xyz/out/UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb"' > launcher/version-lin.json
-          git clone https://github.com/TheUnknownGroup/theunknowngroup.github.io.git repo
-          cd repo/src/pages/
-          mkdir launcher
-          mkdir pages
-          cd ../../../
-          cp launcher/version-lin.json repo/src/pages/launcher
-          cp out/ repo/src/pages/
+      - name: upload
+        uses: actions/upload-artfact@v4
+        with:
+          name: test
+          path: |
+            download/*.exe
+            download/*.deb
+            download/*.dmg
+
+#      - name: copy
+#        run: |
+#          mkdir out
+#          cp downloads/*.exe out/
+#          cp downloads/*.deb out/
+#          cp downloads/*.dmg out/
+#          mkdir launcher
+#          echo '{ "version": "${{ env.ver }}", "changelog": "https://github.com/TheUnknownGroup/UKMCL/blob/main/changelog.md", "download_url": "https://web.thegremlinx.xyz/out/UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb"' > launcher/version-lin.json
+#          git clone https://github.com/TheUnknownGroup/theunknowngroup.github.io.git repo
+#          cd repo/src/pages/
+#          mkdir launcher
+#          mkdir pages
+#          cd ${{ github.workspace }}
+#          cp launcher/version-lin.json repo/src/pages/launcher
+#          cp out/ repo/src/pages/
