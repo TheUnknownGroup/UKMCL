@@ -42,14 +42,8 @@ jobs:
           cp downloads/*.exe out/
           cp downloads/*.deb out/
           cp downloads/*.dmg out/
-          
-      - name: gen version-lin.json
-        run: |
           mkdir launcher
           echo '{ "version": "${{ env.ver }}", "changelog": "https://github.com/TheUnknownGroup/UKMCL/changelog.md", "download_url": "https://web.thegremlinx.xyz/out/UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb"' > launcher/version-lin.json
-
-      - name: clone
-        run: |
           git clone https://github.com/TheUnknownGroup/theunknowngroup.github.io.git repo
           cd repo/src/pages/
           mkdir launcher
