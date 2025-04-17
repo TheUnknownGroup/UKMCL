@@ -79,12 +79,12 @@ jobs:
                 changelog: $changelog,
                 download_url: $url
              }' > json/version-lin.json
-          cp version-lin.json repo/public/launcher/
+          cp json/version-lin.json repo/public/launcher/
 
       - uses: actions/upload-artifact@v4
         with:
           name: test
-          path: version-lin.json
+          path: json/version-lin.json
 
 #
 #      - name: new ver-win
