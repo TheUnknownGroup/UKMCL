@@ -42,9 +42,7 @@ jobs:
           git clone https://x-access-token:${{ secrets.WEBSITE_TOKEN }}@github.com/TheUnknownGroup/theunknowngroup.github.io.git repo
           cd repo/public/
           
-          if [ -d "out" ]; then
-            echo "Exists"
-          elif [ -d "launcher" ]; then
+          if [ -d "out" || -d "launcher"]; then
             echo "Exists"
           else
             mkdir -p out
@@ -70,7 +68,7 @@ jobs:
           jq --arg version "${{ env.ver }}" \
              --arg changelog "https://github.com/TheUnknownGroup/UKMCL/releases/tag/${{ env.ver_tag }}" \
              --arg url "https://web.thegremlinx.xyz/out/UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb" \
-             '. += {
+             '.[] += {
                 version: $version,
                 changelog: $changelog,
                 download_url: $url
@@ -83,11 +81,11 @@ jobs:
           jq --arg version "${{ env.ver }}" \
              --arg changelog "https://github.com/TheUnknownGroup/UKMCL/releases/tag/${{ env.ver_tag }}" \
              --arg url "https://web.thegremlinx.xyz/out/UKMCL-Windows-Installer-en_US.exe" \
-             '. += [{
+             '.[] += {
                 version: $version,
                 changelog: $changelog,
                 download_url: $url
-             }]' > version-win.json
+             ]' > version-win.json
           cp version-win.json repo/public/launcher/
 
       - name: new ver-mac
@@ -96,11 +94,11 @@ jobs:
           jq --arg version "${{ env.ver }}" \
              --arg changelog "https://github.com/TheUnknownGroup/UKMCL/releases/tag/${{ env.ver_tag }}" \
              --arg url "https://web.thegremlinx.xyz/out/UKMCL-macOS-en_US+${{ env.file_ver }}.dmg" \
-             '. += [{
+             '.[] += {
                 version: $version,
                 changelog: $changelog,
                 download_url: $url
-             }]' > version-mac.json
+             }' > version-mac.json
           cp version-mac.json repo/public/launcher/
 
       - name: make version-lin.json
@@ -126,7 +124,7 @@ jobs:
                      "version": "${{ env.ver }}",
                      "changelog": "https://github.com/TheUnknownGroup/UKMCL/releases/tag/${{ env.ver_tag }}",
                      "download_url": "https://web.thegremlinx.xyz/out/UKMCL-Windows-Installer-en_US.exe"
-                 },
+                 }
              ]
           }' > version-win.json
           cp version-win.json repo/public/launcher/
