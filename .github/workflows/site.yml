@@ -44,7 +44,7 @@ jobs:
           
           if [ -d "out" ]; then
             echo "Exists"
-          if [ -d "launcher" ]; then
+          elif [ -d "launcher" ]; then
             echo "Exists"
           else
             mkdir -p out
@@ -53,9 +53,9 @@ jobs:
           
           if [ ! -f launcher/version-lin.json ]; then
             echo "[]" > launcher/version-lin.json          
-          if [ ! -f launcher/version-win.json ]; then
+          elif [ ! -f launcher/version-win.json ]; then
             echo "[]" > launcher/version-win.json          
-          if [ ! -f launcher/version-mac.json ]; then
+          elif [ ! -f launcher/version-mac.json ]; then
             echo "[]" > launcher/version-mac.json
           fi
           
