@@ -39,32 +39,32 @@ jobs:
       - name: copy
         run: |
           git clone https://x-access-token:${{ secrets.WEBSITE_TOKEN }}@github.com/TheUnknownGroup/theunknowngroup.github.io.git repo
-          cd repo/public/
+          cd repo/
           mkdir out
           mkdir launcher
           cd ${{ github.workspace }}
-          cp downloads/*.exe repo/public/out/
-          cp downloads/*.deb repo/public/out/
-          cp downloads/*.dmg repo/public/out/
+          cp downloads/*.exe repo/out/
+          cp downloads/*.deb repo/out/
+          cp downloads/*.dmg repo/out/
 
       - name: make version-lin.json
         run: |
           echo '{ "version": "${{ env.ver }}", "changelog": "https://github.com/TheUnknownGroup/UKMCL/release/tag/${{ env.ver }}", "download_url": "https://web.thegremlinx.xyz/out/UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb" }' > version-lin.json
-          cp version-lin.json repo/public/launcher/
+          cp version-lin.json repo/launcher/
 
       - name: make version-win.json
         run: |
           echo '{ "version": "${{ env.ver }}", "changelog": "https://github.com/TheUnknownGroup/UKMCL/release/tag/${{ env.ver }}", "download_url": "https://web.thegremlinx.xyz/out/UKMCL-Windows-Installer-en_US.exe" }' > version-win.json
-          cp version-win.json repo/public/launcher/    
+          cp version-win.json repo/launcher/    
 
       - name: make version-mac.json
         run: |
           echo '{ "version": "${{ env.ver }}", "changelog": "https://github.com/TheUnknownGroup/UKMCL/release/tag/${{ env.ver }}", "download_url": "https://web.thegremlinx.xyz/out/UKMCL-macOS-en_US+${{ env.file_ver }}.dmg" }' > version-mac.json
-          cp version-mac.json repo/public/launcher/
+          cp version-mac.json repo/launcher/
 
       - name: push to repo
         run: |
-          cd repo/public
+          cd repo
           git config user.name "devonk15"
           git config user.email "94760159+devonk15@users.noreply.github.com"
           git add out/UKMCL-Windows-Installer-en_US.exe
