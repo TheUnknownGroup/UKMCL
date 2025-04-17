@@ -10,6 +10,7 @@ on:
 
 env:
   ver: 0.0.0-experimental+0-beta.10
+  ver_tag: 0.0.0-experimental%2B0-beta.10
   file_ver: 0.0.0
   commit_msg: set [skip]
 
@@ -49,17 +50,38 @@ jobs:
 
       - name: make version-lin.json
         run: |
-          echo '{ "version": "${{ env.ver }}", "changelog": "https://github.com/TheUnknownGroup/UKMCL/release/tag/${{ env.ver }}", "download_url": "https://web.thegremlinx.xyz/out/UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb" }' > version-lin.json
+          echo '{ 
+              "versions": [ 
+              { 
+                "version": "${{ env.ver }}", 
+                "changelog": "https://github.com/TheUnknownGroup/UKMCL/releases/tag/${{ env.ver_tag }}", 
+                "download_url": "https://web.thegremlinx.xyz/out/UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb" } 
+              ] 
+          }' > version-lin.json
           cp version-lin.json repo/launcher/
 
       - name: make version-win.json
         run: |
-          echo '{ "version": "${{ env.ver }}", "changelog": "https://github.com/TheUnknownGroup/UKMCL/release/tag/${{ env.ver }}", "download_url": "https://web.thegremlinx.xyz/out/UKMCL-Windows-Installer-en_US.exe" }' > version-win.json
-          cp version-win.json repo/launcher/    
+          echo '{ 
+              "versions": [ 
+              { 
+                "version": "${{ env.ver }}", 
+                "changelog": "https://github.com/TheUnknownGroup/UKMCL/releases/tag/${{ env.ver_tag }}", 
+                "download_url": "https://web.thegremlinx.xyz/out/UKMCL-Windows-Installer-en_US.exe" } 
+              ] 
+          }' > version-win.json
+          cp version-win.json repo/launcher/
 
       - name: make version-mac.json
         run: |
-          echo '{ "version": "${{ env.ver }}", "changelog": "https://github.com/TheUnknownGroup/UKMCL/release/tag/${{ env.ver }}", "download_url": "https://web.thegremlinx.xyz/out/UKMCL-macOS-en_US+${{ env.file_ver }}.dmg" }' > version-mac.json
+          echo '{ 
+              "versions": [ 
+              { 
+                "version": "${{ env.ver }}", 
+                "changelog": "https://github.com/TheUnknownGroup/UKMCL/releases/tag/${{ env.ver_tag }}", 
+                "download_url": "https://web.thegremlinx.xyz/out/UKMCL-macOS-en_US+${{ env.file_ver }}.dmg" } 
+              ] 
+          }' > version-mac.json
           cp version-mac.json repo/launcher/
 
       - name: push to repo
