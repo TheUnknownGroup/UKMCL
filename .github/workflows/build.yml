@@ -216,36 +216,42 @@ jobs:
           upload-signing-artifacts: true
 
 
-#  release:
-#    if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
-#
-#    permissions:
-#      contents: write
-#
-#    needs: [ sign ]
-#
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#
-#      - name: download files
-#        uses: actions/download-artifact@v4
-#        with:
-#          path: signing-artifacts
-#
-#      - name: create release
-#        uses: softprops/action-gh-release@v2
-#        with:
-#          name: UKMCL V${{ env.ver }}
-#          tag_name: ${{ env.ver }}
-#          body_path: ${{ github.workspace }}/changelog.md
-#          generate_release_notes: true
-#          prerelease: true
-#          files: |
-#            sign-exe/exe/*.exe
-#            sign-exe/dmg/*.dmg
-#            sign-exe/deb/*.deb
-#
+  release:
+    if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
+
+    permissions:
+      contents: write
+
+    needs: [ sign ]
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: download files
+        uses: actions/download-artifact@v4
+        with:
+          path: signing-artifacts-sign
+
+      - run: |
+          mkdir out
+          cp signing-artifacts-sign/exe/*.exe out/
+          cp signing-artifacts-sign/deb/*.deb out/
+          cp signing-artifacts-sign/dmg/*.dmg out/
+
+      - name: create release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: UKMCL V${{ env.ver }}
+          tag_name: ${{ env.ver }}
+          body_path: ${{ github.workspace }}/changelog.md
+          generate_release_notes: true
+          prerelease: true
+          files: |
+            out/*.exe
+            out/*.dmg
+            out/*.deb
+
 #  deploy:
 #    if: ${{ !contains(github.event.head_commit.message, '[site]') }}
 #
