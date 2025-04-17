@@ -1,4 +1,4 @@
-name: Build UKMCL v0.0.0
+name: Build UKMCL v0.0.0-experimental & Deploy to Website
 
 on:
   push:
@@ -8,10 +8,13 @@ on:
 
 env:
   java_ver: "19.0.2"
-  ver: 0.0.0-experimental+0-beta.10
+  ver: 0.0.0-experimental+0-beta.10-test
   py_ver: "3.13.2"
   jar_ver: UKMCL-0.0.0.jar
-  file_ver: "0.0.0"
+  file_ver: 0.0.0
+  ver_tag: 0.0.0-experimental%2B0-beta.10-test
+  commit_msg: update
+  url: https://github.com/TheUnknownGroup/UKMCL/releases/download/
 
 jobs:
   buildWin:
@@ -210,41 +213,168 @@ jobs:
           verify: true
           verify-cert-identity: https://github.com/TheUnknownGroup/UKMCL/.github/workflows/build.yml@refs/heads/main
           verify-oidc-issuer: https://token.actions.githubusercontent.com
-
-      - name: upload exe
-        uses: actions/upload-artifact@v4
-        with:
-          name: sign-exe
-          path: |
-            exe/*.exe
-            deb/*.deb
-            dmg/*.dmg
+          upload-signing-artifacts: true
 
 
-  release:
-    if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
-
-    permissions:
-      contents: write
-
-    needs: [ sign ]
-
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: download files
-        uses: actions/download-artifact@v4
-
-      - name: create release
-        uses: softprops/action-gh-release@v2
-        with:
-          name: UKMCL V${{ env.ver }}
-          tag_name: ${{ env.ver }}
-          body_path: ${{ github.workspace }}/changelog.md
-          draft: true
-          generate_release_notes: true
-          files: |
-            sign-exe/exe/*.exe
-            sign-exe/dmg/*.dmg
-            sign-exe/deb/*.deb
+#  release:
+#    if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
+#
+#    permissions:
+#      contents: write
+#
+#    needs: [ sign ]
+#
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v4
+#
+#      - name: download files
+#        uses: actions/download-artifact@v4
+#        with:
+#          path: signing-artifacts
+#
+#      - name: create release
+#        uses: softprops/action-gh-release@v2
+#        with:
+#          name: UKMCL V${{ env.ver }}
+#          tag_name: ${{ env.ver }}
+#          body_path: ${{ github.workspace }}/changelog.md
+#          generate_release_notes: true
+#          prerelease: true
+#          files: |
+#            sign-exe/exe/*.exe
+#            sign-exe/dmg/*.dmg
+#            sign-exe/deb/*.deb
+#
+#  deploy:
+#    if: ${{ !contains(github.event.head_commit.message, '[site]') }}
+#
+#    needs: [release]
+#
+#    permissions:
+#      contents: write
+#      id-token: write
+#
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v4
+#
+#      - name: copy
+#        run: |
+#          git clone https://x-access-token:${{ secrets.WEBSITE_TOKEN }}@github.com/TheUnknownGroup/theunknowngroup.github.io.git repo
+#          cd repo/public/
+#
+#          if [ -d "launcher" ]; then
+#            echo "Exists"
+#          else
+#            mkdir -p launcher
+#          fi
+#
+#          if [ ! -f launcher/version-lin.json ]; then
+#            echo "[]" > launcher/version-lin.json
+#          elif [ ! -f launcher/version-win.json ]; then
+#            echo "[]" > launcher/version-win.json
+#          elif [ ! -f launcher/version-mac.json ]; then
+#            echo "[]" > launcher/version-mac.json
+#          fi
+#
+#          cd ${{ github.workspace }}
+#
+#      - name: get jq
+#        if: ${{ contains(github.event.head_commit.message, '[newver]') }}
+#        run: sudo apt-get install jq
+#
+#      - name: new ver-lin
+#        if: ${{ contains(github.event.head_commit.message, '[newver]') }}
+#        run: |
+#          jq --arg version "${{ env.ver }}" \
+#             --arg changelog "https://github.com/TheUnknownGroup/UKMCL/releases/tag/${{ env.ver_tag }}" \
+#             --arg url "${{ env.url }}${{ env.ver_tag }}/UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb" \
+#             '.versions[] += {
+#                version: $version,
+#                changelog: $changelog,
+#                download_url: $url
+#             }' > version-lin.json
+#          cp version-lin.json repo/public/launcher/
+#
+#      - name: new ver-win
+#        if: ${{ contains(github.event.head_commit.message, '[newver]') }}
+#        run: |
+#          jq --arg version "${{ env.ver }}" \
+#             --arg changelog "https://github.com/TheUnknownGroup/UKMCL/releases/tag/${{ env.ver_tag }}" \
+#             --arg url "${{ env.url }}${{ env.ver_tag }}/UKMCL-Windows-Installer-en_US.exe" \
+#             '.versions[] += {
+#                version: $version,
+#                changelog: $changelog,
+#                download_url: $url
+#             ]' > version-win.json
+#          cp version-win.json repo/public/launcher/
+#
+#      - name: new ver-mac
+#        if: ${{ contains(github.event.head_commit.message, '[newver]') }}
+#        run: |
+#          jq --arg version "${{ env.ver }}" \
+#             --arg changelog "https://github.com/TheUnknownGroup/UKMCL/releases/tag/${{ env.ver_tag }}" \
+#             --arg url "${{ env.url }}${{ env.ver_tag }}/UKMCL-macOS-en_US+${{ env.file_ver }}.dmg" \
+#             '.[] += {
+#                version: $version,
+#                changelog: $changelog,
+#                download_url: $url
+#             }' > version-mac.json
+#          cp version-mac.json repo/public/launcher/
+#
+#      - name: make version-lin.json
+#        if: ${{ !contains(github.event.head_commit.message, '[newver]') }}
+#        run: |
+#          echo '{
+#              "versions": [
+#                  {
+#                      "version": "${{ env.ver }}",
+#                      "changelog": "https://github.com/TheUnknownGroup/UKMCL/releases/tag/${{ env.ver_tag }}",
+#                      "download_url": "${{ env.url }}${{ env.ver_tag }}/UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb"
+#                  }
+#              ]
+#          }' > version-lin.json
+#          cp version-lin.json repo/public/launcher/
+#
+#      - name: make version-win.json
+#        if: ${{ !contains(github.event.head_commit.message, '[newver]') }}
+#        run: |
+#          echo '{
+#              "versions": [
+#                  {
+#                      "version": "${{ env.ver }}",
+#                      "changelog": "https://github.com/TheUnknownGroup/UKMCL/releases/tag/${{ env.ver_tag }}",
+#                      "download_url": "${{ env.url }}${{ env.ver_tag }}/UKMCL-Windows-Installer-en_US.exe"
+#                  }
+#              ]
+#          }' > version-win.json
+#          cp version-win.json repo/public/launcher/
+#
+#      - name: make version-mac.json
+#        if: ${{ !contains(github.event.head_commit.message, '[newver]') }}
+#        run: |
+#          echo '{
+#              "versions": [
+#                  {
+#                      "version": "${{ env.ver }}",
+#                      "changelog": "https://github.com/TheUnknownGroup/UKMCL/releases/tag/${{ env.ver_tag }}",
+#                      "download_url": "${{ env.url }}${{ env.ver_tag }}/UKMCL-macOS-en_US+${{ env.file_ver }}.dmg"
+#                  }
+#              ]
+#          }' > version-mac.json
+#          cp version-mac.json repo/public/launcher/
+#
+#      - name: push to repo
+#        run: |
+#          cd repo/
+#          git config user.name "devonk15"
+#          git config user.email "94760159+devonk15@users.noreply.github.com"
+#          git add public/launcher/*.json
+#
+#          if git diff --cached --quiet; then
+#            echo "No changes"
+#          else
+#            git commit -m "${{ env.commit_msg }}"
+#            git push
+#          fi
