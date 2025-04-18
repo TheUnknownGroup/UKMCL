@@ -30,61 +30,80 @@ jobs:
 
       - name: copy
         run: |
-          if [ -f json/version-lin.json ]; then
+          git clone https://x-access-token:${{ secrets.WEBSITE_TOKEN }}@github.com/TheUnknownGroup/theunknowngroup.github.io.git repo
+          cd repo/public/
+
+          if [ -d "launcher" ]; then
             echo "Exists"
+          else
+            mkdir -p launcher
           fi
-#          git clone https://x-access-token:${{ secrets.WEBSITE_TOKEN }}@github.com/TheUnknownGroup/theunknowngroup.github.io.git repo
-#          cd repo/public/
-#
-#          if [ -d "launcher" ]; then
-#            echo "Exists"
-#          else
-#            mkdir -p launcher
-#          fi
-#
-#          if [ ! -f launcher/version-lin.json ]; then
-#            cd ${{ github.workspace }}/json
-#            echo '
-#            {
-#              "versions": []
-#            }' > version-lin.json
-#            cd ${{ github.workspace }}/repo/public/
-#          elif [ ! -f launcher/version-win.json ]; then
-#            cd ${{ github.workspace }}/json
-#            echo '
-#            {
-#              "versions": []
-#            }' > version-lin.json
-#            cd ${{ github.workspace }}/repo/public/
-#          elif [ ! -f launcher/version-mac.json ]; then
-#            cd ${{ github.workspace }}/json
-#            echo '
-#            {
-#              "versions": []
-#            }' > version-lin.json
-#            cd ${{ github.workspace }}/repo/public/
-#          fi
-#
-#          cd ${{ github.workspace }}
-#
-#      - name: get jq
-#        if: ${{ contains(github.event.head_commit.message, '[newver]') }}
-#        run: sudo apt-get install jq
-#
-#      - name: new ver-lin
-#        if: ${{ contains(github.event.head_commit.message, '[newver]') }}
-#        run: |
-#          jq --arg version "${{ env.ver }}" \
-#             --arg changelog "https://github.com/TheUnknownGroup/UKMCL/releases/tag/${{ env.ver_tag }}" \
-#             --arg url "${{ env.url }}${{ env.ver_tag }}/UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb" \
-#             '. += { version: $version, changelog: $changelog, download_url: $url }' \
-#             json/version-lin.json > tmp.json && mv tmp.json json/version-lin.json
-#          cp json/version-lin.json repo/public/launcher/
-#
-#      - uses: actions/upload-artifact@v4
-#        with:
-#          name: test
-#          path: json/version-lin.json
+
+          if [ ! -f launcher/version-lin.json ]; then
+            cd ${{ github.workspace }}/json
+            echo '
+            {
+              "versions": []
+            }' > version-lin.json
+            cd ${{ github.workspace }}/repo/public/
+          elif [ ! -f launcher/version-win.json ]; then
+            cd ${{ github.workspace }}/json
+            echo '
+            {
+              "versions": []
+            }' > version-win.json
+            cd ${{ github.workspace }}/repo/public/
+          elif [ ! -f launcher/version-mac.json ]; then
+            cd ${{ github.workspace }}/json
+            echo '
+            {
+              "versions": []
+            }' > version-mac.json
+            cd ${{ github.workspace }}/repo/public/
+          fi
+          
+          if [ -f ${{ github.workspace }}/json/version-lin.json ]; then
+            cd ${{ github.workspace }}/json
+            echo '
+            {
+              "versions": []
+            }' > version-lin.json
+            cd ${{ github.workspace }}/repo/public/          
+          elif [ -f ${{ github.workspace }}/json/version-win.json ]; then
+            cd ${{ github.workspace }}/json
+            echo '
+            {
+              "versions": []
+            }' > version-win.json
+            cd ${{ github.workspace }}/repo/public/          
+          elif [ -f ${{ github.workspace }}/json/version-mac.json ]; then
+            cd ${{ github.workspace }}/json
+            echo '
+            {
+              "versions": []
+            }' > version-mac.json
+            cd ${{ github.workspace }}/repo/public/
+          fi
+          
+          cd ${{ github.workspace }}
+
+      - name: get jq
+        if: ${{ contains(github.event.head_commit.message, '[newver]') }}
+        run: sudo apt-get install jq
+
+      - name: new ver-lin
+        if: ${{ contains(github.event.head_commit.message, '[newver]') }}
+        run: |
+          jq --arg version "${{ env.ver }}" \
+             --arg changelog "https://github.com/TheUnknownGroup/UKMCL/releases/tag/${{ env.ver_tag }}" \
+             --arg url "${{ env.url }}${{ env.ver_tag }}/UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb" \
+             '. += { version: $version, changelog: $changelog, download_url: $url }' > json/version-lin.json
+          cp json/version-lin.json repo/public/launcher/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: test
+          path: json/version-lin.json
 
 #
 #      - name: new ver-win
