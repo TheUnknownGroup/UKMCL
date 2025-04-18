@@ -259,7 +259,7 @@ jobs:
     needs: [ sign ]
 
     env:
-      commit_msg: [skip] [site] [newver] start site.yml
+      commit_msg: "[skip] [site] [newver] start site.yml"
 
     runs-on: ubuntu-latest
     steps:
