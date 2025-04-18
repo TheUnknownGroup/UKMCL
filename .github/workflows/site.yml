@@ -4,15 +4,15 @@ on:
   release:
     types: [published]
 # testing purposes only
-  push:
-    branches:
-      - main
+#  push:
+#    branches:
+#      - main
   workflow_dispatch:
 
 env:
   file_ver: 0.0.0
-  ver: 0.0.0-experimental+0-beta.10
-  ver_tag: 0.0.0-experimental%2B0-beta.10
+  ver: 0.0.0-experimental+0-beta.10-test
+  ver_tag: 0.0.0-experimental%2B0-beta.10-test
   commit_msg: update
   url: https://github.com/TheUnknownGroup/UKMCL/releases/download/
 
@@ -74,7 +74,7 @@ jobs:
               "changelog": $changelog,
               "download_url": $url
             }
-          ]' json/tmp-lin.json > json/latest-version-lin.json
+          ] + .' json/tmp-lin.json > json/latest-version-lin.json
           cp json/latest-version-lin.json repo/public/launcher/
 
       - name: new ver-win
@@ -89,7 +89,7 @@ jobs:
               "changelog": $changelog,
               "download_url": $url
             }
-          ]' json/tmp-win.json > json/latest-version-win.json
+          ] + .' json/tmp-win.json > json/latest-version-win.json
           cp json/latest-version-win.json repo/public/launcher/
 
       - name: new ver-mac
@@ -104,7 +104,7 @@ jobs:
               "changelog": $changelog,
               "download_url": $url
             }
-          ]' json/tmp-mac.json > json/latest-version-mac.json
+          ] + .' json/tmp-mac.json > json/latest-version-mac.json
           cp json/latest-version-mac.json repo/public/launcher/
 
       - name: push to website
