@@ -258,7 +258,7 @@ jobs:
       id-token: write
 
     env:
-      commit_msg: update [site] [newver] 
+      commit_msg: update [site] [newver]
 
     runs-on: ubuntu-latest
     steps:
@@ -272,8 +272,9 @@ jobs:
           git config user.name "devonk15"
           git config user.email "94760159+devonk15@users.noreply.github.com"
           
-          echo 'start' > file.txt
+          mkdir new.txt
+          echo 'start' > new.txt
           
-          git add file.txt
+          git add new.txt
           git commit -m "${{ env.commit_msg }}"
           git push
