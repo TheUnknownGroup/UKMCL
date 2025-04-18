@@ -44,10 +44,12 @@ jobs:
       - name: manual add
         if: ${{ contains(github.event.head_commit.message, '[man]') }}
         run:
-          mv json/tmp-lin.json json/version-lin.json 
+          mv json/tmp-lin.json json/version-lin.json
           mv json/tmp-win.json json/version-win.json
           mv json/tmp-mac.json json/version-mac.json
-          cp json/*.json repo/public/launcher/
+          cp json/version-lin.json repo/public/launcher/
+          cp json/version-win.json repo/public/launcher/
+          cp json/version-mac.json repo/public/launcher/
 
       - name: get jq
         if: ${{ contains(github.event.head_commit.message, '[newver]') }}
