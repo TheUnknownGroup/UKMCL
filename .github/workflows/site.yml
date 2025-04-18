@@ -97,7 +97,7 @@ jobs:
           jq --arg version "${{ env.ver }}" \
              --arg changelog "https://github.com/TheUnknownGroup/UKMCL/releases/tag/${{ env.ver_tag }}" \
              --arg url "${{ env.url }}${{ env.ver_tag }}/UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb" \
-             '. += { version: $version, changelog: $changelog, download_url: $url }' > json/version-lin.json
+             '. += [{ version: $version, changelog: $changelog, download_url: $url }]' tmp.json > json/version-lin.json
           cp json/version-lin.json repo/public/launcher/
 
       - uses: actions/upload-artifact@v4
