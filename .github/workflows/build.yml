@@ -262,16 +262,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: site
 
       - name: site.yml
         run: |
+          git clone https://x-access-token:${{ secrets.WEBSITE_TOKEN }}@github.com/TheUnknownGroup/push.git repo
+          cd repo/          
           git config user.name "devonk15"
           git config user.email "94760159+devonk15@users.noreply.github.com"
 
-          echo 'start' >> new.txt
+          echo '.' >> new.txt
 
           git add new.txt
           git commit -m "${{ env.commit_msg }}"
