@@ -257,28 +257,23 @@ jobs:
       contents: write
       id-token: write
 
-#    needs: [ release ]
-#
-#    env:
-#      commit_msg: update [site] [newver]
+    env:
+      commit_msg: update [site] [newver]
 
     runs-on: ubuntu-latest
     steps:
-#      - name: checkout
-#        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: site
+
       - name: switch
         run: |
           git config user.name "devonk15"
           git config user.email "94760159+devonk15@users.noreply.github.com"
-#          git checkout origin/site
-          git branch -a
-
-#      - name: make file
-#        run: |
-#          echo 'start' > file.txt
-#
-#      - name: commit & push
-#        run: |
-#          git add file.txt
-#          git commit -m "${{ env.commit_msg }}"
-#          git push
+          
+          echo 'start' > file.txt
+          
+          git add file.txt
+          git commit -m "${{ env.commit_msg }}"
+          git push
