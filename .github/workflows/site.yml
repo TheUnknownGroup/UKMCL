@@ -40,6 +40,15 @@ jobs:
           fi
           
           cd ${{ github.workspace }}
+          
+      - name: manual add
+        if: ${{ contains(github.event.head_commit.message, '[man]') }}
+        run:
+          mv json/tmp-lin.json json/version-lin.json 
+          mv json/tmp-win.json json/version-win.json
+          mv json/tmp-mac.json json/version-mac.json
+          cd repo/public/
+          cp json/*.json launcher/
 
       - name: get jq
         if: ${{ contains(github.event.head_commit.message, '[newver]') }}
