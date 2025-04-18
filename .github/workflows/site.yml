@@ -1,4 +1,4 @@
-name: [skip] [site] [newver] haha im using the name of the yml
+name: haha im using the name of the yml [skip] [site] [newver]
 
 on:
   workflow_run:
