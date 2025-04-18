@@ -12,6 +12,7 @@ env:
   py_ver: "3.13.2"
   jar_ver: UKMCL-0.0.0.jar
   file_ver: 0.0.0
+  pre: true
 
 jobs:
   buildWin:
@@ -243,7 +244,7 @@ jobs:
           tag_name: ${{ env.ver }}
           body_path: ${{ github.workspace }}/changelog.md
           generate_release_notes: true
-          prerelease: true
+          prerelease: ${{ env.pre }}
           files: |
             out/*.exe
             out/*.dmg

@@ -11,8 +11,8 @@ on:
 
 env:
   file_ver: 0.0.0
-  ver: 0.0.0-experimental+0-beta.10-test
-  ver_tag: 0.0.0-experimental%2B0-beta.10-test
+  ver: 0.0.0-experimental+0-beta.9
+  ver_tag: 0.0.0-experimental%2B0-beta.9
   commit_msg: update
   url: https://github.com/TheUnknownGroup/UKMCL/releases/download/
 
@@ -37,52 +37,6 @@ jobs:
             echo "Exists"
           else
             mkdir -p launcher
-          fi
-
-          if [ ! -f launcher/version-lin.json ]; then
-            cd ${{ github.workspace }}/json
-            echo '
-            {
-              "versions": []
-            }' > version-lin.json
-            cd ${{ github.workspace }}/repo/public/
-          elif [ ! -f launcher/version-win.json ]; then
-            cd ${{ github.workspace }}/json
-            echo '
-            {
-              "versions": []
-            }' > version-win.json
-            cd ${{ github.workspace }}/repo/public/
-          elif [ ! -f launcher/version-mac.json ]; then
-            cd ${{ github.workspace }}/json
-            echo '
-            {
-              "versions": []
-            }' > version-mac.json
-            cd ${{ github.workspace }}/repo/public/
-          fi
-          
-          if [ -f ${{ github.workspace }}/json/version-lin.json ]; then
-            cd ${{ github.workspace }}/json
-            echo '
-            {
-              "versions": []
-            }' > version-lin.json
-            cd ${{ github.workspace }}/repo/public/          
-          elif [ -f ${{ github.workspace }}/json/version-win.json ]; then
-            cd ${{ github.workspace }}/json
-            echo '
-            {
-              "versions": []
-            }' > version-win.json
-            cd ${{ github.workspace }}/repo/public/          
-          elif [ -f ${{ github.workspace }}/json/version-mac.json ]; then
-            cd ${{ github.workspace }}/json
-            echo '
-            {
-              "versions": []
-            }' > version-mac.json
-            cd ${{ github.workspace }}/repo/public/
           fi
           
           cd ${{ github.workspace }}
@@ -137,8 +91,8 @@ jobs:
             }
           ]' json/tmp-mac.json > json/version-mac.json
           cp json/version-mac.json repo/public/launcher/
-          
-      - name: push to repo
+
+      - name: push to website
         run: |
           cd repo/
           git config user.name "devonk15"
@@ -151,3 +105,13 @@ jobs:
             git commit -m "${{ env.commit_msg }}"
             git push
           fi
+
+      - name: push here
+        run: |
+          git config user.name "devonk15"
+          git config user.email "94760159+devonk15@users.noreply.github.com"
+          git add json/tmp-lin.json
+          git add json/tmp-win.json
+          git add json/tmp-mac.json
+          git commit -m "${{ env.commit_msg }}"
+          git push
