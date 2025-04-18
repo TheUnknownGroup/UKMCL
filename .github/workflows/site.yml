@@ -1,11 +1,9 @@
 name: haha im using the name of the yml [skip] [site] [newver]
 
 on:
-  workflow_run:
-    workflows:
-      - Build UKMCL v0.0.0-experimental
-    types:
-      - completed
+  push:
+    tags:
+      - 0.0.0-experimental+0-beta.10-test
 #  push:
 #    branches:
 #      - main
