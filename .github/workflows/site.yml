@@ -107,6 +107,7 @@ jobs:
           fi
 
       - name: push here
+        if: ${{ contains(github.event.head_commit.message, '[newver]') }}
         run: |
           mv json/version-lin.json json/tmp-lin.json
           mv json/version-win.json json/tmp-win.json
@@ -114,8 +115,6 @@ jobs:
           
           git config user.name "devonk15"
           git config user.email "94760159+devonk15@users.noreply.github.com"
-          git add json/tmp-lin.json
-          git add json/tmp-win.json
-          git add json/tmp-mac.json
+          git add json/*.json
           git commit -m "${{ env.commit_msg }}"
           git push
