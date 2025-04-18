@@ -271,7 +271,6 @@ jobs:
           git config user.name "devonk15"
           git config user.email "94760159+devonk15@users.noreply.github.com"
           git checkout origin/site
-          git switch origin/site
 
       - name: make file
         run: |
