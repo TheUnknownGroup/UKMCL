@@ -249,3 +249,29 @@ jobs:
             out/*.exe
             out/*.dmg
             out/*.deb
+            
+  push:
+    if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
+
+    permissions:
+      contents: write
+
+    needs: [ sign ]
+
+    env:
+      commit_msg: [skip] [site] [newver] start site.yml
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: copy & make commit
+        run: |
+          echo 'start' > file.txt
+          
+          git config user.name "devonk15"
+          git config user.email "94760159+devonk15@users.noreply.github.com"
+          git check out site
+          git add file.txt
+          git commit -m "${{ env.commit_msg }}"
+          git push origin site

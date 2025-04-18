@@ -1,14 +1,9 @@
 name: Deploy to Website
 
 on:
-  workflow_run:
-    workflows:
-      - Build UKMCL v0.0.0-experimental
-    types:
-      - completed
-# testing purposes only
-#  push:
-#    branches:
+  push:
+    branches:
+      - site
 #      - main
   workflow_dispatch:
 
