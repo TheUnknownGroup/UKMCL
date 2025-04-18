@@ -49,11 +49,6 @@
       "version": "0.0.0-experimental+0-beta.10",
       "changelog": "https://github.com/TheUnknownGroup/UKMCL/releases/tag/0.0.0-experimental%2B0-beta.10",
       "download_url": "https://github.com/TheUnknownGroup/UKMCL/releases/download/0.0.0-experimental%2B0-beta.10/UKMCL-Windows-Installer-en_US.exe"
-    },
-    {
-      "version": "0.0.0-experimental+0-beta.10-test",
-      "changelog": "https://github.com/TheUnknownGroup/UKMCL/releases/tag/0.0.0-experimental%2B0-beta.10-test",
-      "download_url": "https://github.com/TheUnknownGroup/UKMCL/releases/download/0.0.0-experimental%2B0-beta.10-test/UKMCL-Windows-Installer-en_US.exe"
     }
   ]
 }
