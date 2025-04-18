@@ -271,7 +271,7 @@ jobs:
           
           git config user.name "devonk15"
           git config user.email "94760159+devonk15@users.noreply.github.com"
-          git check out site
+          git checkout site
           git add file.txt
           git commit -m "${{ env.commit_msg }}"
           git push origin site
