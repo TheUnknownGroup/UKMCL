@@ -1,4 +1,4 @@
-name: Build UKMCL v0.0.0-experimental &
+name: Build UKMCL v0.0.0-experimental
 
 on:
   push:

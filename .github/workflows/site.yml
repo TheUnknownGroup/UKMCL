@@ -4,9 +4,9 @@ on:
   release:
     types: [published]
 # testing purposes only
-  push:
-    branches:
-      - main
+#  push:
+#    branches:
+#      - main
   workflow_dispatch:
 
 env:
