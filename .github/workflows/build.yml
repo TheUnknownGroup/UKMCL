@@ -271,7 +271,7 @@ jobs:
           git config user.name "devonk15"
           git config user.email "94760159+devonk15@users.noreply.github.com"
           
-          echo 'start' > new.txt
+          echo 'start' >> new.txt
           
           git add new.txt
           git commit -m "${{ env.commit_msg }}"
