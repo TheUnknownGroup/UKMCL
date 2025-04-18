@@ -47,8 +47,7 @@ jobs:
           mv json/tmp-lin.json json/version-lin.json 
           mv json/tmp-win.json json/version-win.json
           mv json/tmp-mac.json json/version-mac.json
-          cd repo/public/
-          cp json/*.json launcher/
+          cp json/*.json repo/public/launcher/
 
       - name: get jq
         if: ${{ contains(github.event.head_commit.message, '[newver]') }}
