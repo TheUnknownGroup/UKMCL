@@ -268,16 +268,11 @@ jobs:
 
       - name: site.yml
         run: |
-          curl -X POST \
-            -H "Accept: application/vnd.github+json" \
-            -H" Authorization: Bearer ${{ secrets.WEBSITE_TOKEN }}" \
-            https://api.github.com/repos/TheUnknownGroup/UKMCL/actions/workflows/site.yml/dispatches \
-            -d '{"ref":"site"}'
-#          git config user.name "devonk15"
-#          git config user.email "94760159+devonk15@users.noreply.github.com"
-#
-#          echo 'start' >> new.txt
-#
-#          git add new.txt
-#          git commit -m "${{ env.commit_msg }}"
-#          git push
+          git config user.name "devonk15"
+          git config user.email "94760159+devonk15@users.noreply.github.com"
+
+          echo 'start' >> new.txt
+
+          git add new.txt
+          git commit -m "${{ env.commit_msg }}"
+          git push
