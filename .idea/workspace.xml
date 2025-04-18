@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e9e0e50a-e96f-40a8-9712-ac1e0b469319" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="UKMCL" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="UKMCL" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="Kotlin File" />
+        <option value="Kotlin Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;devonk15&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/TheUnknownGroup/UKMCL.git&quot;,
+    &quot;accountId&quot;: &quot;0c51ffc8-f097-43fb-88f6-a974919fef2e&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2veXEeTx4hJw96RP2UhkOxDLBL0" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "Gradle.Build current language.executor": "Run",
+    "Gradle.Download Sources.executor": "Run",
+    "Kotlin.UkmclMainKt.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/kaylo/repos/theunknowngroup/UKMCL/current language/exe",
+    "onboarding.tips.debug.path": "C:/Users/kaylo/jetbrains/projects/intellij idea/UKMCL/src/main/kotlin/Main.kt",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.38965517",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\kaylo\repos\theunknowngroup\UKMCL\current language\exe" />
+      <recent name="C:\Users\kaylo\repos\theunknowngroup\UKMCL\current language\src\main\resources\icons" />
+      <recent name="C:\Users\kaylo\repos\theunknowngroup\UKMCL\current language\UKMCL\assets" />
+      <recent name="C:\Users\kaylo\repos\theunknowngroup\UKMCL\current language\UKMCL\packaging\deb\opt\UKMCL" />
+      <recent name="C:\Users\kaylo\repos\theunknowngroup\UKMCL\current language\UKMCL\packaging\exe" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\kaylo\repos\theunknowngroup\UKMCL\current language\xml" />
+      <recent name="C:\Users\kaylo\repos\theunknowngroup\UKMCL\current language\exe" />
+      <recent name="C:\Users\kaylo\repos\theunknowngroup\UKMCL\current language\src\main\kotlin\xyz\theunknowngroup" />
+      <recent name="C:\Users\kaylo\repos\theunknowngroup\UKMCL\current language" />
+      <recent name="C:\Users\kaylo\repos\theunknowngroup\UKMCL\current language\src\main\resources" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="UkmclMainKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="xyz.theunknowngroup.UkmclMainKt" />
+      <module name="UKMCL.main" />
+      <shortenClasspath name="NONE" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Kotlin.UkmclMainKt" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e9e0e50a-e96f-40a8-9712-ac1e0b469319" name="Changes" comment="" />
+      <created>1744506403293</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1744506403293</updated>
+    </task>
+    <servers />
+  </component>
+</project>

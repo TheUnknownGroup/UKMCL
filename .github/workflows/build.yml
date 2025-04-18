@@ -259,10 +259,25 @@ jobs:
 
 #    needs: [ release ]
 
+    env:
+      commit_msg: update [site] [newver]
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
+      - name: switch
+        run: |
+          git config user.name "devonk15"
+          git config user.email "94760159+devonk15@users.noreply.github.com"
+          git switch site
+
       - name: make file
         run: |
           echo 'start' > file.txt
+          
+      - name: commit & push
+        run: |
+          git add file.txt
+          git commit -m "${{ env.commit_msg }}"
+          git push
