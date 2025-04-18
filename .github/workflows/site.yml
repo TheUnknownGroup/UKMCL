@@ -138,66 +138,16 @@ jobs:
           ]' json/tmp-mac.json > json/version-mac.json
           cp json/version-mac.json repo/public/launcher/
           
-      - name: upload
-        uses: actions/upload-artifact@v4
-        with:
-          name: stuff
-          path: |
-            json/version-lin.json
-            json/version-win.json
-            json/version-mac.json
-#
-#      - name: make version-lin.json
-#        if: ${{ !contains(github.event.head_commit.message, '[newver]') }}
-#        run: |
-#          echo '{
-#              "versions": [
-#                  {
-#                      "version": "${{ env.ver }}",
-#                      "changelog": "https://github.com/TheUnknownGroup/UKMCL/releases/tag/${{ env.ver_tag }}",
-#                      "download_url": "${{ env.url }}${{ env.ver_tag }}/UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb"
-#                  }
-#              ]
-#          }' > version-lin.json
-#
-#      - name: make version-win.json
-#        if: ${{ !contains(github.event.head_commit.message, '[newver]') }}
-#        run: |
-#          echo '{
-#              "versions": [
-#                  {
-#                      "version": "${{ env.ver }}",
-#                      "changelog": "https://github.com/TheUnknownGroup/UKMCL/releases/tag/${{ env.ver_tag }}",
-#                      "download_url": "${{ env.url }}${{ env.ver_tag }}/UKMCL-Windows-Installer-en_US.exe"
-#                  }
-#              ]
-#          }' > version-win.json
-#          cp version-win.json repo/public/launcher/
-#
-#      - name: make version-mac.json
-#        if: ${{ !contains(github.event.head_commit.message, '[newver]') }}
-#        run: |
-#          echo '{
-#              "versions": [
-#                  {
-#                      "version": "${{ env.ver }}",
-#                      "changelog": "https://github.com/TheUnknownGroup/UKMCL/releases/tag/${{ env.ver_tag }}",
-#                      "download_url": "${{ env.url }}${{ env.ver_tag }}/UKMCL-macOS-en_US+${{ env.file_ver }}.dmg"
-#                  }
-#              ]
-#          }' > version-mac.json
-#          cp version-mac.json repo/public/launcher/
-#
-#      - name: push to repo
-#        run: |
-#          cd repo/
-#          git config user.name "devonk15"
-#          git config user.email "94760159+devonk15@users.noreply.github.com"
-#          git add public/launcher/*.json
-#
-#          if git diff --cached --quiet; then
-#            echo "No changes"
-#          else
-#            git commit -m "${{ env.commit_msg }}"
-#            git push
-#          fi
+      - name: push to repo
+        run: |
+          cd repo/
+          git config user.name "devonk15"
+          git config user.email "94760159+devonk15@users.noreply.github.com"
+          git add public/launcher/*.json
+
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "${{ env.commit_msg }}"
+            git push
+          fi
