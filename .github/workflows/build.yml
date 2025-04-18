@@ -251,7 +251,7 @@ jobs:
             out/*.deb
 
   push:
-    if: ${{ contains(github.event.head_commit.message, '[site]') }}
+    if: ${{ !contains(github.event.head_commit.message, '[site]') }}
 
     permissions:
       contents: write
@@ -268,16 +268,17 @@ jobs:
 
       - name: switch
         run: |
-          git config user.name "devonk15"
-          git config user.email "94760159+devonk15@users.noreply.github.com"
-          git checkout origin/site
+#          git config user.name "devonk15"
+#          git config user.email "94760159+devonk15@users.noreply.github.com"
+#          git checkout origin/site
+          git branch -a
 
-      - name: make file
-        run: |
-          echo 'start' > file.txt
-          
-      - name: commit & push
-        run: |
-          git add file.txt
-          git commit -m "${{ env.commit_msg }}"
-          git push
+#      - name: make file
+#        run: |
+#          echo 'start' > file.txt
+#
+#      - name: commit & push
+#        run: |
+#          git add file.txt
+#          git commit -m "${{ env.commit_msg }}"
+#          git push
