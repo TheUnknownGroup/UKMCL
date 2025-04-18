@@ -108,6 +108,10 @@ jobs:
 
       - name: push here
         run: |
+          mv json/version-lin.json json/tmp-lin.json
+          mv json/version-win.json json/tmp-win.json
+          mv json/version-mac.json json/tmp-mac.json
+          
           git config user.name "devonk15"
           git config user.email "94760159+devonk15@users.noreply.github.com"
           git add json/tmp-lin.json
