@@ -1,12 +1,11 @@
 name: Deploy to Website
 
 on:
-  release:
+  workflow_run:
+    workflows:
+      - Build UKMCL v0.0.0-experimental
     types:
-      - prereleased
-      - released
-      - created
-      - published
+      - completed
 # testing purposes only
 #  push:
 #    branches:
