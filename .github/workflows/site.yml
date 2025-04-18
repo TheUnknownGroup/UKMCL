@@ -108,37 +108,44 @@ jobs:
           ]' json/tmp-lin.json > json/version-lin.json
           cp json/version-lin.json repo/public/launcher/
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: test
-          path: json/version-lin.json
+      - name: new ver-win
+        if: ${{ contains(github.event.head_commit.message, '[newver]') }}
+        run: |
+          jq --arg version "${{ env.ver }}" \
+             --arg changelog "https://github.com/TheUnknownGroup/UKMCL/releases/tag/${{ env.ver_tag }}" \
+             --arg url "${{ env.url }}${{ env.ver_tag }}/UKMCL-Windows-Installer-en_US.exe" \
+             '.versions += [
+            {
+              "version": $version,
+              "changelog": $changelog,
+              "download_url": $url
+            }
+          ]' json/tmp-win.json > json/version-win.json
+          cp json/version-win.json repo/public/launcher/
 
-#
-#      - name: new ver-win
-#        if: ${{ contains(github.event.head_commit.message, '[newver]') }}
-#        run: |
-#          jq --arg version "${{ env.ver }}" \
-#             --arg changelog "https://github.com/TheUnknownGroup/UKMCL/releases/tag/${{ env.ver_tag }}" \
-#             --arg url "${{ env.url }}${{ env.ver_tag }}/UKMCL-Windows-Installer-en_US.exe" \
-#             '.versions[] += {
-#                version: $version,
-#                changelog: $changelog,
-#                download_url: $url
-#             ]' > version-win.json
-#          cp version-win.json repo/public/launcher/
-#
-#      - name: new ver-mac
-#        if: ${{ contains(github.event.head_commit.message, '[newver]') }}
-#        run: |
-#          jq --arg version "${{ env.ver }}" \
-#             --arg changelog "https://github.com/TheUnknownGroup/UKMCL/releases/tag/${{ env.ver_tag }}" \
-#             --arg url "${{ env.url }}${{ env.ver_tag }}/UKMCL-macOS-en_US+${{ env.file_ver }}.dmg" \
-#             '.versions[] += {
-#                version: $version,
-#                changelog: $changelog,
-#                download_url: $url
-#             }' > version-mac.json
-#          cp version-mac.json repo/public/launcher/
+      - name: new ver-mac
+        if: ${{ contains(github.event.head_commit.message, '[newver]') }}
+        run: |
+          jq --arg version "${{ env.ver }}" \
+             --arg changelog "https://github.com/TheUnknownGroup/UKMCL/releases/tag/${{ env.ver_tag }}" \
+             --arg url "${{ env.url }}${{ env.ver_tag }}/UKMCL-macOS-en_US+${{ env.file_ver }}.dmg" \
+             '.versions += [
+            {
+              "version": $version,
+              "changelog": $changelog,
+              "download_url": $url
+            }
+          ]' json/tmp-mac.json > json/version-mac.json
+          cp json/version-mac.json repo/public/launcher/
+          
+      - name: upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: stuff
+          path: |
+            json/version-lin.json
+            json/version-win.json
+            json/version-mac.json
 #
 #      - name: make version-lin.json
 #        if: ${{ !contains(github.event.head_commit.message, '[newver]') }}
