@@ -4,9 +4,9 @@ on:
   release:
     types: [published]
 # testing purposes only
-#  push:
-#    branches:
-#      - main
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 env:
@@ -44,17 +44,17 @@ jobs:
       - name: manual add
         if: ${{ contains(github.event.head_commit.message, '[man]') }}
         run:
-          mv json/tmp-lin.json json/version-lin.json
+          mv json/tmp-lin.json json/latest-version-lin.json
           
-          mv json/tmp-win.json json/version-win.json
+          mv json/tmp-win.json json/latest-version-win.json
           
-          mv json/tmp-mac.json json/version-mac.json
+          mv json/tmp-mac.json json/latest-version-mac.json
           
-          cp json/version-lin.json repo/public/launcher/
+          cp json/latest-version-lin.json repo/public/launcher/
           
-          cp json/version-win.json repo/public/launcher/
+          cp json/latest-version-win.json repo/public/launcher/
           
-          cp json/version-mac.json repo/public/launcher/
+          cp json/latest-version-mac.json repo/public/launcher/
 
       - name: get jq
         if: ${{ contains(github.event.head_commit.message, '[newver]') }}
@@ -74,8 +74,8 @@ jobs:
               "changelog": $changelog,
               "download_url": $url
             }
-          ]' json/tmp-lin.json > json/version-lin.json
-          cp json/version-lin.json repo/public/launcher/
+          ]' json/tmp-lin.json > json/latest-version-lin.json
+          cp json/latest-version-lin.json repo/public/launcher/
 
       - name: new ver-win
         if: ${{ contains(github.event.head_commit.message, '[newver]') }}
@@ -89,8 +89,8 @@ jobs:
               "changelog": $changelog,
               "download_url": $url
             }
-          ]' json/tmp-win.json > json/version-win.json
-          cp json/version-win.json repo/public/launcher/
+          ]' json/tmp-win.json > json/latest-version-win.json
+          cp json/latest-version-win.json repo/public/launcher/
 
       - name: new ver-mac
         if: ${{ contains(github.event.head_commit.message, '[newver]') }}
@@ -104,8 +104,8 @@ jobs:
               "changelog": $changelog,
               "download_url": $url
             }
-          ]' json/tmp-mac.json > json/version-mac.json
-          cp json/version-mac.json repo/public/launcher/
+          ]' json/tmp-mac.json > json/latest-version-mac.json
+          cp json/latest-version-mac.json repo/public/launcher/
 
       - name: push to website
         run: |
@@ -124,9 +124,9 @@ jobs:
       - name: push here
         if: ${{ contains(github.event.head_commit.message, '[newver]') }}
         run: |
-          mv json/version-lin.json json/tmp-lin.json
-          mv json/version-win.json json/tmp-win.json
-          mv json/version-mac.json json/tmp-mac.json
+          mv json/latest-version-lin.json json/tmp-lin.json
+          mv json/latest-version-win.json json/tmp-win.json
+          mv json/latest-version-mac.json json/tmp-mac.json
           
           git config user.name "devonk15"
           git config user.email "94760159+devonk15@users.noreply.github.com"
