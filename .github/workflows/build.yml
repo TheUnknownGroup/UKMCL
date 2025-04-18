@@ -270,6 +270,7 @@ jobs:
         run: |
           git config user.name "devonk15"
           git config user.email "94760159+devonk15@users.noreply.github.com"
+          git checkout site
           git switch site
 
       - name: make file
