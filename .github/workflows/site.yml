@@ -1,9 +1,13 @@
-name: Deploy to Website
+name: [skip] [site] [newver] haha im using the name of the yml
 
 on:
-  push:
-    branches:
-      - site
+  workflow_run:
+    workflows:
+      - Build UKMCL v0.0.0-experimental
+    types:
+      - completed
+#  push:
+#    branches:
 #      - main
   workflow_dispatch:
 
