@@ -258,7 +258,7 @@ jobs:
       id-token: write
 
     env:
-      commit_msg: update [site] [newver]
+      commit_msg: update [site] [newver] 
 
     runs-on: ubuntu-latest
     steps:
