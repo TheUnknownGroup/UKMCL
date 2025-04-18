@@ -11,8 +11,8 @@ on:
 
 env:
   file_ver: 0.0.0
-  ver: 0.0.0-experimental+0-beta.9
-  ver_tag: 0.0.0-experimental%2B0-beta.9
+  ver: 0.0.0-experimental+0-beta.10
+  ver_tag: 0.0.0-experimental%2B0-beta.10
   commit_msg: update
   url: https://github.com/TheUnknownGroup/UKMCL/releases/download/
 
