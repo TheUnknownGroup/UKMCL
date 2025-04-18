@@ -1,10 +1,9 @@
-name: haha im using the name of the yml [skip] [site] [newver]
+name: Deploy to site
 
 on:
-  create:
-#  push:
-#    branches:
-#      - main
+  push:
+    branches:
+      - site
   workflow_dispatch:
 
 env:
