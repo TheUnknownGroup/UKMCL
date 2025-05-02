@@ -3,8 +3,8 @@ package xyz.theunknowngroup.app.scenes
 import javafx.scene.Scene
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
-import xyz.theunknowngroup.app.App.Companion.h
-import xyz.theunknowngroup.app.App.Companion.w
+import xyz.theunknowngroup.app.h
+import xyz.theunknowngroup.app.w
 
 fun launchScreen(stage: Stage): Scene {
 

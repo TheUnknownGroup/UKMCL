@@ -9,8 +9,8 @@ import javafx.scene.layout.GridPane
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import javafx.stage.Stage
-import xyz.theunknowngroup.app.App.Companion.h
-import xyz.theunknowngroup.app.App.Companion.w
+import xyz.theunknowngroup.app.h
+import xyz.theunknowngroup.app.w
 import xyz.theunknowngroup.images.Images.S.back
 
 var key = KeyCode.ENTER
@@ -39,8 +39,8 @@ fun logIn(stage: Stage): Scene {
 
         // config
         id = "lay1"
-        maxWidth = 200.0
-        maxHeight = 200.0
+        maxWidth = 350.0
+        maxHeight = 350.0
         alignment = Pos.CENTER
     }
 
@@ -48,9 +48,9 @@ fun logIn(stage: Stage): Scene {
 
     val layout = VBox(10.0).apply {
         children.addAll(lay1)
-        alignment = Pos.CENTER
         style = "-fx-background-image: url('$back');"
         id = "layout"
+        alignment = Pos.CENTER_LEFT
         VBox.setVgrow(lay1, Priority.SOMETIMES)
     }
 

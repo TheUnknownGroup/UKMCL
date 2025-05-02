@@ -6,13 +6,9 @@ import javafx.stage.Stage
 import xyz.theunknowngroup.app.scenes.startPage
 import xyz.theunknowngroup.images.Images.S.icon
 
+var w = 950.0
+var h = 530.0
 class App : Application() {
-
-    companion object {
-        var w = 950.0;
-        var h = 530.0;
-    }
-
     override fun start(stage: Stage) {
         stage.apply {
             title = "UKMCL"
