@@ -37,17 +37,6 @@ jobs:
           architecture: "x64"
           check-latest: true
 
-      - name: Install Dependencies - Windows
-        run: |
-          choco install visualstudio2019buildtools -y
-          choco install visualstudio2019-workload-vctools -y
-
-      - name: Set up Environment for Windows Build Tools
-        run: |
-          $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin"
-          $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\IDE"
-          $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\*\bin\Hostx64\x64"
-
       - name: make gradle wrapper executable
         run: chmod +x ./gradlew
 
