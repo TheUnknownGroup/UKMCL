@@ -1,0 +1,11 @@
+[package]
+name = "get"
+version = "0.0.0"
+description = "Deserializing"
+authors = ["devonk15"]
+edition = "2024"
+
+[dependencies]
+serde = { version = "1" }
+serde_json = { version = "1" }
+reqwest = { version = "0.13" }
