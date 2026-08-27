@@ -41,7 +41,10 @@
     "linux": {
       "deb": {
            "postRemoveScript": "./scripts/postremove.sh",
-           "postInstallScript": "./scripts/postinstall.sh"
+           "postInstallScript": "./scripts/postinstall.sh",
+           "files": {
+                "/usr/share/ukmcl/launch.sh": "../../launch.sh"
+           }
       },   
       "rpm": {
            "postRemoveScript": "./scripts/postremove.sh",
