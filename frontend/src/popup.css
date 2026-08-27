@@ -1,0 +1,70 @@
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background-color: rgba(0 0 0 / 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay.hidden {
+    display: none;
+}
+
+.modal-box {
+    background: #2E302F;
+    /*padding: 1.5rem;*/
+    border: 1px solid white;
+    border-radius: 8px;
+    padding: 10px 45px 45px 45px;
+    text-align: center;
+    color: white;
+}
+
+.modal-box:hover {
+    transition: box-shadow 0.3s ease;
+    box-shadow: 0 0 10px white;
+}
+
+.modal-tle {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 1.6rem;
+    border: 2px solid transparent;
+    padding: 5px 15px 5px 15px;
+}
+
+.modal-msg {
+    margin-bottom: 1.1rem;
+}
+
+.modal-act {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.cancel {
+  background: #36373B;
+}
+.cancel:hover {
+  background: #4b5563; 
+}
+
+.delete {
+  background: #dc2626;
+}
+.delete:hover {
+  background: #ef4444;
+}

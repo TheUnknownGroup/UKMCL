@@ -1,0 +1,57 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "ukmcl",
+  "version": "0.0.1",
+  "identifier": "ukcml",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:4321/",
+    "beforeDevCommand": "bun astro dev",
+    "beforeBuildCommand": "bun astro build"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "title": "UKMCL",
+        "width": 854,
+        "height": 480,
+        "center": true,
+        "minWidth": 854,
+        "minHeight": 480,
+        "resizable": true
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; font-src 'self' asset: https://asset.localhost; style-src 'self' 'unsafe-inline'"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/64x64.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "linux": {
+      "deb": {
+           "postRemoveScript": "./scripts/postremove.sh",
+           "postInstallScript": "./scripts/postinstall.sh"
+      },   
+      "rpm": {
+           "postRemoveScript": "./scripts/postremove.sh",
+           "postInstallScript": "./scripts/postinstall.sh"
+      }   
+    },
+    "windows": {
+         "nsis": {
+              "installerHooks": "./scripts/installerHooks.nsh"
+         }
+    }
+  }
+}

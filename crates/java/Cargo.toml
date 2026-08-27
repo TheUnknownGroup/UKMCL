@@ -1,0 +1,11 @@
+[package]
+name = "java"
+version = "0.0.0"
+description = "Java End"
+authors = ["devonk15"]
+edition = "2024"
+
+[dependencies]
+auth.path = "../auth/"
+
+tokio = { version = "1", features = ["full"] }

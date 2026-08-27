@@ -1,0 +1,37 @@
+---
+import InstanceList from "./InstanceList.astro";
+---
+
+<div class="app">
+    <div id="background">
+         <div id="column">
+            <div class="row">
+                <a id="logo">
+                    <img src="/assets/images/icon.png" width="45" alt="Unknown Logo">
+                </a>
+            </div>
+            <div class="row">
+                <a id="home">
+                    <img width="30" src="/assets/images/house-door.svg" alt="home_image">
+                </a>
+            </div>
+            <div class="row">
+                <a id="instances">
+                    <img width="30" src="/assets/images/list-ul.svg" alt="instance_list">
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="main">
+        <!--<form class="form">-->
+        <!--    <input type="text" id="username" placeholder="Name" class="text">-->
+        <!--    <input type="submit" id="submit" value="Submit" class="user" />-->
+        <!--</form>-->
+        <form class="form" id="test">
+            <label for="instance">Instance Name</label><br>
+            <input type="text" id="instance" placeholder="Instance" required>
+            <button type="submit">Create</button>
+        </form>
+        <InstanceList />
+    </div>
+</div>

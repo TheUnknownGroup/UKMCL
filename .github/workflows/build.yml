@@ -1,5 +1,4 @@
-name: Build UKMCL v0.0.0-experimental
-
+name: test build
 on:
   push:
     branches:
@@ -7,260 +6,146 @@ on:
   workflow_dispatch:
 
 env:
-  java_ver: "19.0.2"
-  ver: 0.0.0-experimental+0-beta.11
-  py_ver: "3.13.2"
-  jar_ver: UKMCL-0.0.0.jar
-  file_ver: 0.0.0
-  pre: true
+  ver: 0.0.1
 
 jobs:
-  buildWin:
+  build:
     if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
-
-    permissions:
-      contents: write
-      id-token: write
-
-    runs-on: windows-latest
+    strategy:
+      matrix:
+        include:
+          - platform: "macos-latest"
+            args: "--target aarch64-apple-darwin"
+            up: "aarch64-apple-darwin"
+          - platform: "macos-latest"
+            args: "--target x86_64-apple-darwin"
+            up: "x86_64-apple-darwin"
+          - platform: "ubuntu-latest"
+            args: ""
+          - platform: "windows-latest"
+            args: ""
+    runs-on: ${{ matrix.platform }}
+    env:
+      working-directory: ./frontend
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - name: validate gradle wrapper
-        uses: gradle/actions/wrapper-validation@v4
-
-      - name: setup jdk
-        uses: actions/setup-java@v4
+      - name: setup bun
+        uses: oven-sh/setup-bun@v2
         with:
-          java-version: ${{ env.java_ver }}
-          distribution: "temurin"
-          architecture: "x64"
-          check-latest: true
+          bun-version: latest
 
-      - name: make gradle wrapper executable
-        run: chmod +x ./gradlew
+      - name: rust stable
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: stable
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
-      - name: build
-        run: ./gradlew build
-
-      - name: build exe
-        run: ./gradlew createExe
-
-      - name: build installer
+      - name: ubuntu deps
+        if: ${{ matrix.platform == 'ubuntu-latest' }}
         run: |
-          cd ${{ github.workspace }}/packaging/exe
-          
-          copy -r "${{ github.workspace }}/build/libs/*.exe"
-          
-          copy ${{ github.workspace }}/assets ./assets
-          
-          curl https://mlaan2.home.xs4all.nl/ispack/innosetup-6.2.1.exe --output innosetup.exe
-          Start-Process .\innosetup.exe /VERYSILENT -Wait
-          
-          cd "C:\Program Files (x86)\Inno Setup 6"
-          iscc "${{ github.workspace }}/packaging/exe/installer.iss"
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf xdg-utils
 
-      - name: upload exe
-        uses: actions/upload-artifact@v4
+      - name: install frontend deps
+        run: bun install
+        working-directory: ${{ env.working-directory }}
+
+      - name: tauri build
+        uses: tauri-apps/tauri-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          projectPath: ${{ env.working-directory }}
+          tauriScript: "bun tauri"
+          args: ${{ matrix.args }}
+
+      - name: release (windows)
+        if: ${{ matrix.platform == 'windows-latest' }}
+        uses: actions/upload-artifact@v7
         with:
           name: exe
-          path: ${{ github.workspace }}/packaging/exe/UKMCL-Windows-Installer-en_US.exe
+          retention-days: 3
+          path: |
+            ${{ github.workspace }}/target/release/bundle/nsis/*.exe
+            ${{ github.workspace }}/target/release/bundle/msi/*.msi
 
-  buildLin:
-    if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
-
-    permissions:
-      contents: write
-      id-token: write
-
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: validate gradle wrapper
-        uses: gradle/actions/wrapper-validation@v4
-
-      - name: setup jdk
-        uses: actions/setup-java@v4
-        with:
-          java-version: ${{ env.java_ver }}
-          distribution: "temurin"
-          architecture: "x64"
-          check-latest: true
-
-      - name: make gradle wrapper executable
-        run: chmod +x ./gradlew
-
-      - name: build
-        run: ./gradlew build
-
-      - name: build installer
-        run: |
-          cd packaging/deb/usr
-          mkdir -p share/UKMCL
-          cd ${{ github.workspace }}
-          cp -r build/libs/*.jar packaging/deb/usr/share/UKMCL/
-          sed -i 's/${VERSION}/${{ env.ver }}/g' packaging/deb/DEBIAN/control
-          fakeroot dpkg-deb --build packaging/deb "UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb"
-
-      - name: upload installer
-        uses: actions/upload-artifact@v4
+      - name: release (ubuntu)
+        if: ${{ matrix.platform == 'ubuntu-latest' }}
+        uses: actions/upload-artifact@v7
         with:
           name: deb
-          path: UKMCL-Linux-Installer-en_US+${{ env.file_ver }}.deb
+          retention-days: 3
+          path: |
+            ${{ github.workspace }}/target/release/bundle/deb/*.deb
+            ${{ github.workspace }}/target/release/bundle/rpm/*.rpm
+            ${{ github.workspace }}/target/release/bundle/appimage/*.AppImage
 
-  buildMac:
-    if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
-
-    permissions:
-      contents: write
-      id-token: write
-
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: validate gradle wrapper
-        uses: gradle/actions/wrapper-validation@v4
-
-      - name: setup jdk
-        uses: actions/setup-java@v4
+      - name: release (macos)
+        if: ${{ matrix.platform == 'macos-latest' && matrix.up == 'aarch64-apple-darwin'}}
+        uses: actions/upload-artifact@v7
         with:
-          java-version: ${{ env.java_ver }}
-          distribution: "temurin"
-          architecture: "x64"
-          check-latest: true
+          name: dmg aarch
+          retention-days: 3
+          path: |
+            ${{ github.workspace }}/target/aarch64-apple-darwin/release/bundle/dmg/*.dmg
+            ${{ github.workspace }}/target/aarch64-apple-darwin/release/bundle/macos/*.tar.gz
 
-      - name: make gradle wrapper executable
-        run: chmod +x ./gradlew
-
-      - name: build
-        run: ./gradlew build
-
-      - name: build installer
-        run: |
-          mkdir -p output
-          jpackage \
-            -t dmg \
-            --input build/libs \
-            --dest output \
-            --name "UKMCL-Installer" \
-            --main-jar ${{ env.jar_ver }} \
-            --main-class UkmclMain \
-            --icon ${{ github.workspace }}/assets/icon.icns \
-            --java-options "-Xmx2G"
-          
-          mv output/UKMCL-Installer-1.0.dmg output/UKMCL-macOS-en_US+${{ env.file_ver }}.dmg
-
-      - name: upload
-        uses: actions/upload-artifact@v4
+      - name: release (macos)
+        if: ${{ matrix.platform == 'macos-latest' && matrix.up == 'x86_64-apple-darwin'}}
+        uses: actions/upload-artifact@v7
         with:
-          name: dmg
-          path: output/*.dmg
-
-  sign:
-    if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
-
-    permissions:
-      contents: write
-      id-token: write
-
-    needs: [ buildWin, buildLin, buildMac ]
-
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-
-      - name: download exe
-        uses: actions/download-artifact@v4
-
-      - name: py install
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.py_ver }}
-
-      - name: verify py
-        run: python --version
-
-      - name: pip install
-        shell: pwsh
-        run: python -m ensurepip --upgrade
-
-      - name: sign sigstore
-        uses: sigstore/gh-action-sigstore-python@v3.0.0
-        with:
-          inputs: | 
-            exe/*.exe
-            deb/*.deb
-            dmg/*.dmg
-          verify: true
-          verify-cert-identity: https://github.com/TheUnknownGroup/UKMCL/.github/workflows/build.yml@refs/heads/main
-          verify-oidc-issuer: https://token.actions.githubusercontent.com
-          upload-signing-artifacts: true
-
+          name: dmg x86
+          retention-days: 3
+          path: |
+            ${{ github.workspace }}/target/x86_64-apple-darwin/release/bundle/dmg/*.dmg
+            ${{ github.workspace }}/target/x86_64-apple-darwin/release/bundle/macos/*.tar.gz
   release:
-    if: ${{ !contains(github.event.head_commit.message, '[skip]') }}
+    if: ${{ contains(github.event.head_commit.message, '[re]') }}
 
+    needs: [ build ]
     permissions:
-      contents: write
-
-    needs: [ sign ]
-
+      contents:
+        write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - name: download files
-        uses: actions/download-artifact@v4
+      - name: download
+        uses: actions/download-artifact@v8
         with:
-          path: signing-artifacts-sign
+          path: finals
+          merge-multiple: true
+      - run: ls -R finals/
 
       - run: |
-          mkdir out
-          cp signing-artifacts-sign/exe/*.exe out/
-          cp signing-artifacts-sign/deb/*.deb out/
-          cp signing-artifacts-sign/dmg/*.dmg out/
+          mkdir -p final
+          mv finals/appimage/*.AppImage final/
+          mv finals/deb/*.deb final/
+          mv finals/rpm/*.rpm final/
+          mv finals/dmg/*.dmg final/
+          mv finals/macos/*.tar.gz final/
+          mv finals/msi/*.msi final/
+          mv finals/nsis/*.exe final/
+          ls -R final/
+          cd final/
+          mv ukmcl_${{ env.ver }}_x64-setup.exe ukmcl-${{ env.ver }}-windows_x64.exe
+          mv ukmcl_${{ env.ver }}_x64_en-US.msi ukmcl-${{ env.ver }}-windows_x64.msi
+          mv ukmcl_${{ env.ver }}_amd64.deb ukmcl-${{ env.ver }}-linux_x64.deb
+          mv ukmcl_${{ env.ver }}_amd64.AppImage ukmcl-${{ env.ver }}-linux_x64.AppImage
+          mv ukmcl-${{ env.ver }}-1.x86_64.rpm ukmcl-${{ env.ver }}-redhat_x64.rpm
+          mv ukmcl_${{ env.ver }}_aarch64.dmg ukmcl-${{ env.ver }}-macos_arm64.dmg
+          mv ukmcl_${{ env.ver }}_x64.dmg ukmcl-${{ env.ver }}-macos_x64.dmg
 
-      - name: create release
-        uses: softprops/action-gh-release@v2
+      - name: release them
+        uses: softprops/action-gh-release@v3
         with:
-          name: UKMCL V${{ env.ver }}
-          tag_name: ${{ env.ver }}
-          body_path: ${{ github.workspace }}/changelog.md
+          name: UKMCL v${{ env.ver }}
+          tag_name: v${{ env.ver }}
+          body_path: ./changelog.md
           generate_release_notes: true
-          prerelease: ${{ env.pre }}
+          make_latest: true
+          prerelease: false
+          draft: false
           files: |
-            out/*.exe
-            out/*.dmg
-            out/*.deb
-
-  push:
-    if: ${{ contains(github.event.head_commit.message, '[site]') }}
-
-    permissions:
-      contents: write
-      id-token: write
-
-    needs: [ release ]
-
-    env:
-      commit_msg: update [site] [newver]
-
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: site.yml
-        run: |
-          git clone https://x-access-token:${{ secrets.WEBSITE_TOKEN }}@github.com/TheUnknownGroup/push.git repo
-          cd repo/          
-          git config user.name "devonk15"
-          git config user.email "94760159+devonk15@users.noreply.github.com"
-
-          echo '.' >> new.txt
-
-          git add new.txt
-          git commit -m "${{ env.commit_msg }}"
-          git push
+            final/*.*

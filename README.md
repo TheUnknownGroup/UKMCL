@@ -1,3 +1,3 @@
-# UKMCL - the Unknown Launcher! :wave:
+<h1 align="center">UKMCL</h1>
 
-This is the official Minecraft Launcher for & by the Unknown Group.
+<p align="center">This is the official Rustified Minecraft Launcher for & by the Unknown Group.</p>

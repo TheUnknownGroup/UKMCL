@@ -1,0 +1,10 @@
+[package]
+name = "auth"
+version = "0.0.0"
+description = "Authentication"
+authors = ["devonk15"]
+edition = "2024"
+
+[dependencies]
+uuid = "1"
+md5 = "0.8"

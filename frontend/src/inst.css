@@ -1,0 +1,68 @@
+.instance-card {
+     display: flex;
+     flex-direction: column;
+     gap: 0.5rem;
+     padding: 1rem;
+     border-radius: 0.5rem;
+     background: rgba(38, 66, 16, 0.9);
+     border: 2px solid #3F6E1A;
+     width: 150px;
+}
+
+.instance-card h3 {
+     font-size: 17px;
+     margin: 0;
+     white-space: nowrap;
+     text-overflow: ellipsis;
+     overflow: hidden;
+}
+
+.instance-card .card-act {
+     display: flex;
+     gap: 0.3rem;
+     margin-top: auto;
+}
+
+.instance-card .card-act .btn2 {
+     flex: 1;
+}
+
+.grid {
+     display: grid;
+     padding: 0.5rem 0px;
+     padding-left: 0;
+     /*padding-right: 10px;*/
+     gap: 5px;
+     justify-content: start;
+     grid-template-columns: repeat(auto-fit, minmax(150px, 191px))
+}
+
+.btn2 { 
+     padding: 8px 15px;
+     border-radius: 5px;
+     border: none;
+     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+     cursor: pointer;
+     color: white;
+     transition: background-color 0.3s ease;
+}
+
+.launch-btn {
+     background-color: green;
+}
+
+.delete-btn {
+     background-color: #A80000;
+}
+
+.launch-btn:hover {
+     background-color: #00A600;
+}
+
+.delete-btn:hover {
+     background-color: red;
+}
+
+.edit-btn {
+     background-color: #FFA500;
+}
