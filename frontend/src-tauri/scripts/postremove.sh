@@ -1,2 +1,2 @@
 #!/bin/bash
-rm -r /home/$USER/.ukmcl/
+rm -r $HOME/.ukmcl/
