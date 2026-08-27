@@ -61,7 +61,7 @@ jobs:
           args: ${{ matrix.args }}
 
       - name: copy
-        if: ${{ matrix.platform == "ubuntu-latest" }}
+        if: ${{ matrix.platform == 'ubuntu-latest' }}
         working-directory: ${{ github.workspace }}
         run: |
           mv ./install.sh ./target/release/bundle/deb/
