@@ -1,9 +1,0 @@
-Package: ukmcl
-Version: ${VERSION}
-Section: games
-Priority: optional
-Depends: openjdk-19-jdk-headless | java-sdk-headless (>= 19)
-Homepage: https://web.thegremlinx.xyz/
-Architecture: amd64
-Maintainer: TheGremlinX <owner@thegremlinx.xyz>
-Description: This is the Minecraft Launcher for and by the Unknown Group.
