@@ -84,7 +84,7 @@ jobs:
           name: deb
           retention-days: 3
           path: |
-            ${{ github.workspace }}/target/release/bundle/deb/*.deb
+            ${{ github.workspace }}/target/release/bundle/deb/*
             ${{ github.workspace }}/target/release/bundle/rpm/*.rpm
             ${{ github.workspace }}/target/release/bundle/appimage/*.AppImage
 
