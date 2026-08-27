@@ -15,12 +15,7 @@ if [ -n "$SUDO_USER" ]; then
     USER_ID=$(id -u "$SUDO_USER")
     XDG_RUNTIME_DIR="/run/user/$USER_ID"
 
-    runuser -u "$SUDO_USER" -- env \
-        XDG_RUNTIME_DIR="$XDG_RUNTIME_DIR" \
-        DISPLAY="${DISPLAY:-:0}" \
-        DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus" \
-        frontend >/dev/null 2>&1 &
-    disown
+    runuser -u "$SUDO_USER" -- frontend
 fi
 
 exit 0
