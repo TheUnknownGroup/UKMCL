@@ -1,9 +1,6 @@
 name: Build UKMCL v0.0.0-experimental
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 env:
