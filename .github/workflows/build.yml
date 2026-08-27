@@ -145,5 +145,6 @@ jobs:
           body_path: ./changelog.md
           generate_release_notes: true
           make_latest: true
+          draft: true
           files: |
             final/*.*

@@ -1,3 +1,7 @@
 #!/bin/bash
-REAL_HOME=$(genent passwd "$SUDO_USER" | cut -d: -f6)
-rm -rf $REAL_HOME/.ukmcl/
+# 
+if [ -z "$SUDO_USER" ]; then
+     echo "This script must be run with sudo" >&2
+     exit 1
+fi
+rm -rf "/home/$SUDO_USER/.ukmcl/"
