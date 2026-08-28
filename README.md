@@ -4,6 +4,8 @@
      </a>
 </p>
 
+---
+
 <p align="center">This is the official Rustified Minecraft Launcher for & by the Unknown Group.</p>
      
 ---
