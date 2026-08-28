@@ -1,12 +1,10 @@
-<h1 align="center">UKMCL</h1>
-
-<p align="center">This is the official Rustified Minecraft Launcher for & by the Unknown Group.</p>
-
 <p align="center">
      <a href="https://github.com/TheUnknownGroup/UKMCL">
-          <img src="assets/images/ukmcl-img.svg" alt="UKMCL" width="500px">
+          <img src="assets/images/ukmcl-img.svg" alt="UKMCL" width="450px">
      </a>
 </p>
+
+<p align="center">This is the official Rustified Minecraft Launcher for & by the Unknown Group.</p>
      
 ---
 ## Windows Users
