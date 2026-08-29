@@ -1,23 +1,16 @@
-# v0.0.1
+# v0.0.2
 ## What changed?
-Updated instance list, added css and cards so every instance you make will have a nice looking card, along with it being on a grid.
+Added install scripts to the .deb bundle and added them into the release thats made. Along with adding more crates to preserve more of my sanity.
 
-Added the ability to delete instances, along with a custom popup box to double confirm deleting is what you want.
+Updated and revamped the README, added a .svg for the launcher, along with a "PSA" of sorts to let users know how to completely remove the launcher if they choose not to trust it after seeing the SmartScreen / Windows Defender Screen asking you to not run it. One can by pass that by clicking the "More Info" button and then "Run Anyway". Along with other PSA's for the other platforms.
 
-Added the function to create the main directory in the user's home directory. 
+Added the ability to choose the minecraft version to install, along with the versions' json file that is used to download sources related to the version.
 
-The home directories for each platform are as follows: 
-* Windows is ``C:\Users\{your user}\.ukmcl\(subdirectories)``
-* macOS is ``/Users/{your user}/.ukmcl/(subdirectories)``
-* Linux is ``/home/{your user}/.ukmcl/(subdirectories)``
+╰┈➤ This will allow the launcher to both install and launch your minecraft instance(s).
 
-Updated the side panel to follow to the user as they're scrolling for easy of use and fast access to each page.
+Made more subdirectories under the main dir (.ukmcl), those subdirectories are: `assets`, `libs`, `java`.
 
-Changed the font to A Pompadour instead of Alegreya.
-
-Added post install and post removal scripts as due to the app already creating the .ukmcl directory, say you'd uninstall the app if you so choose and don't want to have to scavenge everywhere to find it; the post removal script does that for you. 
-
-If it doesn't then that means your OS doesn't support the command that's used to delete directories recursively. If thats the case, you're welcome to delete the directory manually by referencing [here](https://github.com/TheUnknownGroup/UKMCL/wiki#what-are-the-home-directories).
+Started work on adding the structure for downloading the libraries and other assets.
 
 ## What's expected to come next?
-Currently working on the JVM portion to actually work with the adding of the instances, once its up it'll only be ready to run offline accounts along with no mods, but its a start!
+Next up is still the JVM process, along with other stuff, I still need to decide what to do next... Possibly mod work.

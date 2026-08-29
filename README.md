@@ -10,7 +10,7 @@
      
 ---
 ## Windows Users
-If you choose to download the [windows](https://github.com/TheUnknownGroup/UKMCL/releases/latest) version, please know it will be caught by Microsoft's SmartScreen/Defender. It isn't a virus, everything the app creates in your system (for example: [here]()) to your system is deleted via the script that is bundled in the installer. If you truly don't believe the app is safe to install, I understand your decision and you're welcome to download the source code and build it yourself or completely ignore this app at all.
+If you choose to download the [windows](https://github.com/TheUnknownGroup/UKMCL/releases/latest) version, please know it will be caught by Microsoft's SmartScreen/Defender. It isn't a virus, everything the app creates in your system (for example: [here]()) to your system is deleted via the script that is bundled in the installer. If you wish to continue with the install, you can click "More info" and then "Run Anyway" to start the install. If you truly don't believe the app is safe to install, I understand your decision and you're welcome to download the source code and build it yourself or completely ignore this app at all.
 
 ## Linux Users
 If you choose to download the [linux](https://github.com/TheUnknownGroup/UKMCL/releases/latest) version, please know that it won't be flagged, but it will ask that you use sudo to install it. Please look [here]() for more information. 
