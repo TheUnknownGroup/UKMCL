@@ -26,7 +26,7 @@ dist-ssr
 target/
 
 build.sh
-launch.sh
+./launch.sh
 
 .astro/
 hide/
