@@ -10,3 +10,5 @@ dirs = "6"
 notify = "8"
 tauri = "2.11.5"
 tokio = { version = "1", features = ["full"] }
+download = { path = "../download" }
+types = { path = "../types" }

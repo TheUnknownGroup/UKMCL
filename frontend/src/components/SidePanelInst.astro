@@ -30,6 +30,9 @@ import InstanceList from "./InstanceList.astro";
         <form class="form" id="test">
             <label for="instance">Instance Name</label><br>
             <input type="text" id="instance" placeholder="Instance" required>
+            <select id="ver-list" name="ver-list" required>
+                 <option value="" disabled selected> Select </option>
+            </select>
             <button type="submit">Create</button>
         </form>
         <InstanceList />

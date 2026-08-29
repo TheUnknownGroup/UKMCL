@@ -1,3 +1,5 @@
+import { invoke } from "@tauri-apps/api/core";
+
 const home_btn = document.getElementById("home");
 home_btn.href = "./"
 
@@ -8,4 +10,8 @@ logo_btn.target = "_blank";
 const inst_btn = document.getElementById("instances");
 inst_btn.href = "/instances"
 
-window.view
+function test2() {
+     invoke("test");
+}
+
+test2()

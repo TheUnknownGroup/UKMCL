@@ -2,20 +2,15 @@ use std::path::PathBuf;
 use std::path::Path;
 use tokio::*;
 
-pub fn make_main() -> io::Result<PathBuf> {
-    let base = dirs::home_dir()
-        .ok_or_else(|| io::Error::new(io::ErrorKind::NotFound, "could not resolve data dir"))?;
-    let root = base.join(".ukmcl");
+use crate::dir::main_sub::add_sub_dirs;
 
-    if !root.exists() {
-        std::fs::create_dir_all(&root)?;
-    }
+use download::client::fetch_client;
 
-    Ok(root)
-}
+use types::main_dir::make_main;
 
 pub fn check_dir() -> io::Result<PathBuf> {
     let root = make_main()?;
+    add_sub_dirs()?;
     let instances = root.join("instances");
 
     if !root.exists() {
@@ -52,6 +47,7 @@ fn get_inst_dir(instance_name: &str) -> io::Result<PathBuf> {
     let instances_dir = check_dir()?;
     let unique_name = unique_name(&instances_dir, instance_name);
     let instance_dir = instances_dir.join(&unique_name);
+
     std::fs::create_dir_all(&instance_dir)?;
     
     Ok(instance_dir)
@@ -60,9 +56,17 @@ fn get_inst_dir(instance_name: &str) -> io::Result<PathBuf> {
 pub fn setup_instance(instance_name: &str) -> io::Result<PathBuf> {
     let instance_dir = get_inst_dir(instance_name)?;
 
-    // for sub in ["minecraft"] {
-    //     std::fs::create_dir_all(&instance_dir.join(sub))?;
-    // }
-
+    let sub_dir = instance_dir.join("version");
+    std::fs::create_dir_all(&sub_dir)?;
+    
     Ok(instance_dir)
+}
+
+pub async fn setup_mani(inst_name: &str, id: &str) -> std::result::Result<PathBuf, Box<dyn std::error::Error>> {
+    let inst_dir = setup_instance(inst_name)?;
+    let sub_dir = inst_dir.join("version");
+
+    fetch_client(&id.to_string(), &sub_dir).await.map_err(|e| e.to_string())?;
+
+    Ok(inst_dir)
 }

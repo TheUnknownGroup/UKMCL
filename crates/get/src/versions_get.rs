@@ -1,11 +1,12 @@
-use serde::Deserialize;
+use serde::{Deserialize};
+use reqwest::Result;
 
 #[derive(Deserialize)]
 pub struct VersionManifest {
      pub versions: Vec<VersionEntry>,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Clone)]
 pub struct VersionEntry {
      pub id: String,
      #[serde(rename = "type")]
@@ -13,7 +14,7 @@ pub struct VersionEntry {
      pub url: String,
 }
 
-pub async fn fetch() -> reqwest::Result<VersionManifest> {
+pub async fn fetch() -> Result<VersionManifest> {
      let resp = reqwest::get("https://launchermeta.mojang.com/mc/game/version_manifest_v2.json")
           .await?
           .json::<VersionManifest>()

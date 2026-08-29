@@ -1,6 +1,6 @@
 [package]
 name = "frontend"
-version = "0.0.1"
+version = "0.0.2"
 description = "UKMCL App"
 authors = ["devonk15"]
 edition = "2024"
@@ -17,7 +17,10 @@ tauri = { version = "2", features = [] }
 tauri-plugin-opener = "2"
 auth = { path = "../../crates/auth" }
 acore = { path = "../../crates/acore" }
-# get = { path = "../../crates/get" }
+get = { path = "../../crates/get" }
+download = { path = "../../crates/download" }
+middle_man = { path = "../../crates/middle_man" }
+types = { path = "../../crates/types" }
 tokio = { version = "1", features = ["full"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"

@@ -26,15 +26,12 @@ dist-ssr
 target/
 
 build.sh
+launch.sh
 
 .astro/
 hide/
 .gitignore
-
 /gen/schemas
-
 sites.txt
-
 .zed/
-
 package/
