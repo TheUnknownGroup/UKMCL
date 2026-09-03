@@ -1,8 +1,0 @@
-[package]
-name = "types"
-version = "0.0.0"
-authors = ["devonk15"]
-edition = "2024"
-
-[dependencies]
-dirs = "6"

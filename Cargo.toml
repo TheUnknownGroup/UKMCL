@@ -1,14 +1,17 @@
 [workspace]
 members = [
     "frontend/src-tauri",
-    "crates/java",
-    "crates/auth",
-    "crates/acore",
-    "crates/get",
-    "crates/download",
-    "crates/middle_man",
-    "crates/types",
+    # "crates/java",
+    # "crates/auth",
+    # "crates/acore",
+    # "crates/get",
+    # "crates/download",
+    # "crates/middle_man",
+    # "crates/types",
 ]
 
 default-members = ["frontend/src-tauri"]
 resolver = "1"
+
+[workspace.package]
+version = "0.0.2"
