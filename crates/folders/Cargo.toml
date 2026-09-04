@@ -1,0 +1,8 @@
+[package]
+name = "folders"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+dirs = "6"

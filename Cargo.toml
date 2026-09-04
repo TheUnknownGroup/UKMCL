@@ -1,17 +1,15 @@
 [workspace]
 members = [
     "frontend/src-tauri",
-    # "crates/java",
-    # "crates/auth",
-    # "crates/acore",
-    # "crates/get",
-    # "crates/download",
-    # "crates/middle_man",
-    # "crates/types",
+    "crates/folders",
+    "crates/create",
+    "crates/list",
 ]
 
 default-members = ["frontend/src-tauri"]
 resolver = "1"
 
 [workspace.package]
-version = "0.1.0"
+version = "0.1.1"
+edition = "2024"
+authors = ["devonk15"]

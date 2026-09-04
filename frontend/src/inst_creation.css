@@ -5,7 +5,7 @@
      align-items: center;
      justify-content: center;
      display: flex;
-     background-color: rgba(0, 0, 0, 0.5);
+     background-color: rgba(0, 0, 0, 0.7);
      visibility: hidden;
      opacity: 0;
      transition: opacity 0.3s ease, visibility 0.3s ease-in;
@@ -20,9 +20,7 @@
      background-color: rgb(41, 41, 41);
      border: 1px solid white;
      border-radius: 10px;
-     padding-left: 30px;
-     padding-right: 30px;
-     padding-bottom: 30px;
+     padding: 0px 30px 30px 30px;
 }
 
 .box:hover {
@@ -36,7 +34,7 @@
 
 #inst_name {
      font-size: 30px;
-     padding-left: 20px;
+     padding-left: 19px;
      color: #D9D9D9;
 }
 
@@ -73,15 +71,24 @@
      box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
      text-align: left;
      cursor: pointer;
+     margin-top: 5px;
 }
 
 #cancel-btn {
-     background-color: #dc2626;
+     background-color: #A80000;
      margin-right: 7px;
+}
+
+#cancel-btn:hover {
+     background-color: red;
 }
 
 #create {
      background-color: #00A600;
+}
+
+#create:hover {
+     background-color: #005C00;
 }
 
 .new_inst {

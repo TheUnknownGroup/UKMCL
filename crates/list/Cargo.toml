@@ -1,0 +1,8 @@
+[package]
+name = "list"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+create = { path = "../create" }

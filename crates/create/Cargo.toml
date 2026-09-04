@@ -1,0 +1,8 @@
+[package]
+name = "create"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+folders = { path = "../folders" }

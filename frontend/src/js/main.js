@@ -25,3 +25,7 @@ const cancel_btn = document.getElementById("cancel-btn");
 cancel_btn.addEventListener("click", () => {
      form.classList.remove("hidden");
 })
+
+form.addEventListener("submit", () => {
+     form.classList.remove("hidden");
+})

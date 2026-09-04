@@ -4,23 +4,23 @@ import { confirmDialog } from "./confirmDialog.js";
 
 const container = document.getElementById("grid-item");
 
-async function getVers() {
-     const list = document.getElementById("ver-list");
+// async function getVers() {
+//      const list = document.getElementById("ver-list");
      
-     try {
-          await invoke("load_versions");
-          const ids = await invoke("get_ver_id");
-          list.innerHTML = "";
-          for (const id of ids) {
-               const option = document.createElement("option");
-               option.value = id;
-               option.textContent = id;
-               list.appendChild(option);
-          }
-     } catch (err) {
-          console.error("Failed to load version list: ", err);
-     }
-}
+//      try {
+//           await invoke("load_versions");
+//           const ids = await invoke("get_ver_id");
+//           list.innerHTML = "";
+//           for (const id of ids) {
+//                const option = document.createElement("option");
+//                option.value = id;
+//                option.textContent = id;
+//                list.appendChild(option);
+//           }
+//      } catch (err) {
+//           console.error("Failed to load version list: ", err);
+//      }
+// }
 
 container.addEventListener("click", async (e) => {
   const btn = e.target.closest(".delete-btn");
@@ -77,14 +77,15 @@ form.addEventListener("submit", async (e) => {
     e.preventDefault();
     /** @type {HTMLInputElement} **/
     const input = document.getElementById("instance");
-    const input_1 = document.getElementById("ver-list");
+    // const input_1 = document.getElementById("ver-list");
     const instanceName = input.value.trim();
-    const instanceVersion = input_1.value;
-     
+    // const instanceVersion = input_1.value;
+    
     try {
-        // const path = await invoke("create_command", { instanceName: instanceName, version: instanceVersion });
-        // form.reset();
-        // loadInstance();
+         const path = await invoke("create_command", { instName: instanceName });
+         form.reset();
+         loadInstance();
+         
     } catch (err) {
         console.error(err);
     }

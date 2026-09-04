@@ -42,7 +42,7 @@
 #grid-item {
      display: grid;
      gap: 5px;
-     padding-bottom: 5px;
+     padding-top: 5px;
      grid-template-columns: repeat(auto-fit, minmax(150px, 191px))
 }
 
