@@ -1,8 +1,8 @@
-# v0.1.1
+# v0.1.2
 ## What changed?
-Added instance creation to main folder ``.ukmcl``.
+Added instance deletion, along with watching the directory (``.ukmcl/instances``) to look for deletions or modifications.
 
-Better crate management among self-designated 'libs' per se.
+Added the watch crate to handle the modifications of the directory (``.ukmcl/instances``).
 
 ## What's expected to come next?
-Instance Deletion
+Version downloading, possibly JVM. Possibly. TBD.

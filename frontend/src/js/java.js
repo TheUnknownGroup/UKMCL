@@ -31,7 +31,7 @@ container.addEventListener("click", async (e) => {
   if (!confirmed) return;
 
   try {
-    await invoke("delete_command", { instanceName: name });
+    await invoke("delete_command", { instName: name });
   } catch (err) {
     alert(`Failed to delete instance "${name}": ${err}`)
   }

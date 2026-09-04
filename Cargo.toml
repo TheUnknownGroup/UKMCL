@@ -4,12 +4,14 @@ members = [
     "crates/folders",
     "crates/create",
     "crates/list",
+    "crates/delete",
+    "crates/watch",
 ]
 
 default-members = ["frontend/src-tauri"]
 resolver = "1"
 
 [workspace.package]
-version = "0.1.1"
+version = "0.1.2"
 edition = "2024"
 authors = ["devonk15"]

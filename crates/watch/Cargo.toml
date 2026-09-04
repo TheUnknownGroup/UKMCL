@@ -1,0 +1,10 @@
+[package]
+name = "watch"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+notify = "8"
+tauri = "2"
+create = { path = "../create" }
