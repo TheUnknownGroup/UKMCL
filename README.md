@@ -21,9 +21,12 @@ If you choose to download the [macOS](https://github.com/TheUnknownGroup/UKMCL/r
 ## What does this add to my computer?
 - If you're on Windows, your set up will look similarly to this: ``C:\Users\(your username)\.ukmcl``, along with its contents. If you choose to uninstall the script will delete the parent folder automatically at ``.ukmcl``, after that nothing else remains.
 
-- If you're on Linux, your set up will look similarly to these file paths: ``/home/(your username)/.ukmcl``, and ``/usr/share/ukmcl``, and a few things in ``/var/lib/dpkg/info/``[*](). The second file path is where the app houses its inital launch script of the app, in the case of the app being uninstalled, that script and its parent folder (ukmcl) will be deleted automatically. The files in the /var/lib/ file path are deleted as well using the post removal script. 
+- If you're on Linux, your set up will look similarly to these file paths: ``/home/(your username)/.ukmcl``, and ``/usr/share/ukmcl``, and a few things in ``/var/lib/dpkg/info/``[*](https://github.com/TheUnknownGroup/UKMCL#Legend). The second file path is where the app houses its inital launch script of the app, in the case of the app being uninstalled, that script and its parent folder (ukmcl) will be deleted automatically. The files in the /var/lib/ file path are deleted as well using the post removal script. 
 
 - If you're on macOS, your set up will look similarly to this: ``/Users/(your username)/.ukmcl/``. I'm not completely sure as I personally do not have a Mac/Macbook to test this on. By my understanding there are no files nor scripts I can add to hold the uninstall process accountable for, so in the event that you choose to uninstall the app, please double check that every file has been deleted.
 
-##### /*/
+## Credits
+- A design (specifically the instance create button for when you first click on the instance page) was referenced from [SynthLauncher](https://github.com/SynthLauncher/SynthLauncher)
+
+### Legend
 1. In the case you're on Debian / Ubuntu-based distros, it most likely will use dpkg to install the app.

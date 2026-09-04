@@ -6,10 +6,10 @@ export function confirmDialog(message) {
           const cancel = document.getElementById("cancel");
 
           msg.textContent = message;
-          modal.classList.remove("hidden");
+          modal.classList.add("hidden");
           
           function clear(result) {
-               modal.classList.add("hidden");
+               modal.classList.remove("hidden");
                ok.removeEventListener("click", onOk);
                cancel.removeEventListener("click", onCancel);
                re(result)

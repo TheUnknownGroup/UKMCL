@@ -2,7 +2,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { confirmDialog } from "./confirmDialog.js";
 
-const container = document.getElementById("instance-list");
+const container = document.getElementById("grid-item");
 
 async function getVers() {
      const list = document.getElementById("ver-list");
@@ -38,7 +38,7 @@ container.addEventListener("click", async (e) => {
 });
 
 async function loadInstance() {
-  container.innerHTML = "";
+     container.innerHTML = "";
 
   try {
     const names = await invoke("get_command");
@@ -66,7 +66,7 @@ async function loadInstance() {
 }
 
 /** @type {HTMLFormElement} **/
-const form = document.getElementById("test");
+const form = document.getElementById("inst_creation");
 
 listen("instance-removed", () => {
   console.log("received instance-removed event");
@@ -82,13 +82,13 @@ form.addEventListener("submit", async (e) => {
     const instanceVersion = input_1.value;
      
     try {
-        const path = await invoke("create_command", { instanceName: instanceName, version: instanceVersion });
-        form.reset();
-        loadInstance();
+        // const path = await invoke("create_command", { instanceName: instanceName, version: instanceVersion });
+        // form.reset();
+        // loadInstance();
     } catch (err) {
         console.error(err);
     }
 })
 
 loadInstance();
-getVers();
+// getVers();

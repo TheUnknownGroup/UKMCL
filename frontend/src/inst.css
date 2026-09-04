@@ -28,12 +28,21 @@
 }
 
 .grid {
-     display: grid;
+     /*display: grid;
      padding: 0.5rem 0px;
      padding-left: 0;
-     /*padding-right: 10px;*/
+     padding-right: 10px;
      gap: 5px;
      justify-content: start;
+     grid-template-columns: repeat(auto-fit, minmax(150px, 191px))*/
+     padding: 0.5rem 0px;
+     justify-content: start;
+}
+
+#grid-item {
+     display: grid;
+     gap: 5px;
+     padding-bottom: 5px;
      grid-template-columns: repeat(auto-fit, minmax(150px, 191px))
 }
 

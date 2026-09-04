@@ -6,10 +6,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease-in;
 }
 
 .modal-overlay.hidden {
-    display: none;
+    visibility: visible;
+    opacity: 1;
 }
 
 .modal-box {
@@ -25,6 +30,10 @@
 .modal-box:hover {
     transition: box-shadow 0.3s ease;
     box-shadow: 0 0 10px white;
+}
+
+.modal-box:not(:hover) {
+     transition: box-shadow 0.3s ease;
 }
 
 .modal-tle {
