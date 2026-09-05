@@ -1,6 +1,7 @@
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { confirmDialog } from "./confirmDialog.js";
+import "./instCard.js";
 
 const container = document.getElementById("grid-item");
 
@@ -49,15 +50,7 @@ async function loadInstance() {
 
     for (const name of names) {
       const card = document.createElement("div");
-      card.className = "instance-card";
-      card.innerHTML = `
-        <h3>${name}</h3>
-        <div class="card-act">
-          <button class="launch-btn btn2" data-name="${name}"><img src="/assets/images/play.svg" alt="Launch"></button>
-          <button class="delete-btn btn2" data-name="${name}"><img src="/assets/images/trash.svg" alt="Delete"></button>
-          <button class="edit-btn btn2" data-name="${name}"><img src="/assets/images/tools.svg" alt="Edit"></button>
-        </div>
-        `
+      card.innerHTML = `<inst-card name="${name}"></inst-card>`
       container.appendChild(card);
     }
   } catch (err) {
