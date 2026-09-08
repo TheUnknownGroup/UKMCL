@@ -1,3 +1,8 @@
+#main {
+     margin-right: 5px;
+     margin-left: 5px;
+}
+
 .center {
      display: flex;
      justify-content: center;
@@ -12,19 +17,25 @@
 .border {
      border: 1px solid black;
      border-radius: 8px;
-     width: 1000px;
+     width: 100%;
      margin-top: 10px;
-     background: rgba(0 0 0 / 0.3);
-     /*padding: 2px;*/
-     margin-bottom: 5px;
+     background: rgba(0 0 0 / 0.4);
 }
 
 .border.sec {
      width: 142px;
      margin-left: 5px;
      padding-bottom: 10px;
-     max-height: 465px;
+     min-height: 465px;
      overflow-y: auto;
+     margin-right: 5px;
+}
+
+.border.thi {
+     padding-bottom: 10px;
+     min-height: 465px;
+     overflow-y: auto;
+     margin-right: 5px;
 }
 
 .border {
@@ -36,15 +47,27 @@
 
 h3 {
      color: white;
-     font-size: 18px;
-     text-align: center;
+     font-size: 20px;
+     padding-left: 15px;
 }
+
+h3.line {
+     border-bottom-style: solid;
+     border-bottom-width: 1px;
+     border-bottom-color: white;
+     padding-bottom: 10px;
+}
+
 p {
      color: white;
      font-size: 16px;
      padding-right: 2px;
      overflow: auto;
-     text-align: center;
+     padding-left: 15px;
+}
+
+p.empty {
+     padding-right: 15px;
 }
 
 button {
@@ -56,7 +79,11 @@ button {
      border: none;
      background-color: transparent;
      cursor: pointer;
-     border-radius: 5px;
+     width: 100%;
+     text-align: left;
+     border-top-color: white;
+     border-top-width: 1px;
+     border-top-style: solid;
 }
 
 button:hover {

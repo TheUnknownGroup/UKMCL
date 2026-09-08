@@ -554,7 +554,7 @@ dependencies = [
 
 [[package]]
 name = "create"
-version = "0.1.2"
+version = "0.1.3-test"
 dependencies = [
  "folders",
 ]
@@ -701,7 +701,7 @@ dependencies = [
 
 [[package]]
 name = "delete"
-version = "0.1.2"
+version = "0.1.3-test"
 dependencies = [
  "create",
 ]
@@ -1022,7 +1022,7 @@ checksum = "3f9eec918d3f24069decb9af1554cad7c880e2da24a9afd88aca000531ab82c1"
 
 [[package]]
 name = "folders"
-version = "0.1.2"
+version = "0.1.3-test"
 dependencies = [
  "dirs",
 ]
@@ -1071,7 +1071,7 @@ dependencies = [
 
 [[package]]
 name = "frontend"
-version = "0.1.2"
+version = "0.1.3-test"
 dependencies = [
  "create",
  "delete",
@@ -2074,7 +2074,7 @@ checksum = "32a66949e030da00e8c7d4434b251670a91556f4144941d37452769c25d58a53"
 
 [[package]]
 name = "list"
-version = "0.1.2"
+version = "0.1.3-test"
 dependencies = [
  "create",
 ]
@@ -4377,7 +4377,7 @@ dependencies = [
 
 [[package]]
 name = "watch"
-version = "0.1.2"
+version = "0.1.3-test"
 dependencies = [
  "create",
  "notify",

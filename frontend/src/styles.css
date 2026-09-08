@@ -40,7 +40,8 @@ body {
 }
 
 #background {
-  min-height: 99.270826vh;
+  /*min-height: 99.270826vh;*/
+  min-height: 100%;
   height: auto;
   display: flex;
   position: fixed;
