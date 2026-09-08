@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  ver: 0.1.3-test
+  ver: 0.1.3+1
 
 jobs:
   build:
