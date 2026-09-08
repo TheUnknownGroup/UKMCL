@@ -1,8 +1,8 @@
-# v0.1.2
+# v0.1.3
 ## What changed?
-Added instance deletion, along with watching the directory (``.ukmcl/instances``) to look for deletions or modifications.
+Instead of version downloading, I did page updating.
 
-Added the watch crate to handle the modifications of the directory (``.ukmcl/instances``).
+Main page now shows all of the 
 
 ## What's expected to come next?
 Version downloading, possibly JVM. Possibly. TBD.

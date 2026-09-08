@@ -1,4 +1,4 @@
-// import { invoke } from "@tauri-apps/api/core";
+import { invoke } from "@tauri-apps/api/core";
 
 const home_btn = document.getElementById("home");
 home_btn.href = "./"
@@ -10,22 +10,27 @@ logo_btn.target = "_blank";
 const inst_btn = document.getElementById("instances");
 inst_btn.href = "/instances"
 
-// function test2() {
-//      invoke("test");
-// }
+const set_btn = document.getElementById("settings");
+set_btn.href = "/settings"
 
-// test2()
-const form = document.getElementById("form");
-const add_inst = document.getElementById("add_new_inst");
-add_inst.addEventListener("click", () => {
-     form.classList.add("hidden");
-})
+export async function getLatestInst() {
+     const list = document.getElementById("list");
+     list.innerHTML = ""
+     try {
+          const names = await invoke("get_command");
+          if (names.length === 0) {
+               list.innerHTML = `<p> No latest instance made. </p>`
+          }
 
-const cancel_btn = document.getElementById("cancel-btn");
-cancel_btn.addEventListener("click", () => {
-     form.classList.remove("hidden");
-})
+          for (const name of names) {
+               const newName = document.createElement("button");
+               newName.setAttribute("onclick", `location.href="/instances#${name}"`);
+               newName.innerText = `⤷ ${name}`;
+               list.appendChild(newName);
+          }
+     } catch (err) {
+          console.error(err);
+     }
+}
 
-form.addEventListener("submit", () => {
-     form.classList.remove("hidden");
-})
+getLatestInst();

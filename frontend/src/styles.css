@@ -88,6 +88,13 @@ body {
   color: white;
 }
 
+#settings {
+     padding-top: 5px;
+     position: fixed;
+     z-index: 0;
+     bottom: 8px;
+}
+
 @font-face {
   font-family: "Alata";
   src: url('/assets/fonts/Alata/alata-regular.ttf');

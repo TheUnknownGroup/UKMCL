@@ -14,11 +14,11 @@
     "windows": [
       {
         "title": "UKMCL",
-        "width": 854,
-        "height": 480,
+        "width": 1080,
+        "height": 600,
         "center": true,
-        "minWidth": 854,
-        "minHeight": 480,
+        "minWidth": 1080,
+        "minHeight": 600,
         "resizable": true
       }
     ],
