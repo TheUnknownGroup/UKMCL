@@ -9,6 +9,12 @@ pub fn check_dir() -> Result<PathBuf> {
      let root = make_hub()?;
      let insts_fold = root.join("instances");
 
+     for sub in ["jsons", "assets"] {
+          if !root.join(sub).exists() {
+               fs::create_dir_all(&root.join(sub))?;
+          }
+     }
+
      if !root.exists() {
           fs::create_dir_all(&insts_fold)?;
      } else if !insts_fold.exists() {

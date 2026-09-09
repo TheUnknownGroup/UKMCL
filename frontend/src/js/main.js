@@ -10,3 +10,4 @@ inst_btn.href = "/instances"
 
 const set_btn = document.getElementById("settings");
 set_btn.href = "/settings"
+

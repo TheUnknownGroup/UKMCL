@@ -6,3 +6,5 @@ authors.workspace = true
 
 [dependencies]
 folders = { path = "../folders" }
+minecraft = { path = "../minecraft" }
+serde_json = "1"

@@ -22,3 +22,4 @@ list = { path = "../../crates/list" }
 create = { path = "../../crates/create" }
 delete = { path = "../../crates/delete" }
 watch = { path = "../../crates/watch" }
+folders = { path = "../../crates/folders" }

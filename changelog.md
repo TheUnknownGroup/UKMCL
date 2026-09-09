@@ -1,10 +1,12 @@
 # v0.1.3
 ## What changed?
-Instead of version downloading, I did page updating.
+Updated the main page, created a settings page, and made the GUI for for the main page.
 
-Main page now shows all of the latest instances. Along with the soon to be latest news card.
+Updated the ``No instances yet`` portion to be centered with a border.
 
-Settings page is available, and will be used for things.
+Added version downloading via dropdown list.
+
+Slightly updated the instance card.
 
 ## What's expected to come next?
-Version downloading, possibly JVM. Possibly. TBD.
+Selection of different types of verions (i.e., Old Alpha's, Old Beta's, Snapshots, and General Releases).

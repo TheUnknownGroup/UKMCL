@@ -77,6 +77,24 @@ body {
   color: white;
 }
 
+.empty {
+     user-select: none;
+     -moz-user-select: none;
+     -webkit-user-select: none;
+     -ms-user-select: none;
+}
+
+.empty.state {
+     position: absolute;
+     text-align: center;
+     margin-left: 20vw;
+     border: 2px solid white;
+     border-radius: 5px;
+     padding: 30px;
+     background: rgba(0 0 0 / 0.3);
+     color: white;
+}
+
 .text {
   background-color: grey;
   border: none;

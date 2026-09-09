@@ -4,7 +4,7 @@
      gap: 0.5rem;
      padding: 1rem;
      border-radius: 0.5rem;
-     background: rgba(38, 66, 16, 0.5);
+     background: rgba(38, 66, 16, 0.95);
      border: 2px solid #3F6E1A;
      width: 150px;
 }
@@ -15,6 +15,12 @@
      white-space: nowrap;
      text-overflow: ellipsis;
      overflow: hidden;
+     color: #D4DACF;
+
+     user-select: none;
+     -ms-user-select: none;
+     -moz-user-select: none;
+     -webkit-user-select: none;
 }
 
 .instance-card .card-act {
@@ -28,13 +34,6 @@
 }
 
 .grid {
-     /*display: grid;
-     padding: 0.5rem 0px;
-     padding-left: 0;
-     padding-right: 10px;
-     gap: 5px;
-     justify-content: start;
-     grid-template-columns: repeat(auto-fit, minmax(150px, 191px))*/
      padding: 0.5rem 0px;
      justify-content: start;
 }
@@ -44,6 +43,10 @@
      gap: 5px;
      padding-top: 5px;
      grid-template-columns: repeat(auto-fit, minmax(150px, 191px))
+}
+
+.hides {
+     visibility: hidden;
 }
 
 .btn2 { 

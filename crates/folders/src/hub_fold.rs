@@ -5,7 +5,7 @@ use std::fs;
 use std::path::PathBuf;
 
 pub fn make_hub() -> Result<PathBuf> {
-     let hub = dirs::home_dir().ok_or_else(|| Error::new(ErrorKind::NotFound, "couldn't resolve data dir"))?;
+     let hub = dirs::home_dir().ok_or_else(|| Error::new(ErrorKind::NotFound, "couldn't resolve home dir"))?;
      let base = hub.join(".ukmcl");
 
      if !base.exists() {
