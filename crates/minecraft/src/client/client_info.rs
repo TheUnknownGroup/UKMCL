@@ -1,20 +1,14 @@
 use std::error::Error;
-use std::fs;
-use std::path::Path;
+use std::path::PathBuf;
 
 use crate::id::fetches;
+use crate::client::fetchs;
 
-pub async fn client_url(id: &str, path: &Path) -> Result<(), Box<dyn Error>> {
+pub async fn client_url(app_handle: tauri::AppHandle, id: &str, inst_dir: PathBuf) -> Result<(), Box<dyn Error>> {
     let mani = fetches(id).await?;
     let id_final = &mani.url;
-    println!("{}", id_final);
 
-    let resp = reqwest::get(id_final).await?;
-    let bytes = resp.bytes().await?;
-    let dest = path.join(format!("{}.json", id));
-    fs::write(&dest, &bytes)?;
-
+    fetchs(app_handle, id_final, inst_dir).await?;
+    
     Ok(())
 }
-
-pub fn client_inf() {}

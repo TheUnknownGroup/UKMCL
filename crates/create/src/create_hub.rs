@@ -14,6 +14,13 @@ pub fn check_dir() -> Result<PathBuf> {
                fs::create_dir_all(&root.join(sub))?;
           }
      }
+     
+     let assets_root = root.join("assets");
+     for assets_sub in ["indexes", "objects", "skins"] {
+          if !assets_root.join(assets_sub).exists() {
+               fs::create_dir_all(&assets_root.join(assets_sub))?;
+          }
+     }
 
      if !root.exists() {
           fs::create_dir_all(&insts_fold)?;

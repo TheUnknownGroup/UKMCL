@@ -4,6 +4,7 @@
 use std::path::PathBuf;
 use std::fs;
 
+use tauri::AppHandle;
 use list::list;
 use create::insts::setup_inst;
 use create::make::make_json;
@@ -12,8 +13,8 @@ use watch::watch_dir;
 use folders::hub_fold::make_hub;
 
 #[tauri::command]
-async fn create_command(inst_name: String, ver: String) -> Result<PathBuf, String> {
-     setup_inst(&inst_name, &ver).await.map_err(|e| e.to_string())
+async fn create_command(app_handle: AppHandle, inst_name: String, ver: String) -> Result<PathBuf, String> {
+     setup_inst(app_handle, inst_name, ver).await.map_err(|e| e.to_string())
 }
 
 #[tauri::command]

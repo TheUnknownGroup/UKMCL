@@ -6,26 +6,11 @@ pub async fn make_json() -> Result<(), Box<dyn std::error::Error>> {
 
      let all: Vec<String> = mani.versions.iter()
           .map(|v| v.id.clone()).collect();
-     
-     let real: Vec<String> = mani.versions.iter()
-          .filter(|v| v.ver_type == "release")
-          .map(|v| v.id.clone()).collect();
-     
-     let snap: Vec<String> = mani.versions.iter()
-          .filter(|v| v.ver_type == "snapshot")
-          .map(|v| v.id.clone()).collect();
-
-     let old: Vec<String> = mani.versions.iter()
-          .filter(|v| v.ver_type == "old_beta" || v.ver_type == "old_alpha")
-          .map(|v| v.id.clone()).collect();
 
      let home = make_hub()?.join("jsons");
 
      let pairs = [
           ("versions.json", &all),
-          ("releases.json", &real),
-          ("snapshots.json", &snap),
-          ("old.json", &old),
      ];
      
      for (filename, bys) in pairs {
@@ -33,6 +18,13 @@ pub async fn make_json() -> Result<(), Box<dyn std::error::Error>> {
           if !json_dir.exists() {
                let file = serde_json::to_string_pretty(bys)?;
                std::fs::write(&json_dir, file)?;
+          } else {
+               let raw = std::fs::read_to_string(&json_dir)?;
+               let existing: Vec<String> = serde_json::from_str(&raw)?;
+               if existing != *bys {
+                    let file = serde_json::to_string_pretty(bys)?;
+                    std::fs::write(&json_dir, file)?;
+               }
           }
      }
      

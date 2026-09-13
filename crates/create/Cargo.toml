@@ -8,3 +8,4 @@ authors.workspace = true
 folders = { path = "../folders" }
 minecraft = { path = "../minecraft" }
 serde_json = "1"
+tauri = { version = "2", features = [] }

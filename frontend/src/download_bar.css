@@ -1,0 +1,68 @@
+html, body {
+     /*margin: 0;
+     padding: 0;
+     background: black;
+     overflow: hidden;*/
+     background-image: none;
+     background-color: #303030;
+}
+
+#download-bar {
+     position: fixed;
+     inset: 0;
+     z-index: 50;
+     display: flex;
+     background: #1a1a1a;
+     height: 25px;
+     top: 43%;
+     border: 1px solid black;
+     margin-left: 5px;
+     margin-right: 5px;
+}
+
+#download-bar.hiddenes {
+     opacity: 0;
+     transition: opacity 0.3s ease;
+}
+
+#download-fill {
+     height: 100%;
+     width: 0%;
+     background: #4caf50;
+     transition: width 0.2s ease-out;
+}
+
+span#download-label {
+     position: absolute;
+     left: 8px;
+     line-height: 20px;
+     font-size: 12px;
+     color: #fff;
+     white-space: nowrap;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     transform: translateY(-130%);
+     border: 1px solid white;
+     background-color: rgba(0 0 0 / 0.3);
+     padding: 5px 5px 3px 5px;
+
+     user-select: none;
+     -ms-user-select: none;
+     -moz-user-select: none;
+     -webkit-user-select: none;
+}
+
+#eta {
+     position: absolute;
+     transform: translateY(150%);
+     right: 0;
+     line-height: 20px;
+     font-size: 12px;
+     color: #ccc;
+
+     user-select: none;
+     -ms-user-select: none;
+     -moz-user-select: none;
+     -webkit-user-select: none;
+}

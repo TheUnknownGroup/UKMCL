@@ -8,7 +8,7 @@ const state = document.getElementById("states");
 
 async function getVers() {
      const list = document.getElementById("ver-list");
-     
+
      try {
           await invoke("load_versions");
           const ids = await invoke("get");
@@ -44,17 +44,18 @@ async function loadInstance() {
   try {
     const names = await invoke("get_command");
     if (names.length === 0) {
-         container.innerHTML = `<p class="empty state" id="states">No instances yet. To create one, press the button above this.</p>`;
+         container.innerHTML = `<p class="empty state" id="states">No instances yet. <br><br> To create one, press the button above this. <br><br> If you made an instance, it will take some time as the app automatically downloads the assets as soon as the instance is made. </p>`;
       const state = document.getElementById("states");
-              
+
       function update() {
            if (window.innerHeight > 600) {
-                state.style.marginLeft = "31.7vw";
+                state.style.marginLeft = "33vw";
            } else {
-                state.style.marginLeft = "20vw";
+                state.style.marginLeft = "19.2vw";
            }
       }
       window.addEventListener("resize", update);
+      update();
       state.classList.remove("hides");
       return;
     }
@@ -85,9 +86,9 @@ form.addEventListener("submit", async (e) => {
     const input_1 = document.getElementById("ver-list");
     const instanceName = input.value.trim();
     const instanceVersion = input_1.value;
-    
+
     try {
-         const path = await invoke("create_command", { instName: instanceName, ver: instanceVersion });
+         await invoke("create_command", { instName: instanceName, ver: instanceVersion });
          form.reset();
          loadInstance();
     } catch (err) {
