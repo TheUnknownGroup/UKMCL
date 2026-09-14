@@ -136,7 +136,6 @@ jobs:
           mv finals/macos/*.tar.gz final/
           mv finals/msi/*.msi final/
           mv finals/nsis/*.exe final/
-          ls -R final/
           cd final/
           mv ukmcl_${{ env.ver }}_x64-setup.exe ukmcl-${{ env.ver }}-windows_x64.exe
           mv ukmcl_${{ env.ver }}_x64_en-US.msi ukmcl-${{ env.ver }}-windows_x64.msi
