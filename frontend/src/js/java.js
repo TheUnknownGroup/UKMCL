@@ -27,17 +27,28 @@ async function getVers() {
 container.addEventListener("click", async (e) => {
   const btn = e.target.closest(".delete-btn");
   if (!btn) return;
-
+  
   const name = btn.dataset.name;
   const confirmed = await confirmDialog(`Delete instance "${name}"?`);
   if (!confirmed) return;
-
+     
   try {
     await invoke("delete_command", { instName: name });
   } catch (err) {
     alert(`Failed to delete instance "${name}": ${err}`)
   }
 });
+
+container.addEventListener("click", async (e) => {
+  const btn = e.target.closest(".launch-btn");
+  if (!btn) return;
+  const name = btn.dataset.name;
+  try {
+       await invoke("launch_command", { instName: name });
+  } catch (err) {
+       alert(`Failed to launch: "${name}": ${err}`)
+  }
+});     
 
 async function loadInstance() {
      container.innerHTML = "";

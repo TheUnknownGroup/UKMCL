@@ -11,4 +11,10 @@ reqwest = "0.13"
 tauri = { version = "2", features = [] }
 futures-util = "0.3"
 
+md5 = "0.8"
+uuid = "1"
+
 folders = { path = "../folders" }
+config = { path = "../config" }
+
+zip = "8"

@@ -1,10 +1,12 @@
 [package]
-name = "delete"
+name = "java"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
 
 [dependencies]
-create = { path = "../create" }
+minecraft = { path = "../minecraft" }
 config = { path = "../config" }
 folders = { path = "../folders" }
+toml = "1"
+dirs = "6"

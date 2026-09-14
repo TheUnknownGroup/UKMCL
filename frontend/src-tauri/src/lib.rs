@@ -11,6 +11,7 @@ use create::make::make_json;
 use delete::inst_del;
 use watch::watch_dir;
 use folders::hub_fold::make_hub;
+use java::launch;
 
 #[tauri::command]
 async fn create_command(app_handle: AppHandle, inst_name: String, ver: String) -> Result<PathBuf, String> {
@@ -20,6 +21,11 @@ async fn create_command(app_handle: AppHandle, inst_name: String, ver: String) -
 #[tauri::command]
 fn delete_command(inst_name: String) -> Result<(), String> {
      inst_del(&inst_name).map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+async fn launch_command(inst_name: String) -> Result<(), String> {
+     launch(&inst_name).map_err(|e| e.to_string())
 }
 
 #[tauri::command]
@@ -55,6 +61,7 @@ pub fn run() {
              get_command,
              create_command,
              delete_command,
+             launch_command,
              load_versions,
              get,
         ])

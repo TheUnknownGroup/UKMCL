@@ -23,3 +23,4 @@ create = { path = "../../crates/create" }
 delete = { path = "../../crates/delete" }
 watch = { path = "../../crates/watch" }
 folders = { path = "../../crates/folders" }
+java = { path = "../../crates/java" }
