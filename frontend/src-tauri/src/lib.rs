@@ -12,6 +12,8 @@ use delete::inst_del;
 use watch::watch_dir;
 use folders::hub_fold::make_hub;
 use java::launch;
+use windows::inst::spawn_insts;
+use windows::inst_creation::spawn_inst;
 
 #[tauri::command]
 async fn create_command(app_handle: AppHandle, inst_name: String, ver: String) -> Result<PathBuf, String> {
@@ -40,9 +42,22 @@ async fn get() -> Result<Vec<String>, String> {
      // let old_dir = home.join("old.json");
      // let real_dir = home.join("releases.json");
      // let snap_dir = home.join("snapshots.json");
+     
      let conts = fs::read_to_string(&all_dir).map_err(|e| e.to_string())?;
      let ids: Vec<String> = serde_json::from_str(&conts).map_err(|e| e.to_string())?;
      Ok(ids)
+}
+
+#[tauri::command]
+async fn spawn_window(app_handle: AppHandle) -> Result<(), String> {
+     spawn_inst(&app_handle).await.map_err(|e| e.to_string())?;
+     Ok(())
+}
+
+#[tauri::command]
+async fn spawn_window_2(app_handle: AppHandle, label: String, url: String, name: String) -> Result<(), String> {
+     spawn_insts(&app_handle, &label, &url, &name).await.map_err(|e| e.to_string())?;
+     Ok(())
 }
 
 #[tauri::command]
@@ -63,6 +78,8 @@ pub fn run() {
              delete_command,
              launch_command,
              load_versions,
+             spawn_window,
+             spawn_window_2,
              get,
         ])
         .run(tauri::generate_context!())

@@ -1,0 +1,8 @@
+[package]
+name = "windows"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+tauri = { version = "2", features = [] }

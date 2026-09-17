@@ -39,7 +39,7 @@ pub async fn setup_inst(app_handle: tauri::AppHandle, inst_name: String, id: Str
      }
      
      fs::create_dir_all(&vers)?;
-     client_url(app_handle, &id, vers, &inst_dir, &unique_name).await.map_err(|e| e.to_string())?;
+     client_url(app_handle, &id, vers, &unique_name).await.map_err(|e| e.to_string())?;
 
      Ok(inst_dir)     
 }

@@ -1,34 +1,36 @@
 use std::{error::Error, process::{Command, Stdio}};
 use config::Main;
-use minecraft::client::offline::offline;
+use config::main_conf;
 use folders::hub_fold::make_hub;
 
 #[allow(unused)]
 pub fn launch(inst_name: &str) -> Result<(), Box<dyn Error>>{
     let home_dir = make_hub()?;
     let inst_config = home_dir.join("instances").join(inst_name).join("config.toml").to_string_lossy().to_string();
-    let config = Main::load(&inst_config).unwrap();
-
-    let username = "TheGremlinX";
-    let uuid = offline(username);
+    let main_file = home_dir.join("config.toml").to_string_lossy().to_string();
+    let inst_file = Main::load(&inst_config).unwrap();
+    let inst_main = &inst_file.main;
+    let main = main_conf::Main::load(&main_file).unwrap();
+    let account = main.main;
+    
 
     let sep = if cfg!(windows) { ";" } else { ":" };
-    let full = config.main.classpath.join(sep);
+    let full = &inst_main.classpath.join(sep);
 
     let mut cmd = Command::new("java");
-    cmd.current_dir(&config.main.directory.game_dir)
-        .arg(format!("-Djava.library.path={}", config.main.directory.lib_dir))
-        .arg("-Xmx2G")
+    cmd.current_dir(&inst_main.directory.game_dir)
+        .arg(format!("-Djava.library.path={}", &inst_main.directory.lib_dir))
+        .arg("-Xmx4G")
         .arg("-cp").arg(full)
-        .arg(config.main.main_class)
-        .arg("--username").arg(username)
-        .arg("--uuid").arg(uuid.hyphenated().to_string())
-        .arg("--accessToken").arg("0")
-        .arg("--userType").arg("legacy")
-        .arg("--version").arg(config.main.minecraft_version)
-        .arg("--gameDir").arg(config.main.directory.game_dir)
-        .arg("--assetsDir").arg(config.main.directory.assets_dir)
-        .arg("--assetIndex").arg(config.main.assets_index)
+        .arg(&inst_main.main_class)
+        .arg("--username").arg(&account.username)
+        .arg("--uuid").arg(&account.uuid)
+        .arg("--accessToken").arg(&account.access_token)
+        .arg("--userType").arg(&account.user_type)
+        .arg("--version").arg(&inst_main.minecraft_version)
+        .arg("--gameDir").arg(&inst_main.directory.game_dir)
+        .arg("--assetsDir").arg(&inst_main.directory.assets_dir)
+        .arg("--assetIndex").arg(&inst_main.assets_index)
         .stdout(Stdio::piped());
 
     let mut child = cmd.spawn()?;

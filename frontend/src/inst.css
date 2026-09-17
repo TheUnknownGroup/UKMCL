@@ -1,21 +1,42 @@
 .instance-card {
      display: flex;
-     flex-direction: column;
-     gap: 0.5rem;
-     padding: 1rem;
-     border-radius: 0.5rem;
+     border-radius: 8px;
      background: rgba(38, 66, 16, 0.95);
      border: 2px solid #3F6E1A;
-     width: 150px;
+     width: 100%;
+     transition: box-shadow ease 0.3s;
+     padding: 10px 0 10px 0;
+     margin-left: 3px;
+     cursor: pointer;
+}
+
+.instance-card:hover {
+     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.icon {
+     padding-left: 10px;
+}
+
+.header {
+     display: flex;
+     align-self: center;
+}
+
+.dots {
+     display: flex;
+     margin-left: auto;
+     padding-right: 5px;
 }
 
 .instance-card h3 {
-     font-size: 17px;
+     font-size: 20px;
      margin: 0;
      white-space: nowrap;
      text-overflow: ellipsis;
-     overflow: hidden;
+     overflow: hidden;     
      color: #D4DACF;
+     padding-left: 10px;
 
      user-select: none;
      -ms-user-select: none;
@@ -23,7 +44,7 @@
      -webkit-user-select: none;
 }
 
-.instance-card .card-act {
+/*.instance-card .card-act {
      display: flex;
      gap: 0.3rem;
      margin-top: auto;
@@ -32,6 +53,7 @@
 .instance-card .card-act .btn2 {
      flex: 1;
 }
+*/
 
 .grid {
      padding: 0.5rem 0px;
@@ -40,41 +62,12 @@
 
 #grid-item {
      display: grid;
-     gap: 5px;
      padding-top: 5px;
-     grid-template-columns: repeat(auto-fit, minmax(150px, 191px))
+     gap: 5px;
+     grid-template-columns: repeat(auto-fit, minmax(196px, 197px))
 }
 
+/*
 .hides {
      visibility: hidden;
-}
-
-.btn2 { 
-     padding: 8px 15px;
-     border-radius: 5px;
-     border: none;
-     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-     cursor: pointer;
-     color: white;
-     transition: background-color 0.3s ease;
-}
-
-.launch-btn {
-     background-color: green;
-}
-
-.delete-btn {
-     background-color: #A80000;
-}
-
-.launch-btn:hover {
-     background-color: #00A600;
-}
-
-.delete-btn:hover {
-     background-color: red;
-}
-
-.edit-btn {
-     background-color: #FFA500;
-}
+}*/

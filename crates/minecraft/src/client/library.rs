@@ -1,11 +1,13 @@
-use std::path::Path;
+use std::path::{PathBuf};
+use tokio::io::AsyncWriteExt;
+use futures_util::StreamExt;
 
-use crate::client::{Libraries, current_os, applies};
+use crate::client::{Libraries, applies};
 
 #[allow(unused)]
-pub async fn fetch_libraries(libs: &[Libraries], path: &Path) -> Result<Vec<String>, Box<dyn std::error::Error>>{
-     let os = current_os();
+pub async fn fetch_libraries(libs: &[Libraries], main: &PathBuf) -> Result<Vec<String>, Box<dyn std::error::Error>>{
      let mut class = Vec::new();
+     let path = main.join("libraries");
      
      for lib in libs {
           if !applies(&lib.rules) {
@@ -16,8 +18,13 @@ pub async fn fetch_libraries(libs: &[Libraries], path: &Path) -> Result<Vec<Stri
                let dest = path.join(&artifact.path);
                if !dest.exists() {
                     std::fs::create_dir_all(dest.parent().unwrap())?;
-                    let bys = reqwest::get(&artifact.url).await?.bytes().await?;
-                    std::fs::write(&dest, bys)?;
+                    let bys = reqwest::get(&artifact.url).await?;
+                    let mut stream = bys.bytes_stream();
+                    let mut file = tokio::fs::File::create(&dest).await?;
+                    while let Some(chunk) = stream.next().await {
+                         let chunk = chunk?;
+                         file.write_all(&chunk).await?;
+                    }
                }
                class.push(dest.to_string_lossy().to_string());
           }

@@ -1,7 +1,7 @@
 {
   "name": "ukmcl",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "scripts": {
     "dev": "astro dev",
@@ -11,12 +11,10 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
-    "@astrojs/svelte": "^9.0.1",
     "@tauri-apps/api": "^2.11.1",
     "@tauri-apps/cli": "^2.11.4",
-    "astro": "^7.2.4",
+    "astro": "^7.3.3",
     "bootstrap-icons": "^1.13.1",
-    "svelte": "^5.57.0",
     "typescript": "^6.0.3"
   },
   "devDependencies": {

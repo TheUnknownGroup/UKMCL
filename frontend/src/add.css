@@ -1,0 +1,9 @@
+.new_inst {
+     padding: 7px 50px 7px 50px;
+     background-color: rgba(0, 0, 0, 0.3);
+     border: none;
+     border-radius: 5px;
+     border: 2px solid;
+     cursor: pointer;
+     margin-left: 5px;
+}

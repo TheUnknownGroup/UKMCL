@@ -1,16 +1,14 @@
 pub mod client_info;
 pub mod assets;
 pub mod jars;
-pub mod window;
 pub mod library;
-pub mod offline;
 
 use std::{error::Error, path::{PathBuf}, fs};
 use serde::{Deserialize};
 
 use crate::client::{assets::fetch_asset_index, jars::download_client_jar, library::fetch_libraries};
 use folders::hub_fold::make_hub;
-use config::Main;
+use config::write::cfg_write;
 
 #[derive(Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
@@ -75,35 +73,26 @@ pub struct JavaVersion {
      pub major_version: u32,
 }
 
-pub async fn fetchs(app_handle: tauri::AppHandle, url: &str, dest_dir: PathBuf, inst_dir: &PathBuf, inst_name: &str) -> Result<ClientInfo, Box<dyn Error>> {
+pub async fn fetchs(app_handle: tauri::AppHandle, url: &str, dest_dir: PathBuf, inst_name: &str) -> Result<ClientInfo, Box<dyn Error>> {
      let resp = reqwest::get(url)
           .await?
           .json::<ClientInfo>()
           .await?;
 
      let main = make_hub()?;
-     let lib_dir = main.join("libraries");
      
      fetch_asset_index(app_handle, &resp.asset_index.url).await?;
      download_client_jar(&resp.downloads.client.url, dest_dir).await?;
-     let paths =  fetch_libraries(&resp.libraries, &lib_dir).await?;
+     let paths = fetch_libraries(&resp.libraries, &main).await?;
 
-     let asset_dir = main.join("assets");
-     let home = asset_dir.join("indexes");
-     fs::create_dir_all(&home)?;
+     let home = main.join("assets").join("indexes");
 
      let asset_json = reqwest::get(&resp.asset_index.url).await?;
      let bytes = asset_json.bytes().await?;
      let dest = home.join(format!("{}.json", resp.asset_index.id));
      fs::write(&dest, &bytes)?;
 
-     let insts_dir = inst_dir.join("minecraft").to_string_lossy().to_string();
-     let libs_dir = lib_dir.to_string_lossy().to_string();
-     let assets_dir = asset_dir.to_string_lossy().to_string();
-     let versions_dir = main.join("versions").join(&resp.id).join(inst_name).join("client.jar").to_string_lossy().to_string();
-
-     let saves = Main::new(&inst_name, &resp.id, &resp.asset_index.id, &resp.main_class, &insts_dir, &libs_dir, &assets_dir, &paths, &versions_dir)?;
-     saves.save(&inst_dir.join("config.toml").to_string_lossy().to_string())?;
+     cfg_write(&inst_name, &resp.id, &resp.asset_index.id, &resp.main_class, main, &paths)?;
      
      Ok(resp)
 }

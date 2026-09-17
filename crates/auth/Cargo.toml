@@ -1,0 +1,9 @@
+[package]
+name = "auth"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+md5 = "0.8"
+uuid = "1"

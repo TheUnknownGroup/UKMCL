@@ -1,15 +1,14 @@
 class InstCard extends HTMLElement {
      connectedCallback() {
           const name = this.getAttribute('name');
+          const src = this.getAttribute('src') || '/assets/images/icon.png';
+          const alt = this.getAttribute('alt');
           this.innerHTML = `
-               <div class="instance-card">
-                    <h3>${name}</h3>
-                    <div class="card-act">
-                         <button class="launch-btn btn2" data-name="${name}"><img src="/assets/images/play.svg" alt="Launch"></button>
-                         <button class="delete-btn btn2" data-name="${name}"><img src="/assets/images/trash.svg" alt="Delete"></button>
-                         <button class="edit-btn btn2" data-name="${name}"><img src="/assets/images/tools.svg" alt="Edit"></button>
-                    </div>
-               </div>
+               <button data-name="${name}" class="instance-card">
+                    <span class="icon"><img src="${src}" alt="${alt}" width="30px"></span>
+                    <span class="header"><h3>${name}</h3></span>
+                    <span class="dots"><img src="/assets/images/three-dots.svg" alt="Dropdown" width="16px"></span>
+               </button>
           `;
      }
 }
