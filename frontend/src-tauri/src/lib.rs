@@ -5,15 +5,14 @@ use std::path::PathBuf;
 use std::fs;
 
 use tauri::AppHandle;
+use tauri_plugin_opener::OpenerExt;
 use list::list;
-use create::insts::setup_inst;
-use create::make::make_json;
+use create::{insts::setup_inst, make::make_json, create_hub::check_dir};
 use delete::inst_del;
 use watch::watch_dir;
 use folders::hub_fold::make_hub;
 use java::launch;
-use windows::inst::spawn_insts;
-use windows::inst_creation::spawn_inst;
+use windows::{inst::spawn_insts, inst_creation::spawn_inst};
 
 #[tauri::command]
 async fn create_command(app_handle: AppHandle, inst_name: String, ver: String) -> Result<PathBuf, String> {
@@ -65,6 +64,15 @@ fn get_command() -> Result<Vec<String>, String> {
    list().map_err(|e| e.to_string())
 }
 
+#[tauri::command]
+async fn open(app: AppHandle, name: String) -> Result<(), String> {
+    let insts = check_dir().map_err(|e| e.to_string())?;
+    let inst = insts.join(&name);
+    let path = inst.to_string_lossy().to_string();
+    app.opener().open_path(path, None::<&str>).map_err(|e| e.to_string())?;
+    Ok(())
+}
+
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
@@ -81,6 +89,7 @@ pub fn run() {
              spawn_window,
              spawn_window_2,
              get,
+             open,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

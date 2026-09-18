@@ -220,7 +220,7 @@ checksum = "1505bd5d3d116872e7271a6d4e16d81d0c8570876c8de68093a09ac269d8aac0"
 
 [[package]]
 name = "auth"
-version = "1.0.1"
+version = "1.0.2"
 dependencies = [
  "md5",
  "uuid",
@@ -591,7 +591,7 @@ dependencies = [
 
 [[package]]
 name = "config"
-version = "1.0.1"
+version = "1.0.2"
 dependencies = [
  "auth",
  "dirs",
@@ -707,7 +707,7 @@ dependencies = [
 
 [[package]]
 name = "create"
-version = "1.0.1"
+version = "1.0.2"
 dependencies = [
  "folders",
  "minecraft",
@@ -881,7 +881,7 @@ dependencies = [
 
 [[package]]
 name = "delete"
-version = "1.0.1"
+version = "1.0.2"
 dependencies = [
  "config",
  "create",
@@ -1227,7 +1227,7 @@ checksum = "3f9eec918d3f24069decb9af1554cad7c880e2da24a9afd88aca000531ab82c1"
 
 [[package]]
 name = "folders"
-version = "1.0.1"
+version = "1.0.2"
 dependencies = [
  "dirs",
 ]
@@ -1276,7 +1276,7 @@ dependencies = [
 
 [[package]]
 name = "frontend"
-version = "1.0.1"
+version = "1.0.2"
 dependencies = [
  "create",
  "delete",
@@ -1290,7 +1290,7 @@ dependencies = [
  "tauri-plugin-opener",
  "tokio",
  "watch",
- "windows 1.0.1",
+ "windows 1.0.2",
 ]
 
 [[package]]
@@ -2109,7 +2109,7 @@ checksum = "8f42a60cbdf9a97f5d2305f08a87dc4e09308d1276d28c869c684d7777685682"
 
 [[package]]
 name = "java"
-version = "1.0.1"
+version = "1.0.2"
 dependencies = [
  "config",
  "dirs",
@@ -2414,7 +2414,7 @@ checksum = "32a66949e030da00e8c7d4434b251670a91556f4144941d37452769c25d58a53"
 
 [[package]]
 name = "list"
-version = "1.0.1"
+version = "1.0.2"
 dependencies = [
  "create",
 ]
@@ -2495,7 +2495,7 @@ checksum = "6877bb514081ee2a7ff5ef9de3281f14a4dd4bceac4c09388074a6b5df8a139a"
 
 [[package]]
 name = "minecraft"
-version = "1.0.1"
+version = "1.0.2"
 dependencies = [
  "config",
  "folders",
@@ -2505,7 +2505,7 @@ dependencies = [
  "serde_json",
  "tauri",
  "tokio",
- "windows 1.0.1",
+ "windows 1.0.2",
  "zip",
 ]
 
@@ -5078,7 +5078,7 @@ dependencies = [
 
 [[package]]
 name = "watch"
-version = "1.0.1"
+version = "1.0.2"
 dependencies = [
  "create",
  "notify",
@@ -5267,7 +5267,7 @@ dependencies = [
 
 [[package]]
 name = "windows"
-version = "1.0.1"
+version = "1.0.2"
 dependencies = [
  "tauri",
 ]
