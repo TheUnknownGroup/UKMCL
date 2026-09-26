@@ -10,6 +10,8 @@ pub fn launch(inst_name: &str) -> Result<(), Box<dyn Error>>{
     let main_file = home_dir.join("config.toml").to_string_lossy().to_string();
     let inst_file = Main::load(&inst_config).unwrap();
     let inst_main = &inst_file.main;
+    let inst_dir = &inst_file.directory;
+    let inst_java = &inst_file.java;
     let main = main_conf::Main::load(&main_file).unwrap();
     let account = main.main;
     
@@ -18,9 +20,9 @@ pub fn launch(inst_name: &str) -> Result<(), Box<dyn Error>>{
     let full = &inst_main.classpath.join(sep);
 
     let mut cmd = Command::new("java");
-    cmd.current_dir(&inst_main.directory.game_dir)
-        .arg(format!("-Djava.library.path={}", &inst_main.directory.lib_dir))
-        .arg("-Xmx4G")
+    cmd.current_dir(&inst_dir.game_dir)
+        .arg(format!("-Djava.library.path={}",&inst_dir.lib_dir))
+        .arg(format!("-Xms{}M", &inst_java.min)).arg(format!("-Xmx{}M", &inst_java.max))
         .arg("-cp").arg(full)
         .arg(&inst_main.main_class)
         .arg("--username").arg(&account.username)
@@ -28,8 +30,8 @@ pub fn launch(inst_name: &str) -> Result<(), Box<dyn Error>>{
         .arg("--accessToken").arg(&account.access_token)
         .arg("--userType").arg(&account.user_type)
         .arg("--version").arg(&inst_main.minecraft_version)
-        .arg("--gameDir").arg(&inst_main.directory.game_dir)
-        .arg("--assetsDir").arg(&inst_main.directory.assets_dir)
+        .arg("--gameDir").arg(&inst_dir.game_dir)
+        .arg("--assetsDir").arg(&inst_dir.assets_dir)
         .arg("--assetIndex").arg(&inst_main.assets_index)
         .stdout(Stdio::piped());
 

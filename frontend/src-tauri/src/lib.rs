@@ -1,7 +1,7 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 
-use std::path::PathBuf;
+use std::path::{PathBuf};
 use std::fs;
 
 use tauri::AppHandle;
@@ -15,8 +15,8 @@ use java::launch;
 use windows::{inst::spawn_insts, inst_creation::spawn_inst};
 
 #[tauri::command]
-async fn create_command(app_handle: AppHandle, inst_name: String, ver: String) -> Result<PathBuf, String> {
-     setup_inst(app_handle, inst_name, ver).await.map_err(|e| e.to_string())
+async fn create_command(app_handle: AppHandle, inst_name: String, ver: String, loader: String, loader_ver: String) -> Result<PathBuf, String> {
+     setup_inst(app_handle, inst_name, ver, loader, loader_ver).await.map_err(|e| e.to_string())
 }
 
 #[tauri::command]
@@ -30,17 +30,36 @@ async fn launch_command(inst_name: String) -> Result<(), String> {
 }
 
 #[tauri::command]
-async fn load_versions() -> Result<(), String> {
-     make_json().await.map_err(|e| e.to_string())?;
+async fn load_versions(loader: String) -> Result<(), String> {
+     make_json(&loader).await.map_err(|e| e.to_string())?;
      Ok(())
 }
 #[tauri::command]
-async fn get() -> Result<Vec<String>, String> {
+async fn get(loader: String) -> Result<Vec<String>, String> {
+     let file = match loader.as_str() {
+          "vanilla" => "versions.json",
+          "fabric" => "fabric.json",
+          "quilt" => "quilt.json",
+          other => return Err(format!("unknown loader: {}", other)),
+     };
      let home = make_hub().map_err(|e| e.to_string())?;
-     let all_dir = home.join("jsons").join("versions.json");
-     // let old_dir = home.join("old.json");
-     // let real_dir = home.join("releases.json");
-     // let snap_dir = home.join("snapshots.json");
+     let all_dir = home.join("jsons").join(file);
+     
+     let conts = fs::read_to_string(&all_dir).map_err(|e| e.to_string())?;
+     let ids: Vec<String> = serde_json::from_str(&conts).map_err(|e| e.to_string())?;
+     Ok(ids)
+}
+
+#[tauri::command]
+async fn get_loader(loader: String) -> Result<Vec<String>, String> {
+     let file = match loader.as_str() {
+          "vanilla" => return Err("no vanilla loader found".into()),
+          "fabric" => "fabric_load.json",
+          "quilt" => "quilt_load.json",
+          other => return Err(format!("unknown loader: {}", other)),
+     };
+     let home = make_hub().map_err(|e| e.to_string())?;
+     let all_dir = home.join("jsons").join(file);
      
      let conts = fs::read_to_string(&all_dir).map_err(|e| e.to_string())?;
      let ids: Vec<String> = serde_json::from_str(&conts).map_err(|e| e.to_string())?;
@@ -89,6 +108,7 @@ pub fn run() {
              spawn_window,
              spawn_window_2,
              get,
+             get_loader,
              open,
         ])
         .run(tauri::generate_context!())

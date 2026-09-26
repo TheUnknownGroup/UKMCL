@@ -1,5 +1,5 @@
 <script>
-     import Panel from '$lib/components/Panel.svelte';
+     import PanelSettings from '$lib/components/PanelSettings.svelte';
 </script>
 
-<Panel/>
+<PanelSettings/>

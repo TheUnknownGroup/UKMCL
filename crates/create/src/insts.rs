@@ -23,7 +23,7 @@ fn unique_name(inst_dir: &Path, desired: String) -> String {
      }
 }
 
-pub async fn setup_inst(app_handle: tauri::AppHandle, inst_name: String, id: String) -> Result<PathBuf, Box<dyn std::error::Error>> {
+pub async fn setup_inst(app_handle: tauri::AppHandle, inst_name: String, id: String, loader: String, loader_ver: String) -> Result<PathBuf, Box<dyn std::error::Error>> {
      let insts_dir = check_dir()?;
      let unique_name = unique_name(&insts_dir, inst_name);
      let inst_dir = insts_dir.join(&unique_name);
@@ -39,7 +39,7 @@ pub async fn setup_inst(app_handle: tauri::AppHandle, inst_name: String, id: Str
      }
      
      fs::create_dir_all(&vers)?;
-     client_url(app_handle, &id, vers, &unique_name).await.map_err(|e| e.to_string())?;
-
+     client_url(app_handle, &id, vers, &unique_name, &loader, &loader_ver).await.map_err(|e| e.to_string())?;
+     
      Ok(inst_dir)     
 }

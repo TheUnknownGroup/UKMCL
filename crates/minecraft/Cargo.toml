@@ -12,6 +12,7 @@ tauri = { version = "2", features = [] }
 futures-util = "0.3"
 
 tokio = { version = "1", features = ["full"] }
+anyhow = "1"
 
 folders = { path = "../folders" }
 config = { path = "../config" }
