@@ -11,9 +11,9 @@ pub fn launch(inst_name: &str) -> Result<(), Box<dyn Error>>{
     let inst_file = Main::load(&inst_config).unwrap();
     let inst_main = &inst_file.main;
     let inst_dir = &inst_file.directory;
-    let inst_java = &inst_file.java;
     let main = main_conf::Main::load(&main_file).unwrap();
-    let account = main.main;
+    let account = main.account;
+    let inst_java = main.java;
     
 
     let sep = if cfg!(windows) { ";" } else { ":" };

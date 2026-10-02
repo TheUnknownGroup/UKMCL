@@ -1,5 +1,6 @@
 pub mod write;
 pub mod main_conf;
+pub mod writes;
 
 use serde::{Deserialize, Serialize};
 
@@ -15,8 +16,6 @@ pub struct MainBuilder {
      classpath: Vec<String>,
      loader: String,
      version: String,
-     max: u32,
-     min: u32,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -24,7 +23,6 @@ pub struct Main {
      pub main: InstanceConfig,
      pub loader: Option<LoaderConfig>,
      pub directory: DirectoryConfig,
-     pub java: JavaConfig,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -47,12 +45,6 @@ pub struct DirectoryConfig {
      pub game_dir: String,
      pub lib_dir: String,
      pub assets_dir: String,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct JavaConfig {
-     pub max: u32,
-     pub min: u32,
 }
 
 impl Main {
@@ -81,8 +73,6 @@ impl MainBuilder {
                classpath: Vec::new(),
                loader: String::new(),
                version: String::new(),
-               max: 32768,
-               min: 512,
           }
      }
 
@@ -103,12 +93,6 @@ impl MainBuilder {
           self.game_dir = inst_dir.into();
           self.lib_dir = lib_dir.into();
           self.assets_dir = assets_dir.into();
-          self
-     }
-
-     pub fn java(mut self, max: u32, min: u32) -> Self {
-          self.max = max.into();
-          self.min = min.into();
           self
      }
 
@@ -135,10 +119,6 @@ impl MainBuilder {
                     game_dir: self.game_dir,
                     lib_dir: self.lib_dir,
                     assets_dir: self.assets_dir,
-               },
-               java: JavaConfig {
-                    max: self.max,
-                    min: self.min,
                }
           }
      }

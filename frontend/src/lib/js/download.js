@@ -37,7 +37,7 @@ export function downloadSetup({ onProgress, onComplete }) {
 
           timestamp = now;
           down = downloaded;
-          onProgress({ pct, label: `${current} (${files} / ${file_total}) -- ${pct}%`, eta: etaTxt });
+          onProgress({ pct, label: `${current} (${files} / ${file_total})`, eta: etaTxt });
      }).then((fn) => (active ? unlisten.push(fn) : fn()));
 
      listen('complete', () => {

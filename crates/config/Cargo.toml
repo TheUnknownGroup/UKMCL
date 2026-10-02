@@ -11,3 +11,4 @@ toml = "0.8"
 dirs = "6"
 
 auth = { path = "../auth" }
+folders = { path = "../folders" }

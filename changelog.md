@@ -1,14 +1,22 @@
-# v1.0.3
+# v1.0.4
 ## What changed?
-Updated version selecting to include FabricMC and QuiltMC! You can now play with mods if you so choose, or just play regular old vanilla. 
+Updated the main config to support for a user set Offline / Microsoft account for Minecraft. Microsoft Auth is currently not supported but offline accounts are more than plausible.
 
-Forge and Neoforged will most definitely take some time to get implemented quicker as they have a vastly different set up than Fabric & Quilt.
+Added the ability to change the memory usage globally, so each instance will run with the same amount of memory. (This make change.)
 
-Added SVG's to display each of the different loaders.
+On the start of running the app, it creates the main config which--as said previously--can be edited in the settings page.
 
-Updated the instance creation panel to accept each of the different loaders as options, currently only Fabric, Quilt, and Vanilla work with downloading.
+Added a Discord Rich presence, that will show on the start of the app, and accumulate the amount of time you've been on it.
 
-Updated the java launch command to take the minimum and maximum amount of ram **you** decide to choose. For example, 2048 megabytes (2GB) for the minimum, and 4096 megabytes (4G) for the maximum. Do note that on lower amounts of ram the game begins to slow down a little due to its structure and the company's recent graphics API change.
+Added a window for making an offline account.
+
+Moved all of the commands in lib.rs inside of ``src-tauri/src`` to their own .rs files.
+
+Slightly updated the download-bar css to move the percentage of total downloaded assets to be in the dead center of the bar.
+
+When changing how much memory is being used, it'll show in the placeholder so you don't have to guess. It can be any number, but do not exceed half or 75% of the total ram you have.
+
+Your account whether it be a Microsoft one or a Offline account, will show at the bottom of the instance's page and the main page.
 
 ## What's expected to come next?
 Will add microsoft authentication for minecraft accounts and playing.

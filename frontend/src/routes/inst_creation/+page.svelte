@@ -82,7 +82,7 @@
                     {/each}
                </select>
                <br>
-               {#if loader !== "vanilla"}
+               {#if loader !== "vanilla" && loader !== "forge" && loader !== "neoforge"}
                <select name="ver-list" id="ver-list" class="absolute translate-x-[172%] p-1.5 text-[16px] w-25 text-ellipsis border-none" required bind:value={selected2}>
                     {#each vers2 as id (id)}
                          <option value={id}>{id}</option>
@@ -104,7 +104,7 @@
                     <div class="float-right"><img src="/assets/images/forgemc.svg" alt="Forge" width="24"></div><br>
                     <input type="radio" id="neoforge" value="neoforge" bind:group={loader} required>
                     <label for="neoforge">NeoForge</label>
-                    <div class="float-right pl-[15px]"><img src="/assets/images/neoforged.svg" alt="Neoforged" width="24"></div>
+                    <div class="float-right pl-3"><img src="/assets/images/neoforged.svg" alt="Neoforged" width="24"></div>
                </div>
                <button type="button" onclick={() => close(800)} class="rounded-[5px] p-[5px_6px_4px_6px] text-[14px] text-white shadow-[0_0_10px_rgba(0,0,0,0.7)] bg-[#a80000] mr-1.75 hover:bg-red-600 cursor-pointer">Cancel</button>
                <button type="submit" class="rounded-[5px] p-[5px_6px_4px_6px] text-[14px] text-white shadow-[0_0_10px_rgba(0,0,0,0.7)] bg-[#00a600] hover:bg-[#005c00] cursor-pointer">Create</button>

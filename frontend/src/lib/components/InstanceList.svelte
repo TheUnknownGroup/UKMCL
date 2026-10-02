@@ -2,16 +2,21 @@
      import { onMount } from 'svelte';
      import { setup } from '$lib/js/java.js';
      import CreateBtn from '$lib/components/CreateBtn.svelte';
+     import Account from './Account.svelte';
 
      let { children } = $props();
      
      let container;
      let isEmpty = $state(false);
      let marginLeft = $state('18vw');
+     let translate = $state('586%');
+     let width = $state('85%');
      
      onMount(() => {
           const update = () => {
                marginLeft = window.innerHeight > 600 ? '32vw' : "18vw";
+               translate = window.innerHeight > 600 ? '1114%' : '586%';
+               width = window.innerHeight > 600 ? '96.6%' : '94.1%';
           };
           window.addEventListener('resize', update);
           update();
@@ -26,9 +31,11 @@
      });
 </script>
 
-
 <div class="p-[0.3125rem_0] justify-start">
      <CreateBtn/>
+     <div class="absolute" style:transform={`translateY(${translate})`} style:width={width}>
+          <Account />
+     </div>
      <div class="grid pt-1.25 gap-1.25 grid-cols-[repeat(auto-fit,minmax(196px,198px))]" bind:this={container}></div>
 
      {#if isEmpty}

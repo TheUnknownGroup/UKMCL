@@ -3,11 +3,11 @@
      import List from '$lib/components/List.svelte';
      let { children } = $props();
      
-     let minHeight = $state('515px');
+     let minHeight = $state('435px');
      
      onMount(() => {
           const update = () => { 
-              minHeight = window.innerHeight > 600 ? '91.7vh' : '515px'; 
+              minHeight = window.innerHeight > 600 ? '83.7vh' : '435px'; 
           };
           update();
           window.addEventListener('resize', update);
