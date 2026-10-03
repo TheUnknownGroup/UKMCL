@@ -24,6 +24,10 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .manage(DiscordRpc(Mutex::new(None)))
         .on_window_event(|window, event| {
+             if window.label() != "UKMCL" {
+                  return;
+             }
+             
              if let WindowEvent::CloseRequested { .. } = event {
                   let state: State<DiscordRpc> = window.state();
                   if let Ok(mut guard) = state.0.lock() {
