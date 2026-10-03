@@ -24,7 +24,7 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .manage(DiscordRpc(Mutex::new(None)))
         .on_window_event(|window, event| {
-             if window.label() != "UKMCL" {
+             if window.label() != "main" {
                   return;
              }
              
