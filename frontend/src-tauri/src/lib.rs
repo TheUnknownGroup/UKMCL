@@ -11,13 +11,15 @@ use tokio::time::sleep;
 use std::time::Duration;
 use commands::{
      rpc::{DiscordRpc, bot}, 
-     gets::{get, get_loader, get_java_max, get_java_min, acc_info}, 
+     gets::{get, get_loader, get_java_max, get_java_min, acc_info, auths}, 
      windows::{spawn_window, spawn_window_2, spawn_off}, 
      create::create_command, delete::delete_command, launch::launch_command, load::load_versions, list::get_command, open::open,
-     offline::offline_account, ram::ram,
-     on_start::write
+     offline::offline_account, micro::microsoft_auth, ram::ram,
+     on_start::write,
+     cancel::cancel
 };
 use discord_rich_presence::DiscordIpc;
+use auth::refresh::refresh_start;
 
 pub fn run() {
     tauri::Builder::default()
@@ -42,10 +44,11 @@ pub fn run() {
              let handle = app.handle().clone();
              async_runtime::spawn(async move {
                   sleep(Duration::from_secs(3)).await;
-                  match bot(handle) {
+                  match bot(handle.clone()) {
                        Ok(_) => println!("Discord RPC: Activity set"),
                        Err(e) => eprintln!("Discord RPC Error: {}", e),
                   }
+                  refresh_start().await.map_err(|e| e.to_string())
              });
              Ok(())
         })
@@ -63,10 +66,13 @@ pub fn run() {
              get_java_max, 
              get_java_min,
              acc_info,
+             auths,
              open,
              offline_account,
+             microsoft_auth,
              ram,
              write,
+             cancel,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

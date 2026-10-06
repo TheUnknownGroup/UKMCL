@@ -1,7 +1,5 @@
 use serde::{Deserialize, Serialize};
-use std::io::Error;
-use std::io::ErrorKind;
-use std::io::Result;
+use std::io::{Error, ErrorKind, Result};
 
 #[derive(Debug)]
 pub struct AccountBuilder {
@@ -9,6 +7,8 @@ pub struct AccountBuilder {
      uuid: String,
      access_token: String,
      user_type: String,
+     refresh_token: Option<String>,
+     expires: u64,
      max: u32,
      min: u32,
 }
@@ -26,6 +26,8 @@ pub struct AccountConfig {
      pub uuid: String,
      pub access_token: String,
      pub user_type: String,
+     pub refresh_token: Option<String>,
+     pub expires: u64,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -76,12 +78,14 @@ impl Default for AccountBuilder {
 }
 
 impl AccountConfig {
-     pub fn new(username: &str, uuid: &str, access_token: &str, user_type: &str) -> Self {
+     pub fn new(username: &str, uuid: &str, access_token: &str, user_type: &str, refresh: &Option<String>, expires: u64) -> Self {
           Self {
                username: username.into(),
                uuid: uuid.into(),
                access_token: access_token.into(),
                user_type: user_type.into(),
+               refresh_token: refresh.clone(),
+               expires: expires.into(),
           }
      }
 }
@@ -93,6 +97,8 @@ impl AccountBuilder {
                uuid: String::new(),
                access_token: String::new(),
                user_type: String::new(),
+               refresh_token: None,
+               expires: 0,
                max: 32768,
                min: 512,
           }
@@ -119,6 +125,8 @@ impl AccountBuilder {
                     uuid: self.uuid, 
                     access_token: self.access_token, 
                     user_type: self.user_type,
+                    refresh_token: self.refresh_token,
+                    expires: self.expires,
                },
                java: JavaConfig {
                     max: self.max,

@@ -10,3 +10,5 @@ pub mod ram;
 pub mod rpc;
 pub mod windows;
 pub mod on_start;
+pub mod micro;
+pub mod cancel;

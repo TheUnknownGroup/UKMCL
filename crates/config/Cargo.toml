@@ -10,5 +10,9 @@ serde_json = "1"
 toml = "0.8"
 dirs = "6"
 
-auth = { path = "../auth" }
+md5 = "0.8"
+uuid = "1"
+
+anyhow = "1"
+tauri = { version = "2", features = [] }
 folders = { path = "../folders" }

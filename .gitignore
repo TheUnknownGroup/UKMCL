@@ -36,4 +36,4 @@ sites.txt
 .zed/
 package/
 
-microsoft.rs
+.env

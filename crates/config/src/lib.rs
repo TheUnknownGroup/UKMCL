@@ -1,6 +1,8 @@
 pub mod write;
 pub mod main_conf;
 pub mod writes;
+pub mod msa;
+pub mod offline;
 
 use serde::{Deserialize, Serialize};
 

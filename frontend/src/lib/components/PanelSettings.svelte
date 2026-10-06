@@ -2,7 +2,9 @@
      import Panel from '$lib/components/Panel.svelte';
      import MainText from '$lib/components/MainText.svelte';
      import { spawn, mins, maxs, rams } from '$lib/js/setts.js';
-    import { onMount } from 'svelte';
+     import { auth } from "$lib/js/login.js";
+     import { invoke } from "@tauri-apps/api/core";
+     import { onMount } from 'svelte';
 
      let min = $state('');
      let max = $state('');
@@ -24,6 +26,16 @@
           if (t === '') return null;
           const n = Number(t);
           return Number.isFinite(n) ? n : null;
+     }
+
+     async function micro() {
+          console.log("launch");
+          const result = await auth();
+          if (result === 'done') {
+               console.log('signed in');
+          } else {
+               console.log('cancelled');
+          }
      }
 
      async function onSubmit(e) {
@@ -76,7 +88,7 @@
           </div>
           <div class="p-3 border m-1.25 rounded-lg bg-[rgba(0,0,0,0.4)] text-white w-46.75 justify-center float-right">
                <h3 class="text-center text-xl font-semibold">Login</h3>
-               <button class="px-2 pt-0.5 mb-1 rounded-lg cursor-pointer w-full" id="img">Microsoft</button><br>
+               <button onclick={micro} class="px-2 pt-0.5 mb-1 rounded-lg cursor-pointer w-full" id="img">Microsoft</button><br>
                <button onclick={spawn} class="bg-green-900 px-2 pt-0.5 rounded-lg cursor-pointer w-full">Offline</button>
           </div>
      </MainText>

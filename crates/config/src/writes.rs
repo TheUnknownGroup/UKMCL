@@ -1,6 +1,6 @@
 use crate::main_conf::AccountBuilder;
 
-use auth::offline::offline;
+use crate::offline::offline;
 use folders::hub_fold::make_hub;
 
 pub async fn build() -> Result<(), Box<dyn std::error::Error>> {

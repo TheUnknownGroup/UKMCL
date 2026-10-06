@@ -220,9 +220,18 @@ checksum = "1505bd5d3d116872e7271a6d4e16d81d0c8570876c8de68093a09ac269d8aac0"
 
 [[package]]
 name = "auth"
-version = "1.0.4+2"
+version = "1.0.5"
 dependencies = [
+ "anyhow",
+ "config",
+ "folders",
  "md5",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "tauri",
+ "tokio",
+ "toml 0.8.2",
  "uuid 1.26.0",
 ]
 
@@ -591,14 +600,17 @@ dependencies = [
 
 [[package]]
 name = "config"
-version = "1.0.4+2"
+version = "1.0.5"
 dependencies = [
- "auth",
+ "anyhow",
  "dirs",
  "folders",
+ "md5",
  "serde",
  "serde_json",
+ "tauri",
  "toml 0.8.2",
+ "uuid 1.26.0",
 ]
 
 [[package]]
@@ -708,7 +720,7 @@ dependencies = [
 
 [[package]]
 name = "create"
-version = "1.0.4+2"
+version = "1.0.5"
 dependencies = [
  "folders",
  "minecraft",
@@ -882,7 +894,7 @@ dependencies = [
 
 [[package]]
 name = "delete"
-version = "1.0.4+2"
+version = "1.0.5"
 dependencies = [
  "config",
  "create",
@@ -1243,7 +1255,7 @@ checksum = "3f9eec918d3f24069decb9af1554cad7c880e2da24a9afd88aca000531ab82c1"
 
 [[package]]
 name = "folders"
-version = "1.0.4+2"
+version = "1.0.5"
 dependencies = [
  "dirs",
 ]
@@ -1292,7 +1304,7 @@ dependencies = [
 
 [[package]]
 name = "frontend"
-version = "1.0.4+2"
+version = "1.0.5"
 dependencies = [
  "auth",
  "config",
@@ -1311,7 +1323,7 @@ dependencies = [
  "tokio",
  "toml 0.8.2",
  "watch",
- "windows 1.0.4+2",
+ "windows 1.0.5",
 ]
 
 [[package]]
@@ -2130,7 +2142,7 @@ checksum = "8f42a60cbdf9a97f5d2305f08a87dc4e09308d1276d28c869c684d7777685682"
 
 [[package]]
 name = "java"
-version = "1.0.4+2"
+version = "1.0.5"
 dependencies = [
  "config",
  "dirs",
@@ -2435,7 +2447,7 @@ checksum = "32a66949e030da00e8c7d4434b251670a91556f4144941d37452769c25d58a53"
 
 [[package]]
 name = "list"
-version = "1.0.4+2"
+version = "1.0.5"
 dependencies = [
  "create",
 ]
@@ -2516,7 +2528,7 @@ checksum = "6877bb514081ee2a7ff5ef9de3281f14a4dd4bceac4c09388074a6b5df8a139a"
 
 [[package]]
 name = "minecraft"
-version = "1.0.4+2"
+version = "1.0.5"
 dependencies = [
  "anyhow",
  "config",
@@ -2527,7 +2539,7 @@ dependencies = [
  "serde_json",
  "tauri",
  "tokio",
- "windows 1.0.4+2",
+ "windows 1.0.5",
  "zip",
 ]
 
@@ -3452,6 +3464,7 @@ dependencies = [
  "rustls-platform-verifier",
  "serde",
  "serde_json",
+ "serde_urlencoded",
  "sync_wrapper",
  "tokio",
  "tokio-rustls",
@@ -3588,6 +3601,12 @@ name = "rustversion"
 version = "1.0.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cf54715a573b99ac80df0bc206da022bcd442c974952c7b9720069370852e21f"
+
+[[package]]
+name = "ryu"
+version = "1.0.23"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9774ba4a74de5f7b1c1451ed6cd5285a32eddb5cccb8cc655a4e50009e06477f"
 
 [[package]]
 name = "same-file"
@@ -3809,6 +3828,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6662b5879511e06e8999a8a235d848113e942c9124f211511b16466ee2995f26"
 dependencies = [
  "serde_core",
+]
+
+[[package]]
+name = "serde_urlencoded"
+version = "0.7.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d3491c14715ca2294c4d6a88f15e84739788c1d030eed8c110436aafdaa2f3fd"
+dependencies = [
+ "form_urlencoded",
+ "itoa",
+ "ryu",
+ "serde",
 ]
 
 [[package]]
@@ -5154,7 +5185,7 @@ dependencies = [
 
 [[package]]
 name = "watch"
-version = "1.0.4+2"
+version = "1.0.5"
 dependencies = [
  "create",
  "notify",
@@ -5355,7 +5386,7 @@ dependencies = [
 
 [[package]]
 name = "windows"
-version = "1.0.4+2"
+version = "1.0.5"
 dependencies = [
  "tauri",
 ]

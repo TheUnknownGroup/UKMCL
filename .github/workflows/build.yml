@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  ver: 1.0.4+2
+  ver: 1.0.5
 
 jobs:
   build:
@@ -55,20 +55,11 @@ jobs:
         uses: tauri-apps/tauri-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MC_CLIENT_ID: ${{ secrets.MC_CLIENT_ID }}
         with:
           projectPath: ${{ env.working-directory }}
           tauriScript: "bun tauri"
           args: ${{ matrix.args }}
-
-      - name: copy
-        if: ${{ matrix.platform == 'ubuntu-latest' }}
-        working-directory: ${{ github.workspace }}
-        run: |
-          cd ./assets/scripts/
-          chmod +x ./install.sh
-          cd ../../
-          mv ./assets/scripts/install.sh ./target/release/bundle/deb/
-          mv ./assets/scripts/install.md ./target/release/bundle/deb/
 
       - name: release (windows)
         if: ${{ matrix.platform == 'windows-latest' }}
@@ -87,7 +78,7 @@ jobs:
           name: deb
           retention-days: 3
           path: |
-            ${{ github.workspace }}/target/release/bundle/deb/*.*
+            ${{ github.workspace }}/target/release/bundle/deb/*.deb
             ${{ github.workspace }}/target/release/bundle/rpm/*.rpm
             ${{ github.workspace }}/target/release/bundle/appimage/*.AppImage
 
@@ -130,7 +121,7 @@ jobs:
       - run: |
           mkdir -p final
           mv finals/appimage/*.AppImage final/
-          mv finals/deb/* final/
+          mv finals/deb/*.deb final/
           mv finals/rpm/*.rpm final/
           mv finals/dmg/*.dmg final/
           mv finals/macos/*.tar.gz final/
@@ -144,11 +135,6 @@ jobs:
           mv ukmcl-${{ env.ver }}-1.x86_64.rpm ukmcl-${{ env.ver }}-redhat_x64.rpm
           mv ukmcl_${{ env.ver }}_aarch64.dmg ukmcl-${{ env.ver }}-macos_arm64.dmg
           mv ukmcl_${{ env.ver }}_x64.dmg ukmcl-${{ env.ver }}-macos_x64.dmg
-
-          mkdir -p ukmcl/
-          mv *.deb install.md install.sh ukmcl/
-          zip -r ukmcl-${{ env.ver }}-linux_x64.zip ukmcl/
-          rm -rf ukmcl/
 
       - name: release them
         uses: softprops/action-gh-release@v3

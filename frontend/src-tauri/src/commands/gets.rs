@@ -1,7 +1,7 @@
 use folders::hub_fold::make_hub;
 use std::fs;
 
-use config::main_conf::{AccountConfig, Main};
+use config::{main_conf::{AccountConfig, Main}, msa::AuthMSA};
 
 #[tauri::command]
 pub async fn get(loader: String) -> Result<Vec<String>, String> {
@@ -62,4 +62,13 @@ pub async fn acc_info() -> Result<AccountConfig, String> {
      let acc = Main::load(&conf.to_string_lossy().to_string()).map_err(|e| e.to_string())?;
 
      Ok(acc.account)
+}
+
+#[tauri::command]
+pub async fn auths() -> Result<AuthMSA, String> {
+     let home = make_hub().map_err(|e| e.to_string())?;
+     let conf = home.join("msa.toml").to_string_lossy().to_string();
+     let auth = AuthMSA::load(&conf).map_err(|e| e.to_string())?;
+
+     Ok(auth)
 }
