@@ -7,8 +7,7 @@ use folders::hub_fold::make_hub;
 use anyhow::{bail, Result, Context};
 use serde::{Deserialize, Serialize};
 
-// const CLIENT_ID: &str = match option_env!("MC_CLIENT_ID") { Some(id) => id, None => "fallback-id" };
-const CLIENT_ID: &str = "56bb5bc5-ab86-4960-bf94-20e638adc063";
+const CLIENT_ID: &str = match option_env!("MC_CLIENT_ID") { Some(id) => id, None => "fallback-id" };
 const DEVICE_URL: &str = "https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode";
 const TOKEN_URL: &str = "https://login.microsoftonline.com/consumers/oauth2/v2.0/token";
 const XBOX_URL: &str = "https://user.auth.xboxlive.com/user/authenticate";
