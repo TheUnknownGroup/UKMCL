@@ -211,10 +211,16 @@ async fn download_file(client: &reqwest::Client, raw: &Raw, dest: &Path, executa
      set_exec(dest, executable).await
 }
 
+#[cfg(unix)]
 async fn set_exec(path: &Path, executable: bool) -> Result<()> {
      if executable {
           use std::os::unix::fs::PermissionsExt;
           fs::set_permissions(path, std::fs::Permissions::from_mode(0o755)).await?;
      }
      Ok(())
+}
+
+#[cfg(not(unix))]
+async fn set_exec(path: &Path, executable: bool) -> Result<()> {
+    Ok(())
 }
