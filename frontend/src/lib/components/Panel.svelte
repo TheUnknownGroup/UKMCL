@@ -1,4 +1,9 @@
 <script>
+     import { invoke } from "@tauri-apps/api/core";
+     async function spawn() {
+          await invoke('spawn_modss');
+     } 
+     
      let { children } = $props();
 </script>
 
@@ -18,6 +23,11 @@
                <a class="cursor-pointer" href="/instances">
                     <img src="/assets/images/list-ul.svg" alt="Instances" width="30">   
                </a>
+          </div>
+          <div class="flex justify-center shrink-0">
+               <button class="cursor-pointer" onclick={() => spawn()}>
+                    <img src="/assets/images/mods.svg" alt="Mods" width="30">   
+               </button>
           </div>
           <div class="flex justify-center shrink-0">
                <a class="cursor-pointer pt-px-5 fixed z-0 bottom-3.75" href="/settings">

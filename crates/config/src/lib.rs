@@ -18,6 +18,9 @@ pub struct MainBuilder {
      classpath: Vec<String>,
      loader: String,
      version: String,
+     component: String,
+     supports_quick_play_single: bool,
+     supports_quick_play_multi: bool,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -39,6 +42,9 @@ pub struct InstanceConfig {
      pub minecraft_version: String,
      pub assets_index: String,
      pub main_class: String,
+     pub component: String,
+     pub supports_quick_play_single: bool,
+     pub supports_quick_play_multi: bool,
      pub classpath: Vec<String>,
 }
 
@@ -75,6 +81,9 @@ impl MainBuilder {
                classpath: Vec::new(),
                loader: String::new(),
                version: String::new(),
+               component: String::new(),
+               supports_quick_play_multi: false,
+               supports_quick_play_single: false,
           }
      }
 
@@ -104,6 +113,17 @@ impl MainBuilder {
           self
      }
 
+     pub fn javas(mut self, component: &str) -> Self {
+          self.component = component.into();
+          self
+     }
+
+     pub fn supports(mut self, multi: bool, single: bool) -> Self {
+          self.supports_quick_play_multi = multi;
+          self.supports_quick_play_single = single;
+          self
+     }
+
      pub fn build(self) -> Main {
           Main {
                main: InstanceConfig {
@@ -111,7 +131,10 @@ impl MainBuilder {
                     minecraft_version: self.minecraft_version,
                     assets_index: self.assets_index,
                     main_class: self.main_class,
+                    component: self.component,
                     classpath: self.classpath,
+                    supports_quick_play_single: self.supports_quick_play_multi,
+                    supports_quick_play_multi: self.supports_quick_play_multi,
                },
                loader: Some(LoaderConfig {
                     loader: self.loader,

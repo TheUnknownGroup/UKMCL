@@ -1,6 +1,6 @@
 use tauri::AppHandle;
 
-use windows::{inst::spawn_insts, inst_creation::spawn_inst, offline::spawn_offs};
+use windows::{inst::spawn_insts, inst_creation::spawn_inst, offline::spawn_offs, download_mod::spawn_mod, mods_window};
 
 #[tauri::command]
 pub async fn spawn_window(app_handle: AppHandle) -> Result<(), String> {
@@ -17,5 +17,17 @@ pub async fn spawn_window_2(app_handle: AppHandle, label: String, url: String, n
 #[tauri::command]
 pub async fn spawn_off(app_handle: AppHandle) -> Result<(), String> {
      spawn_offs(&app_handle).await.map_err(|e| e.to_string())?;
+     Ok(())
+}
+
+#[tauri::command]
+pub async fn spawn_mods(app_handle: AppHandle, label: String, url: String, name: String) -> Result<(), String> {
+     spawn_mod(&app_handle, &label, &url, &name).await.map_err(|e| e.to_string())?;
+     Ok(())
+}
+
+#[tauri::command]
+pub async fn spawn_modss(app_handle: AppHandle) -> Result<(), String> {
+     mods_window::spawn_mods(&app_handle).await.map_err(|e| e.to_string())?;
      Ok(())
 }

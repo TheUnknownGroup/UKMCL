@@ -32,7 +32,7 @@ export async function setup(container, onRefresh) {
           await listen('instance-removed', refresh),
           await listen('closing', refresh),
           await listen('created', refresh),
-     ]
+     ];
 
      container?.addEventListener('click', async (e) => {
           const btn = e.target.closest('.instance-card');

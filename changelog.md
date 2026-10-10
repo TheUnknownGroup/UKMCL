@@ -1,16 +1,26 @@
-# v1.0.5
+# v1.0.6
 ## What changed?
-Updated launcher for microsoft authentication! You can now use your real Minecraft account login info, and play servers and the like with friends.
+Finally updated the instance window, it now shows your instance's information like the Minecraft version, your Loader, and the Loader version. Unless you're in Vanilla, then the loader and loader version will not show as vanilla is not a separate loader.
 
-Microsoft auth will now show up as a dialog where you click 'Auth Me' and also copy the code, finally you'll paste the code into the Microsoft prompt and log into your account.
+Added mod downloading from Modrinth, you can select your instance in the top right, and download the mods of your choosing.
 
-Removed PostInstall / PostRemoval and Install shell files. You will now have to manually remove the launcher data [here](https://github.com/TheUnknownGroup/UKMCL/wiki#what-are-the-home-directories).
+Added java installing due to not knowing if the user already has java installed, and failing to launch the instance.
 
-On launch, you will have a default / temporary user, but you can go to the settings button, and click on Microsoft on the far right and you'll be able to log in from there.
+Slightly updated the refresh token process due to failure in refreshing.
 
-A count down will being upon the dialog opening of the time limit (usually 15 minutes).
+Made a global request client.
 
-If you choose to cancel the auth, the dialog will close, and you can continue again if you choose.
+Added quick play which allows the user to pick any of their world's or server's (as long as their account is authenticated with microsoft) and play them right from the instance window.
+
+Updated the launch to accomodate for both the quick play and the java download.
+
+Created a new window for the store page to be separate from the rest of the pages.
+
+Drastically expanded the size of the instance window.
+
+On the main page you can now click on the instance list for any of the instance's and open the instance window.
 
 ## What's expected to come next?
-Updating the css of the instance window.
+Forge & Neoforge installing.
+
+Curseforge mod downloading.

@@ -1,0 +1,8 @@
+[package]
+name = "clients"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+reqwest = "0.13"

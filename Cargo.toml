@@ -11,12 +11,15 @@ members = [
     "crates/config",
     "crates/windows",
     "crates/auth",
+    "crates/mods",
+    "crates/download",
+    "crates/clients",
 ]
 
 default-members = ["frontend/src-tauri"]
 resolver = "1"
 
 [workspace.package]
-version = "1.0.5"
+version = "1.0.6"
 edition = "2024"
 authors = ["devonk15"]

@@ -10,6 +10,8 @@ uuid = "1"
 config = { path = "../config" }
 folders = { path = "../folders" }
 
+clients = { path = "../clients" }
+
 tauri = { version = "2", features = [] }
 
 serde = { version = "1", features = ["derive"] }

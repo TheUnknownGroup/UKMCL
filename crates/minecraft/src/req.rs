@@ -1,3 +1,4 @@
+use clients::base_client;
 use serde::{Deserialize};
 use reqwest::Result;
 
@@ -20,8 +21,9 @@ pub struct VersionEntry {
      pub url: String,
 }
 
-pub async fn fetch() -> reqwest::Result<VersionMani> {
-     let resp = reqwest::get(VERSION_MANIFEST_URL)
+pub async fn fetch() -> Result<VersionMani> {
+     let client = base_client();
+     let resp = client.get(VERSION_MANIFEST_URL).send()
           .await?
           .json::<VersionMani>()
           .await?;
@@ -47,7 +49,8 @@ pub struct QuiltLoader {
 }
 
 pub async fn fabric() -> Result<Vec<FabricGameVersions>> {
-     let resp = reqwest::get(FABRIC_URL_GAME)
+     let client = base_client();
+     let resp = client.get(FABRIC_URL_GAME).send()
           .await?
           .json::<Vec<FabricGameVersions>>()
           .await?;
@@ -55,7 +58,8 @@ pub async fn fabric() -> Result<Vec<FabricGameVersions>> {
 }
 
 pub async fn fabric_load() -> Result<Vec<FabLoader>> {
-     let resp = reqwest::get(FABRIC_URL_LOADER)
+     let client = base_client();
+     let resp = client.get(FABRIC_URL_LOADER).send()
           .await?
           .json::<Vec<FabLoader>>()
           .await?;
@@ -63,7 +67,8 @@ pub async fn fabric_load() -> Result<Vec<FabLoader>> {
 }
 
 pub async fn quilt() -> Result<Vec<FabricGameVersions>> {
-     let resp = reqwest::get(QUILT_URL_GAME)
+     let client = base_client();
+     let resp = client.get(QUILT_URL_GAME).send()
           .await?
           .json::<Vec<FabricGameVersions>>()
           .await?;
@@ -71,7 +76,8 @@ pub async fn quilt() -> Result<Vec<FabricGameVersions>> {
 }
 
 pub async fn quilt_load() -> Result<Vec<QuiltLoader>> {
-     let resp = reqwest::get(QUILT_URL_LOADER)
+     let client = base_client();
+     let resp = client.get(QUILT_URL_LOADER).send()
           .await?
           .json::<Vec<QuiltLoader>>()
           .await?;

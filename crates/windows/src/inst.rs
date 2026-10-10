@@ -1,6 +1,6 @@
 use tauri::{AppHandle, Manager, WebviewUrl, WebviewWindowBuilder};
 
-const WIDTH: f64 = 854.0;
+const WIDTH: f64 = 1320.0;
 const HEIGHT: f64 = 480.0;
 
 pub async fn spawn_insts(app_handle: &AppHandle, label: &String, url: &String, name: &String) -> Result<(), Box<dyn std::error::Error>> {

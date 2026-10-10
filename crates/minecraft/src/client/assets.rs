@@ -1,4 +1,5 @@
 use std::{path::{Path}, collections::HashMap, error::Error, sync::{Arc, atomic::{AtomicU64, Ordering}}};
+use clients::base_client;
 use tokio::{io::AsyncWriteExt, fs};
 use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Emitter};
@@ -28,8 +29,9 @@ struct DownloadProgress {
      file_total: u32,
 }
 
-pub async fn fetch_asset_index(app_handle: AppHandle, url: &str) -> Result<AssetIndex, Box<dyn Error>> {   
-     let resp = reqwest::get(url)
+pub async fn fetch_asset_index(app_handle: AppHandle, url: &str) -> Result<AssetIndex, Box<dyn Error>> {
+     let client = base_client();
+     let resp = client.get(url).send()
           .await?
           .json::<AssetIndex>()
           .await?;

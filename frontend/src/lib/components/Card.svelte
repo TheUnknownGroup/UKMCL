@@ -41,7 +41,7 @@
      </div>
 </div>
 <div class="flex justify-center pr-1.25 ml-1.25 float-left">
-     <div class="border color rounded-lg bg-[rgba(0,0,0,0.4)] w-27 mt-1.25 pb-2.5 select-none" style:min-height={minHeight}>
+     <div class="border color rounded-lg bg-[rgba(0,0,0,0.4)] w-27 mt-1.25 pb-2.5 select-none overflow-scroll" style:min-height={minHeight} style:max-height={minHeight}>
           <h3>Latest Instances</h3>
           <List />
      </div>

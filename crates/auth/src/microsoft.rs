@@ -1,12 +1,14 @@
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
+use clients::base_client;
 use reqwest::Client;
-use tauri::{AppHandle, Emitter, Listener};
+use tauri::{AppHandle, Emitter};
 use tokio::time::sleep;
 use folders::hub_fold::make_hub;
 use anyhow::{bail, Result, Context};
 use serde::{Deserialize, Serialize};
 
-const CLIENT_ID: &str = match option_env!("MC_CLIENT_ID") { Some(id) => id, None => "fallback-id" };
+// const CLIENT_ID: &str = match option_env!("MC_CLIENT_ID") { Some(id) => id, None => "fallback-id" };
+const CLIENT_ID: &str = "56bb5bc5-ab86-4960-bf94-20e638adc063";
 const DEVICE_URL: &str = "https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode";
 const TOKEN_URL: &str = "https://login.microsoftonline.com/consumers/oauth2/v2.0/token";
 const XBOX_URL: &str = "https://user.auth.xboxlive.com/user/authenticate";
@@ -257,7 +259,7 @@ pub struct Authenticated {
 use config::msa::AuthMSA;
 
 pub async fn auth(app: AppHandle) -> Result<Authenticated> {
-     let client = reqwest::Client::new();
+     let client = base_client();
      let home = make_hub()?;
      let main = home.join("msa.toml").to_string_lossy().to_string();
      let now = SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs();
@@ -312,7 +314,7 @@ async fn refresh_ms(client: &Client, refresh_token: &str) -> Result<RefreshToken
 
      let resp = client.post(TOKEN_URL).form(&params).send().await.context("refresh token req failed")?;
 
-     if resp.status().is_success() {
+     if !resp.status().is_success() {
           let text = resp.text().await?;
 
           if text.contains("invalid_grant") {
@@ -326,7 +328,7 @@ async fn refresh_ms(client: &Client, refresh_token: &str) -> Result<RefreshToken
 }
 
 pub async fn refresh(refresh_token: &str) -> Result<Authenticated> {
-     let client = Client::new();
+     let client = base_client();
 
      let ms = refresh_ms(&client, refresh_token).await?;
      let (xbox, uhs) = get_xbox(&client, &ms.access_token).await?;
@@ -342,6 +344,6 @@ pub async fn refresh(refresh_token: &str) -> Result<Authenticated> {
           access_token: mc.access_token, 
           user_type: "msa".into(), 
           refresh_token: ms.refresh_token.or_else(|| Some(refresh_token.to_string())), 
-          expires: ms.expires_in + now + 86400, 
+          expires: now + ms.expires_in, 
      })
 }

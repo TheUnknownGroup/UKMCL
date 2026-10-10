@@ -1,4 +1,5 @@
 use std::path::{PathBuf};
+use clients::base_client;
 use tokio::io::AsyncWriteExt;
 use futures_util::StreamExt;
 
@@ -85,10 +86,11 @@ fn names(name: &str) -> String {
 
 async fn destination(path: &PathBuf, paths: &String, url: &str) -> anyhow::Result<PathBuf> {
      let dest = path.join(paths);
+     let client = base_client();
 
      if !dest.exists() {
           std::fs::create_dir_all(dest.parent().unwrap())?;
-          let bys = reqwest::get(url).await?;
+          let bys = client.get(url).send().await?;
           let mut stream = bys.bytes_stream();
           let mut file = tokio::fs::File::create(&dest).await?;
           while let Some(chunk) = stream.next().await {

@@ -3,7 +3,8 @@ pub mod assets;
 pub mod jars;
 pub mod library;
 
-use std::{error::Error, path::{PathBuf}, fs};
+use std::{collections::HashMap, error::Error, fs, path::PathBuf};
+use clients::base_client;
 use serde::{Deserialize};
 
 use crate::client::{assets::fetch_asset_index, jars::download_client_jar, library::{fabric_libraries, fetch_libraries}};
@@ -19,6 +20,25 @@ pub struct ClientInfo {
      pub libraries: Vec<Libraries>,
      pub java_version: JavaVersion,
      pub id: String,
+     pub arguments: Option<Game>,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct Game {
+     pub game: Vec<Arg>,
+}
+
+#[derive(Deserialize, Debug)]
+#[serde(untagged)]
+pub enum Arg {
+     Plain(String),
+     Conditional { rules: Vec<Rules> },
+}
+
+#[derive(Deserialize, Debug)]
+pub struct Rules {
+     #[serde(default)]
+     pub features: HashMap<String, bool>,
 }
 
 #[derive(Deserialize, Debug)]
@@ -126,8 +146,20 @@ pub struct MainClass {
      pub client: String,
 }
 
+impl ClientInfo {
+     pub fn supports(&self, feature: &str) -> bool {
+         self.arguments.as_ref().is_some_and(|a| {
+             a.game.iter().any(|arg| match arg {
+                 Arg::Conditional { rules } => rules.iter().any(|r| r.features.contains_key(feature)),
+                 _ => false,
+             })
+         })
+     }
+}
+
 pub async fn fetchs(app_handle: tauri::AppHandle, url: &str, dest_dir: PathBuf, inst_name: &str, loader: &str, loader_ver: &str) -> Result<ClientInfo, Box<dyn Error>> {
-     let resp = reqwest::get(url)
+     let client = base_client();
+     let resp = client.get(url).send()
           .await?
           .json::<ClientInfo>()
           .await?;
@@ -139,7 +171,7 @@ pub async fn fetchs(app_handle: tauri::AppHandle, url: &str, dest_dir: PathBuf, 
      
      let home = &main.join("assets").join("indexes");
 
-     let asset_json = reqwest::get(&resp.asset_index.url).await?;
+     let asset_json = client.get(&resp.asset_index.url).send().await?;
      let bytes = asset_json.bytes().await?;
      let dest = home.join(format!("{}.json", resp.asset_index.id));
      fs::write(&dest, &bytes)?;
@@ -147,13 +179,13 @@ pub async fn fetchs(app_handle: tauri::AppHandle, url: &str, dest_dir: PathBuf, 
      match loader {
           "vanilla" => {
                let paths = fetch_libraries(&resp.libraries, &main).await?;
-               cfg_write(&inst_name, &resp.id, &resp.asset_index.id, &resp.main_class, main.clone(), &paths, loader, loader_ver)?;
+               cfg_write(&inst_name, &resp.id, &resp.asset_index.id, &resp.main_class, main.clone(), &paths, loader, loader_ver, &resp.java_version.component, resp.supports("is_quick_play_singleplayer"), resp.supports("is_quick_play_multiplayer"))?;
           }
           "fabric" => {
-               fab(&resp.id, loader_ver, &resp.asset_index.id, main.clone(), inst_name, &resp.libraries, loader).await?;
+               fab(&resp.id, loader_ver, &resp.asset_index.id, main.clone(), inst_name, &resp.libraries, loader, &resp.java_version.component, resp.supports("is_quick_play_singleplayer"), resp.supports("is_quick_play_multiplayer")).await?;
           },
           "quilt" => {
-               qui(&resp.id, loader_ver, &resp.asset_index.id, main.clone(), inst_name, &resp.libraries, loader).await?;
+               qui(&resp.id, loader_ver, &resp.asset_index.id, main.clone(), inst_name, &resp.libraries, loader, &resp.java_version.component, resp.supports("is_quick_play_singleplayer"), resp.supports("is_quick_play_multiplayer")).await?;
           }
           other => return Err(format!("couldn't find launcher: {}", other).into())
      }
@@ -161,22 +193,24 @@ pub async fn fetchs(app_handle: tauri::AppHandle, url: &str, dest_dir: PathBuf, 
      Ok(resp)
 }
 
-async fn fab(id: &str, loader_ver: &str, asset_id: &str, main: PathBuf, inst_name: &str, libs: &[Libraries], loader: &str) -> Result<(), Box<dyn Error>> {
-     let resp2 = reqwest::get(format!("https://meta.fabricmc.net/v2/versions/loader/{}/{}", &id, loader_ver)).await?;
+async fn fab(id: &str, loader_ver: &str, asset_id: &str, main: PathBuf, inst_name: &str, libs: &[Libraries], loader: &str, component: &str, single: bool, multi: bool) -> Result<(), Box<dyn Error>> {
+     let client = base_client();
+     let resp2 = client.get(format!("https://meta.fabricmc.net/v2/versions/loader/{}/{}", &id, loader_ver)).send().await?;
      let body = resp2.text().await?;
      let as_json: Fabric = serde_json::from_str(&body).map_err(|e| { format!("decode failed: {e}") })?;
      let paths = fabric_libraries(&as_json.launcher_meta.libraries.common, &as_json.loader.maven, &main, &as_json.intermediary.maven, libs, loader).await?;
-     cfg_write(&inst_name, &id, &asset_id, &as_json.launcher_meta.main_class.client, main, &paths, loader, loader_ver)?;
+     cfg_write(&inst_name, &id, &asset_id, &as_json.launcher_meta.main_class.client, main, &paths, loader, loader_ver, component, single, multi)?;
 
      Ok(())
 }
 
-async fn qui(id: &str, loader_ver: &str, asset_id: &str, main: PathBuf, inst_name: &str, libs: &[Libraries], loader: &str) -> Result<(), Box<dyn Error>> {
-     let resp2 = reqwest::get(format!("https://meta.quiltmc.org/v3/versions/loader/{}/{}", &id, loader_ver)).await?;
+async fn qui(id: &str, loader_ver: &str, asset_id: &str, main: PathBuf, inst_name: &str, libs: &[Libraries], loader: &str, component: &str, single: bool, multi: bool) -> Result<(), Box<dyn Error>> {
+     let client = base_client();
+     let resp2 = client.get(format!("https://meta.quiltmc.org/v3/versions/loader/{}/{}", &id, loader_ver)).send().await?;
      let body = resp2.text().await?;
      let as_json: Quilt = serde_json::from_str(&body).map_err(|e| { format!("decode failed: {e}") })?;
      let paths = fabric_libraries(&as_json.launcher_meta.libraries.common, &as_json.loader.maven, &main, "", libs, loader).await?;
-     cfg_write(&inst_name, &id, &asset_id, &as_json.launcher_meta.main_class.client, main, &paths, loader, loader_ver)?;
+     cfg_write(&inst_name, &id, &asset_id, &as_json.launcher_meta.main_class.client, main, &paths, loader, loader_ver, component, single, multi)?;
 
      Ok(())
 }

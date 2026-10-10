@@ -18,6 +18,14 @@
                loading = false
           }
      }
+
+     async function setup(name) {
+          const url = `/instance?name=${encodeURIComponent(name)}`;
+          const lab = name.replace(/[^a-zA-Z0-9_-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+          const label = `instance-${lab}-${Date.now()}`;
+          await invoke('spawn_window_2', { label, url, name });
+     }
+     
      onMount(getLatest);
 </script>
 
@@ -41,7 +49,7 @@
           <p class="pr-1.5">No instances yet.</p>
      {:else}
           {#each names as name}
-               <a href="/instances#{name}" class="decoration-[none] text-white text-[17px] font-[550] pl-3.75 border-none bg-transparent cursor-pointer w-full text-left border-t-white border-t">⤷ {name}</a>
+               <div><button onclick={() => setup(name)} class="cursor-pointer w-full block whitespace-nowrap overflow-hidden text-left text-ellipsis pl-2.25 right-0 no-underline text-white text-[17px] hover:bg-black/30 transition duration-200 ease-in-out">➙ {name}</button></div>
           {/each}
      {/if}
 </div>

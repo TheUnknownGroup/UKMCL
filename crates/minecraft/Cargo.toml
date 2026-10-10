@@ -18,4 +18,6 @@ folders = { path = "../folders" }
 config = { path = "../config" }
 windows = { path = "../windows" }
 
+clients = { path = "../clients" }
+
 zip = "8"

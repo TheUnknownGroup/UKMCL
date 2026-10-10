@@ -30,4 +30,7 @@ java = { path = "../../crates/java" }
 windows = { path = "../../crates/windows" }
 auth = { path = "../../crates/auth" }
 config = { path = "../../crates/config" }
+mods = { path = "../../crates/mods" }
+download = { path = "../../crates/download" }
 toml = "0.8"
+fastnbt = "2"

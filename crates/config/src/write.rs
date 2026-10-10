@@ -2,7 +2,7 @@ use std::path::PathBuf;
 
 use crate::{MainBuilder};
 
-pub fn cfg_write(inst_name: &str, id: &str, ind: &str, main: &str, main2: PathBuf, class: &[String], load: &str, version: &str) -> Result<(), Box<dyn std::error::Error>>{
+pub fn cfg_write(inst_name: &str, id: &str, ind: &str, main: &str, main2: PathBuf, class: &[String], load: &str, version: &str, component: &str, single: bool, multi: bool) -> Result<(), Box<dyn std::error::Error>>{
      let insts_dir = &main2.join("instances").join(inst_name).join("minecraft").to_string_lossy().to_string();
      let lib_dir = &main2.join("libraries").to_string_lossy().to_string();
      let assets_dir = &main2.join("assets").to_string_lossy().to_string();
@@ -18,11 +18,13 @@ pub fn cfg_write(inst_name: &str, id: &str, ind: &str, main: &str, main2: PathBu
                .ver(ind, main, class.into(), versions_dir)
                .directory(insts_dir, lib_dir, assets_dir)
                .loaders(load, version)
+               .javas(component).supports(multi, single)
                .build();
      } else {
           cfg = MainBuilder::new(inst_name, id)
                .ver(ind, main, class.into(), versions_dir)
                .directory(insts_dir, lib_dir, assets_dir)
+               .javas(component).supports(multi, single)
                .build();
      }
      
