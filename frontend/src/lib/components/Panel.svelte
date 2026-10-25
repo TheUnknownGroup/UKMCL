@@ -3,7 +3,6 @@
      async function spawn() {
           await invoke('spawn_modss', { url: "/store"});
      } 
-     
      let { children } = $props();
 </script>
 
