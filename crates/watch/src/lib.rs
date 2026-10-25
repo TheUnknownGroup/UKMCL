@@ -20,11 +20,7 @@ pub fn watch_dir(app_handle: AppHandle) -> Result<()> {
           let _watcher = watcher;
 
           for event in rx {
-               let is_removal = match &event.kind {
-                    EventKind::Remove(_) => true,
-                    EventKind::Modify(ModifyKind::Name(RenameMode::From)) => true,
-                    _ => false,
-               };
+               let is_removal = matches!(&event.kind, EventKind::Remove(_) | EventKind::Modify(ModifyKind::Name(RenameMode::From)));
 
                if is_removal {
                     let _ = app_handle.emit("instance-removed", ());

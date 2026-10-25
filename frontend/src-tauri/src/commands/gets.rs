@@ -1,32 +1,38 @@
+use create::make::Ent;
 use folders::hub_fold::make_hub;
+use tauri::AppHandle;
 use std::fs;
 
 use config::{main_conf::{AccountConfig, Main}, msa::AuthMSA};
-use download::{Modrinth, download, load};
+use download::{Modrinth, download, download_p, download_s, load};
 use serde::{Serialize, Deserialize};
 
 #[tauri::command]
-pub async fn get(loader: String) -> Result<Vec<String>, String> {
+pub async fn get(loader: String) -> Result<Vec<Ent>, String> {
      let file = match loader.as_str() {
           "vanilla" => "versions.json",
           "fabric" => "fabric.json",
           "quilt" => "quilt.json",
+          "neoforge" => "versions.json",
+          "forge" => "versions.json",
           other => return Err(format!("unknown loader: {}", other)),
      };
      let home = make_hub().map_err(|e| e.to_string())?;
      let all_dir = home.join("jsons").join(file);
      
      let conts = fs::read_to_string(&all_dir).map_err(|e| e.to_string())?;
-     let ids: Vec<String> = serde_json::from_str(&conts).map_err(|e| e.to_string())?;
+     let ids: Vec<Ent> = serde_json::from_str(&conts).map_err(|e| e.to_string())?;
      Ok(ids)
 }
 
 #[tauri::command]
-pub async fn get_loader(loader: String) -> Result<Vec<String>, String> {
+pub async fn get_loader(loader: String, mc: Option<String>) -> Result<Vec<String>, String> {
      let file = match loader.as_str() {
           "vanilla" => return Err("no vanilla loader found".into()),
           "fabric" => "fabric_load.json",
           "quilt" => "quilt_load.json",
+          "forge" => return Err("no vanilla loader found".into()),
+          "neoforge" => "neo_load.json",
           other => return Err(format!("unknown loader: {}", other)),
      };
      let home = make_hub().map_err(|e| e.to_string())?;
@@ -34,6 +40,11 @@ pub async fn get_loader(loader: String) -> Result<Vec<String>, String> {
      
      let conts = fs::read_to_string(&all_dir).map_err(|e| e.to_string())?;
      let ids: Vec<String> = serde_json::from_str(&conts).map_err(|e| e.to_string())?;
+
+     if loader == "neoforge" && let Some(mc) = mc {
+          return Ok(minecraft::neoforge::for_mc(&ids, &mc))
+     }
+     
      Ok(ids)
 }
 
@@ -42,7 +53,7 @@ pub async fn get_java_min() -> Result<u32, String> {
      let home = make_hub().map_err(|e| e.to_string())?;
      let conf = home.join("config.toml");
 
-     let min = Main::load(&conf.to_string_lossy().to_string()).map_err(|e| e.to_string())?;
+     let min = Main::load(conf.to_string_lossy().as_ref()).map_err(|e| e.to_string())?;
      
      Ok(min.java.min)
 }
@@ -52,7 +63,7 @@ pub async fn get_java_max() -> Result<u32, String> {
      let home = make_hub().map_err(|e| e.to_string())?;
      let conf = home.join("config.toml");
 
-     let max = Main::load(&conf.to_string_lossy().to_string()).map_err(|e| e.to_string())?;
+     let max = Main::load(conf.to_string_lossy().as_ref()).map_err(|e| e.to_string())?;
      
      Ok(max.java.max)
 }
@@ -61,7 +72,7 @@ pub async fn get_java_max() -> Result<u32, String> {
 pub async fn acc_info() -> Result<AccountConfig, String> {
      let home = make_hub().map_err(|e| e.to_string())?;
      let conf = home.join("config.toml");
-     let acc = Main::load(&conf.to_string_lossy().to_string()).map_err(|e| e.to_string())?;
+     let acc = Main::load(conf.to_string_lossy().as_ref()).map_err(|e| e.to_string())?;
 
      Ok(acc.account)
 }
@@ -90,8 +101,21 @@ pub async fn list_mod_info(project_id: &str, game_ver: &str) -> Result<Vec<Modri
 }
 
 #[tauri::command]
-pub async fn downloads(url: &str, file: &str, inst_name: &str) -> Result<(), String> {
-     download(url, file, inst_name).await
+pub async fn downloads(app_handle: AppHandle, url: &str, file: &str, inst_name: &str, loader: &str) -> Result<(), String> {
+     let shaders = ["vanilla-like", "optifine", "canvas", "iris"];
+     let loaders = ["fabric", "quilt", "neoforge"];
+     let mods = ["fabric-mod", "quilt-mod", "neoforge-mod"];
+     if shaders.contains(&loader) {
+          download_s(url, file, inst_name).await?;
+     }
+     if loaders.contains(&loader) {
+          download_p(url, file, app_handle, loader).await?;
+     }
+     if mods.contains(&loader) {
+          download(url, file, inst_name).await?;
+     }
+     
+     Ok(())
 }
 
 #[derive(Serialize)]

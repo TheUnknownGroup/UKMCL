@@ -11,7 +11,7 @@ members = [
     "crates/config",
     "crates/windows",
     "crates/auth",
-    "crates/mods",
+    "crates/store",
     "crates/download",
     "crates/clients",
 ]

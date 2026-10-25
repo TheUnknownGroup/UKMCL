@@ -4,7 +4,10 @@ const WIDTH: f64 = 1320.0;
 const HEIGHT: f64 = 480.0;
 
 pub async fn spawn_insts(app_handle: &AppHandle, label: &String, url: &String, name: &String) -> Result<(), Box<dyn std::error::Error>> {
-     if app_handle.get_webview_window(&label).is_some() {
+     if let Some(win) = app_handle.get_webview_window(label) {
+          win.show()?;
+          win.unminimize()?;
+          win.set_focus()?;
           return Ok(())
      }
 

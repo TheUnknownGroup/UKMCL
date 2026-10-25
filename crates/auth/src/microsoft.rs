@@ -291,7 +291,7 @@ pub async fn auth(app: AppHandle) -> Result<Authenticated> {
           })
      }.await;
 
-     let _ = AuthMSA::delete(&main)?;
+     AuthMSA::delete(&main)?;
       
      result
 }

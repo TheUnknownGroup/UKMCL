@@ -12,5 +12,6 @@ pub mod windows;
 pub mod on_start;
 pub mod micro;
 pub mod cancel;
-pub mod mods;
+pub mod modrinth;
+pub mod curseforge;
 pub mod save_mod;

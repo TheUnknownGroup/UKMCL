@@ -4,7 +4,10 @@ const WIDTH: f64 = 830.0;
 const HEIGHT: f64 = 450.0;
 
 pub async fn spawn_inst(app_handle: &AppHandle) -> Result<(), Box<dyn std::error::Error>> {
-     if app_handle.get_webview_window("inst_creation").is_some() {
+     if let Some(win) = app_handle.get_webview_window("inst_creation") {
+          win.show()?;
+          win.unminimize()?;
+          win.set_focus()?;
           return Ok(())
      }
 

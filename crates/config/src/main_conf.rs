@@ -85,7 +85,7 @@ impl AccountConfig {
                access_token: access_token.into(),
                user_type: user_type.into(),
                refresh_token: refresh.clone(),
-               expires: expires.into(),
+               expires,
           }
      }
 }
@@ -145,8 +145,8 @@ impl AccountBuilder {
 impl JavaConfig {
      pub fn new(min: u32, max: u32) -> Self {
           Self {
-               min: min,
-               max: max,
+               min,
+               max,
           }
      }
 }

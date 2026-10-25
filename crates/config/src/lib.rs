@@ -19,6 +19,8 @@ pub struct MainBuilder {
      loader: String,
      version: String,
      component: String,
+     jvm_args: Vec<String>,
+     game_args: Vec<String>,
      supports_quick_play_single: bool,
      supports_quick_play_multi: bool,
 }
@@ -43,6 +45,10 @@ pub struct InstanceConfig {
      pub assets_index: String,
      pub main_class: String,
      pub component: String,
+     #[serde(default)]
+     pub jvm_args: Vec<String>,
+     #[serde(default)]
+     pub game_args: Vec<String>,
      pub supports_quick_play_single: bool,
      pub supports_quick_play_multi: bool,
      pub classpath: Vec<String>,
@@ -82,6 +88,8 @@ impl MainBuilder {
                loader: String::new(),
                version: String::new(),
                component: String::new(),
+               jvm_args: Vec::new(),
+               game_args: Vec::new(),
                supports_quick_play_multi: false,
                supports_quick_play_single: false,
           }
@@ -118,6 +126,12 @@ impl MainBuilder {
           self
      }
 
+     pub fn launch_args(mut self, jvm: &[String], game: &[String]) -> Self {
+          self.jvm_args = jvm.to_vec();
+          self.game_args = game.to_vec();
+          self
+     }
+     
      pub fn supports(mut self, multi: bool, single: bool) -> Self {
           self.supports_quick_play_multi = multi;
           self.supports_quick_play_single = single;
@@ -133,7 +147,9 @@ impl MainBuilder {
                     main_class: self.main_class,
                     component: self.component,
                     classpath: self.classpath,
-                    supports_quick_play_single: self.supports_quick_play_multi,
+                    jvm_args: self.jvm_args,
+                    game_args: self.game_args,
+                    supports_quick_play_single: self.supports_quick_play_single,
                     supports_quick_play_multi: self.supports_quick_play_multi,
                },
                loader: Some(LoaderConfig {

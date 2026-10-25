@@ -10,13 +10,13 @@
      let isEmpty = $state(false);
      let marginLeft = $state('18vw');
      let translate = $state('586%');
-     let width = $state('85%');
+     let width = $state('94.35%');
      
      onMount(() => {
           const update = () => {
                marginLeft = window.innerHeight > 600 ? '32vw' : "18vw";
                translate = window.innerHeight > 600 ? '1114%' : '586%';
-               width = window.innerHeight > 600 ? '96.6%' : '94.1%';
+               width = window.innerHeight > 600 ? '96.8%' : '94.35%';
           };
           window.addEventListener('resize', update);
           update();

@@ -27,7 +27,7 @@ pub async fn spawn_mods(app_handle: AppHandle, label: String, url: String, name:
 }
 
 #[tauri::command]
-pub async fn spawn_modss(app_handle: AppHandle) -> Result<(), String> {
-     mods_window::spawn_mods(&app_handle).await.map_err(|e| e.to_string())?;
+pub async fn spawn_modss(app_handle: AppHandle, url: &str) -> Result<(), String> {
+     mods_window::spawn_mods(&app_handle, url).await.map_err(|e| e.to_string())?;
      Ok(())
 }

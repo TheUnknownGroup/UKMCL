@@ -11,7 +11,7 @@ pub fn inst_del(inst_name: &str) -> Result<()> {
      let inst_dir = insts_dir.join(inst_name);
 
      let config = inst_dir.join("config.toml");
-     let info = Main::load(&config.to_string_lossy().to_string())?;
+     let info = Main::load(config.to_string_lossy().as_ref())?;
      let version = &info.main.minecraft_version;
      let version_dir = make_hub()?.join("versions").join(version).join(inst_name);
 

@@ -9,7 +9,7 @@ pub async fn refresh_start() -> Result<(), String> {
      let home = make_hub().map_err(|e| e.to_string());
      let main = home?.join("config.toml");
      
-     let acc = Main::load(&main.to_string_lossy().to_string()).map_err(|e| format!("{}", e))?;
+     let acc = Main::load(main.to_string_lossy().as_ref()).map_err(|e| format!("{}", e))?;
 
      let now = SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs();
 
@@ -25,6 +25,6 @@ pub async fn refresh_start() -> Result<(), String> {
 
      let ses = refresh(&refresh_token).await.map_err(|e| format!("{e:#}"))?; 
      let conf = AccountConfig::new(&ses.username, &ses.uuid, &ses.access_token, &ses.user_type, &ses.refresh_token, ses.expires);
-     Main::update_acc(&main.to_string_lossy().to_string(), conf).map_err(|e| e.to_string())?;
+     Main::update_acc(main.to_string_lossy().as_ref(), conf).map_err(|e| e.to_string())?;
      Ok(())
 }

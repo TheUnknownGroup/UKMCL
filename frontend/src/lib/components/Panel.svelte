@@ -1,7 +1,7 @@
 <script>
      import { invoke } from "@tauri-apps/api/core";
      async function spawn() {
-          await invoke('spawn_modss');
+          await invoke('spawn_modss', { url: "/store"});
      } 
      
      let { children } = $props();

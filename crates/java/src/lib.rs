@@ -6,8 +6,6 @@ use config::main_conf;
 use folders::hub_fold::make_hub;
 
 use crate::manager::ensure;
-
-#[allow(unused)]
 pub async fn launch(inst_name: &str, world: Option<&str>, server: Option<&str>) -> Result<(), Box<dyn Error>>{
      let home_dir = make_hub()?;
      let inst_config = home_dir.join("instances").join(inst_name).join("config.toml").to_string_lossy().to_string();
@@ -27,9 +25,16 @@ pub async fn launch(inst_name: &str, world: Option<&str>, server: Option<&str>) 
 
      let mut cmd = Command::new(&java);
      cmd.current_dir(&inst_dir.game_dir)
-          .arg(format!("-Djava.library.path={}",&inst_dir.lib_dir))
-          .arg(format!("-Xms{}M", &inst_java.min)).arg(format!("-Xmx{}M", &inst_java.max))
-          .arg("-cp").arg(full)
+          .arg(format!("-Djava.library.path={}", inst_dir.lib_dir))
+          .arg(format!("-Xms{}M", inst_java.min)).arg(format!("-Xmx{}M", inst_java.max));
+
+     if comp == "java-runtime-epsilon" {
+          cmd.arg("--enable-native-access=ALL-UNNAMED").arg("--sun-misc-unsafe-memory-access=allow").arg("--add-opens").arg("java.base/jdk.internal.misc=ALL-UNNAMED");
+     }
+
+     for a in &inst_main.jvm_args { cmd.arg(a); }
+     
+          cmd.arg("-cp").arg(full)
           .arg(&inst_main.main_class)
           .arg("--username").arg(&account.username)
           .arg("--uuid").arg(&account.uuid)
@@ -50,13 +55,16 @@ pub async fn launch(inst_name: &str, world: Option<&str>, server: Option<&str>) 
           cmd.arg(flag).arg(val);
      }
 
-     if comp == "java-runtime-epsilon" {
-          cmd.arg("--enable-native-access=ALL-UNNAMED").arg("--sun-misc-unsafe-memory-access=allow").arg("java.base/jdk.internal.misc=ALL-UNNAMED");
-     }
-
-     cmd.stdout(Stdio::piped());
+     for a in &inst_main.game_args { cmd.arg(a); }
+     
+     cmd.stdout(Stdio::null()).stderr(Stdio::null());
 
      let mut child = cmd.spawn()?;
+
+     let status = tokio::task::spawn_blocking(move || child.wait()).await??;
+     if !status.success() {
+          return Err(format!("game exited with {status}").into());
+     }
     
      Ok(())
 }

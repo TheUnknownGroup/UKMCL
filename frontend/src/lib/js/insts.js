@@ -61,9 +61,10 @@ export async function instInfo(name) {
      }
 }
 
-export async function mods() {
+export async function mods(name) {
      try {
-          await invoke('spawn_modss');
+          let url = `/store?name=${encodeURIComponent(name)}`;
+          await invoke('spawn_modss', { url });
      } catch (e) {
           alert(`Failed to find mods window: "${e}"`);
      }

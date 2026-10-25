@@ -1,5 +1,5 @@
 <script>
-     import { load, create, close } from '$lib/js/inst_c.js';
+     import { load, create, close, loaderList } from '$lib/js/inst_c.js';
 
      let vers = $state([]);
      let vers2 = $state([]);
@@ -12,52 +12,86 @@
      let form;
 
      const cache = new Map();
+     const loadCa = new Map();
 
      $effect(() => {
           if (loader == last) return;
           last = loader;
           fetches(loader);
-     })
+     });
 
-     async function fetches(l) {
-          if (cache.has(l)){
-               const c = cache.get(l);
-               vers = c.versions;
-               vers2 = c.loaders;
-               selected = vers[0] ?? '';
-               selected2 = vers2[0] ?? '';
-               return;
+     $effect(() => {
+          if (loader === "neoforge") loadL(loader, selected); 
+     })
+     
+     const def = (list, l) => {
+          if (l === "forge" || l === "neoforge") {
+               return list.find(v => v.ver_type === "release")?.id ?? '';
           }
-          loading = true;
-          try {
-               const { versions, loaders: ls } = await load(l);
-               cache.set(l, { versions, loaders: ls });
-               vers = versions;
-               vers2 = ls;
-               selected = vers[0] ?? '';
-               selected2 = vers2[0] ?? '';
-          } catch (e) {
-               console.error('Failed to load version list:', e);
-               vers = []; vers2 = [];
-               selected = ''; selected2 = '';
-          } finally {
-               loading = false;
+          return list[0]?.id ?? '';
+     };
+     
+     async function fetches(l) {
+          vers2 = []; selected = ''; selected2 = '';
+          let c = cache.get(l);
+          if (!c) {
+               loading = true;
+               try {
+                    c = await load(l);
+                    cache.set(l, c);
+               } catch (e) {
+                    console.error('Failed to load version list: ', e);
+                    c = { versions: [], loaders: [] };
+               } finally {
+                    if (l === loader) loading = false;
+               }
+          }
+          if (l !== loader) return;
+          vers = c.versions;
+          selected = def(c.versions, l);
+          if (l !== 'neoforge') {
+               vers2 = c.loaders;
+               selected2 = c.loaders[0] ?? '';
           }
      }
 
+     async function loadL(l, mc) {
+          if (!mc) { vers2 = []; selected2 = ''; return;}
+          const key = `${l}:${mc}`;
+          let list = loadCa.get(key);
+          if (!list) {
+               try {
+                    list = await loaderList(l, mc);
+                    loadCa.set(key, list);
+               } catch (e) {
+                    console.error('Failed to load loader versions', e);
+                    list = [];
+               }
+          }
+
+          if (l !== loader || mc !== selected) return;
+          vers2 = list;
+          selected2 = list[0] ?? '';
+     }
+
+     let creating = $state(false);
+     
      async function onSubmit(e) {
           e.preventDefault();
           const name = instName.trim();
           if (!name || loading) return;
+          creating = true;
           try {
                await create(name, selected, loader, selected2);
                form?.reset();
                instName = '';
                loader = 'vanilla';
+               close(300);
           } catch (e) {
                console.error(e);
+          } finally {
+               creating = false;
           }
-          close(300);
      }
 </script>
 
@@ -76,18 +110,26 @@
           <form bind:this={form} onsubmit={onSubmit}>
                <h3 class="text-[30px] text-[#D9D9D9] pb-4">Instance Name</h3>
                <input type="text" class="bg-[#d9d9d9] text-black rounded-[5px] p-1.75 mb-1.75 mr-1.75 text-[16px]" placeholder="Instance" required bind:value={instName}>
-               <select name="ver-list" id="ver-list" class="p-1.5 text-[16px] w-25 text-ellipsis border-none" required bind:value={selected}>
-                    {#each vers as id (id)}
-                         <option value={id}>{id}</option>
-                    {/each}
-               </select>
+               {#if loader !== "forge" && loader !== "neoforge"}
+                    <select name="ver-list" id="ver-list" class="p-1.5 text-[16px] w-25 text-ellipsis border-none" required bind:value={selected}>
+                         {#each vers as i}
+                              <option value={i.id}>{i.id}</option>
+                         {/each}
+                    </select>
+               {:else if loader === "forge" || loader === "neoforge"}
+                    <select name="ver-list" id="forge-list" class="p-1.5 text-[16px] w-25 text-ellipsis border-none" required bind:value={selected}>
+                         {#each vers.filter(v => v.ver_type === "release" ) as i (i.id) }
+                              <option value={i.id}>{i.id}</option>
+                         {/each}
+                    </select>
+               {/if}
                <br>
-               {#if loader !== "vanilla" && loader !== "forge" && loader !== "neoforge"}
-               <select name="ver-list" id="ver-list" class="absolute translate-x-[172%] p-1.5 text-[16px] w-25 text-ellipsis border-none" required bind:value={selected2}>
-                    {#each vers2 as id (id)}
-                         <option value={id}>{id}</option>
-                    {/each}
-               </select>
+               {#if loader !== "vanilla" && loader !== "forge"}
+                    <select name="ver-list" id="loader-list" class="absolute translate-x-[172%] p-1.5 text-[16px] w-25 text-ellipsis border-none" required bind:value={selected2}>
+                         {#each vers2 as i}
+                              <option value={i}>{i}</option>
+                         {/each}
+                    </select>
                {/if}
                <div class="fixed translate-x-[265%] translate-y-[-72%] text-white">
                     <input type="radio" id="vanilla" value="vanilla" bind:group={loader} required>
@@ -107,7 +149,7 @@
                     <div class="float-right pl-3"><img src="/assets/images/neoforged.svg" alt="Neoforged" width="24"></div>
                </div>
                <button type="button" onclick={() => close(800)} class="rounded-[5px] p-[5px_6px_4px_6px] text-[14px] text-white shadow-[0_0_10px_rgba(0,0,0,0.7)] bg-[#a80000] mr-1.75 hover:bg-red-600 cursor-pointer">Cancel</button>
-               <button type="submit" class="rounded-[5px] p-[5px_6px_4px_6px] text-[14px] text-white shadow-[0_0_10px_rgba(0,0,0,0.7)] bg-[#00a600] hover:bg-[#005c00] cursor-pointer">Create</button>
+               <button type="submit" class="rounded-[5px] p-[5px_6px_4px_6px] text-[14px] text-white shadow-[0_0_10px_rgba(0,0,0,0.7)] bg-[#00a600] hover:bg-[#005c00] cursor-pointer" disabled={creating}>Create</button>
           </form>
      </div> 
 </div>

@@ -10,14 +10,14 @@ serde_json = "1"
 reqwest = "0.13"
 tauri = { version = "2", features = [] }
 futures-util = "0.3"
-
-tokio = { version = "1", features = ["full"] }
 anyhow = "1"
 
 folders = { path = "../folders" }
 config = { path = "../config" }
 windows = { path = "../windows" }
+java = { path = "../java"}
 
 clients = { path = "../clients" }
+tokio = { version = "1", features = ["full"] }
 
-zip = "8"
+zip = "9"

@@ -34,7 +34,7 @@
      } 
      
      const onEdit = () => edit(name);
-     const onMods = () => mods();
+     const onMods = () => mods(name);
 </script>
 <style>
      .color {
@@ -75,7 +75,6 @@
      <div class="border border-white text-white mx-2 min-h-[34.25%] max-h-[34.25%] overflow-scroll">
           {#each list as name}
                <button onclick={() => { onLaunchSave(name.folder) }} class="cursor-pointer hover:bg-black/30 w-full block py-1.25"><p class="float-left pl-2">{name.folder}</p></button>
-
           {/each}
      </div>
      <h1 class="text-center text-[35px] border-white text-white font-semibold text-ellipsis overflow-hidden whitespace-nowrap pt-2 border-y-0 border mx-2 bg-[#02749E]">Servers</h1>
@@ -85,4 +84,3 @@
           {/each}
      </div>
 </div>
-<!-- onclick={location.href='/mods'} -->

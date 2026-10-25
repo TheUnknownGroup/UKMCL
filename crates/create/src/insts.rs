@@ -31,11 +31,9 @@ pub async fn setup_inst(app_handle: tauri::AppHandle, inst_name: String, id: Str
      
      let home = make_hub()?.join("versions");
      let vers = home.join(&id).join(&unique_name);
-
-     for sub in ["minecraft"] {
-          if !inst_dir.join(sub).exists() {
-               fs::create_dir_all(&inst_dir.join(sub))?;
-          }
+     let sub = "minecraft";
+     if !inst_dir.join(sub).exists() {
+          fs::create_dir_all(inst_dir.join(sub))?;
      }
      
      fs::create_dir_all(&vers)?;

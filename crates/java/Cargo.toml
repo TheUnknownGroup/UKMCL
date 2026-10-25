@@ -5,7 +5,6 @@ edition.workspace = true
 authors.workspace = true
 
 [dependencies]
-minecraft = { path = "../minecraft" }
 config = { path = "../config" }
 folders = { path = "../folders" }
 clients = { path = "../clients" }

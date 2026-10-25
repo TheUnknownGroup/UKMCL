@@ -8,6 +8,7 @@ const FABRIC_URL_LOADER: &str = "https://meta.fabricmc.net/v2/versions/loader";
 const QUILT_URL_GAME: &str = "https://meta.quiltmc.org/v3/versions/game";
 const QUILT_URL_LOADER: &str = "https://meta.quiltmc.org/v3/versions/loader";
 
+
 #[derive(Deserialize)]
 pub struct VersionMani {
      pub versions: Vec<VersionEntry>,

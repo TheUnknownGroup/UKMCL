@@ -9,7 +9,7 @@ pub async fn build() -> Result<(), Box<dyn std::error::Error>> {
           return Ok(())
      }
      let main_conf = AccountBuilder::new().account("User", &offline("User").hyphenated().to_string(), "0", "legacy").java(2048, 4096).build();
-     main_conf.save(&main2.join("config.toml").to_string_lossy().to_string())?;
+     main_conf.save(main2.join("config.toml").to_string_lossy().as_ref())?;
      
      Ok(())
 }

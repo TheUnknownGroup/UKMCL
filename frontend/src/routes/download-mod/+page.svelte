@@ -44,9 +44,8 @@
 
     async function download(url, file) {
          try {
-              await invoke('downloads', { url, file, instName: inst});
-              await invoke('delete_mod_json', { id: info, ver: version });
-              setTimeout(() => getCurrentWindow().close(), 800);
+              await invoke('downloads', { url, file, instName: inst, loader: `${loader}-mod`});
+              close();
          } catch (e) {
               console.error(e);
          }
@@ -64,14 +63,13 @@
     async function downDeps(selecteds) {
           try {
                const file = selecteds.files.find(f => f.primary) ?? selecteds.files[0];
-               await invoke('downloads', { url: file.url, file: file.filename, instName: inst });
+               await invoke('downloads', { url: file.url, file: file.filename, instName: inst, loader: `${loader}-mod` });
                for (const dep of selecteds.dependencies ?? []) {
                     if(dep.dependency_type !== "required") continue;
                     if (!dep.project_id) continue;
                     await invoke('download_depss', { versionId: dep.version_id, projectId: dep.project_id, game: version, loader, instName: inst })
                }
-               await invoke('delete_mod_json', { id: info, ver: version });
-               setTimeout(() => getCurrentWindow().close(), 800);
+               close();
           } catch (e) {
                console.error(e);
           }

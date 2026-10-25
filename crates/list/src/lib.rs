@@ -12,10 +12,8 @@ pub fn list() -> Result<Vec<String>> {
      let mut names = Vec::new();
      for entry in fs::read_dir(&insts_dir)? {
           let entry = entry?;
-          if entry.path().is_dir() {
-               if let Some(name) = entry.file_name().to_str() {
-                    names.push(name.to_string());
-               }
+          if entry.path().is_dir() && let Some(name) = entry.file_name().to_str(){
+               names.push(name.to_string());
           }
      }
      names.sort();

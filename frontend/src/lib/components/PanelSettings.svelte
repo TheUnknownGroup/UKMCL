@@ -5,6 +5,8 @@
      import { auth } from "$lib/js/login.js";
      import { invoke } from "@tauri-apps/api/core";
      import { onMount } from 'svelte';
+     import Account from './Account.svelte';
+     import AuthOkToast from './AuthOkToast.svelte';
 
      let min = $state('');
      let max = $state('');
@@ -12,11 +14,23 @@
      let inp2 = $state('');
      let form;
 
+     let finished = $state(false);
+
+     let translate = $state('653.3%');
+     let width = $state('94.35%');
+
      onMount(async () => {
           let num1 = await mins();
           let num2 = await maxs();
           min = num1;
           max = num2;
+
+          const update = () => {
+               translate = window.innerHeight > 600 ? '1181%' : '653.3%';
+               width = window.innerHeight > 600 ? '96.8%' : '94.35%';
+          }
+          window.addEventListener('resize', update);
+          update();
      });
 
      let canSave = $derived(inp1.trim() !== '' || inp2.trim !== '');
@@ -29,12 +43,11 @@
      }
 
      async function micro() {
-          console.log("launch");
           const result = await auth();
           if (result === 'done') {
-               console.log('signed in');
+               finished = true;
           } else {
-               console.log('cancelled');
+               finished = false;
           }
      }
 
@@ -91,6 +104,13 @@
                <button onclick={micro} class="px-2 pt-0.5 mb-1 rounded-lg cursor-pointer w-full" id="img">Microsoft</button><br>
                <button onclick={spawn} class="bg-green-900 px-2 pt-0.5 rounded-lg cursor-pointer w-full">Offline</button>
           </div>
+
+          <AuthOkToast bind:finished />
+          
+          <div class="absolute" style:width={width} style:transform={`translateY(${translate})`}>
+               <Account />
+          </div>
+          
      </MainText>
      {@render children?.()}
 </div>

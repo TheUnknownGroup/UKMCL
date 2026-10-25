@@ -1,11 +1,11 @@
-use std::path::{PathBuf};
+use std::path::{Path, PathBuf};
 use clients::base_client;
 use tokio::io::AsyncWriteExt;
 use futures_util::StreamExt;
 
 use crate::client::{Libraries, CommonLibs, applies};
 
-pub async fn fetch_libraries(libs: &[Libraries], main: &PathBuf) -> Result<Vec<String>, Box<dyn std::error::Error>>{
+pub async fn fetch_libraries(libs: &[Libraries], main: &Path) -> Result<Vec<String>, Box<dyn std::error::Error>>{
      let mut class = Vec::new();
      let path = main.join("libraries");
      
@@ -23,7 +23,7 @@ pub async fn fetch_libraries(libs: &[Libraries], main: &PathBuf) -> Result<Vec<S
      Ok(class)
 }
 
-pub async fn fabric_libraries(libs: &[CommonLibs], loader: &str, main: &PathBuf, inter: &str, vanilla_libs: &[Libraries], loaders: &str) -> Result<Vec<String>, Box<dyn std::error::Error>> {
+pub async fn fabric_libraries(libs: &[CommonLibs], loader: &str, main: &Path, inter: &str, vanilla_libs: &[Libraries], loaders: &str) -> Result<Vec<String>, Box<dyn std::error::Error>> {
      let mut class = Vec::new();
      let path = main.join("libraries");
 
@@ -84,7 +84,7 @@ fn names(name: &str) -> String {
      format!("{}/{artifact}/{version}/{artifact}-{version}.jar", group.replace(".", "/"))
 }
 
-async fn destination(path: &PathBuf, paths: &String, url: &str) -> anyhow::Result<PathBuf> {
+async fn destination(path: &Path, paths: &String, url: &str) -> anyhow::Result<PathBuf> {
      let dest = path.join(paths);
      let client = base_client();
 
