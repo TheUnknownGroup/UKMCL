@@ -27,6 +27,6 @@
     "@tauri-apps/plugin-opener": "^2.7.2",
     "@types/bun": "^1.4.4",
     "bootstrap-icons": "^1.13.2",
-    "typescript": "^6.0.0"
+    "typescript": "^7.0.2"
   }
 }
