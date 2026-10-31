@@ -1,29 +1,28 @@
 {
-	"name": "ukmcl",
-	"private": true,
-	"version": "1.0.6",
-	"type": "module",
-	"scripts": {
-		"dev": "vite dev",
-		"build": "vite build",
-		"preview": "vite preview",
-		"tauri": "tauri"
-	},
-	"devDependencies": {
-		"@sveltejs/adapter-static": "^3.0.10",
-		"@sveltejs/kit": "^2.70.3",
-		"@sveltejs/vite-plugin-svelte": "^7.3.1",
-		"@tailwindcss/vite": "^4.3.3",
-		"svelte": "^5.57.2",
-		"vite": "^8.3.3"
-	},
-	"dependencies": {
-		"@tauri-apps/api": "^2.12.1",
-		"@tauri-apps/cli": "^2.12.1",
-		"@tauri-apps/plugin-process": "~2",
-		"@tauri-apps/plugin-updater": "~2",
-		"@types/bun": "^1.4.2",
-		"bootstrap-icons": "^1.13.1",
-		"typescript": "^7.0.2"
-	}
+  "name": "ukmcl",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "tauri": "tauri"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-static": "^3.0.10",
+    "@sveltejs/kit": "^2.70.3",
+    "@sveltejs/vite-plugin-svelte": "^7.3.1",
+    "@tailwindcss/vite": "^4.3.3",
+    "svelte": "^5.57.2",
+    "vite": "^8.3.5"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.12.4",
+    "@tauri-apps/cli": "^2.12.4",
+    "@tauri-apps/plugin-opener": "^2.7.2",
+    "@types/bun": "^1.4.4",
+    "bootstrap-icons": "^1.13.2",
+    "typescript": "^7.0.2"
+  }
 }

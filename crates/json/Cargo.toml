@@ -1,0 +1,16 @@
+[package]
+name = "json_minecraft"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+utils = { workspace = true }
+serde = { workspace = true }
+serde_json.workspace = true
+tauri = { workspace = true }
+reqwest = { workspace = true }
+anyhow.workspace = true
+tokio = { workspace = true }
+futures-util.workspace = true
+config = { workspace = true }

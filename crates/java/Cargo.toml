@@ -1,21 +1,5 @@
 [package]
 name = "java"
-version.workspace = true
 edition.workspace = true
 authors.workspace = true
-
-[dependencies]
-config = { path = "../config" }
-folders = { path = "../folders" }
-clients = { path = "../clients" }
-toml = "1"
-dirs = "6"
-
-anyhow = "1"
-futures = "0.3"
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
-tokio = { version = "1", features = ["fs", "sync", "time", "macros", "rt-multi-thread"] }
-sha1 = "0.11"
-hex = "0.4"
-reqwest = { version = "0.13", default-features = false, features = ["json", "rustls"]}
+version.workspace = true

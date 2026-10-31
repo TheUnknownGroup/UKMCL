@@ -1,0 +1,57 @@
+// Java Edition Versions
+https://launchermeta.mojang.com/mc/game/version_manifest_v2.json
+https://piston-meta.mojang.com/mc/game/version_manifest_v2.json
+
+// Runtime
+https://launchermeta.mojang.com/v1/products/java-runtime/2ec0cc96c44e5a76b9c8b7c39df7210883d12871/all.json
+
+// OS Metadata
+
+// Linux
+https://launchermeta.mojang.com/v1/products/launcher/6f083b80d5e6fabbc4236f81d0d8f8a350c665a9/linux.json
+https://launchermeta.mojang.com/v1/products/launcher/bb3355e087ada56549e6342233b57bf65d9d7147/linux.json
+
+// Windows
+https://launchermeta.mojang.com/v1/products/launcher/d03cf0cf95cce259fa9ea3ab54b65bd28bb0ae82/windows-x86.json
+https://launchermeta.mojang.com/v1/products/launcher/a9ed4e847bec412e84bbdc95c11e7771218be683/windows-x86.json
+
+// MacOS
+https://launchermeta.mojang.com/v1/products/launcher/022631aeac4a9addbce8e0503dce662152dc198d/mac-os.json
+
+// News - Deprecated
+https://launchercontent.mojang.com/news.json
+
+// Other Manifest Site
+https://skyrising.github.io/mc-versions/
+
+
+// JDK Download
+
+// Mac
+https://api.adoptium.net/v3/assets/feature_releases/{}/ga?architecture=x64&heap_size=normal&image_type=jdk&jvm_impl=hotspot&os=mac
+
+// Windows
+https://api.adoptium.net/v3/assets/feature_releases/{}/ga?architecture=x64&heap_size=normal&image_type=jdk&jvm_impl=hotspot&os=windows
+
+// Linux
+https://api.adoptium.net/v3/assets/feature_releases/{}/ga?architecture=x64&heap_size=normal&image_type=jre&jvm_impl=hotspot&os=linux
+
+
+// loaders
+Forge:
+https://files.minecraftforge.net/net/minecraftforge/forge/maven-metadata.json
+
+Fabric:
+https://meta.fabricmc.net/v2/versions
+
+Neoforged:
+https://maven.neoforged.net/releases/net/neoforged/neoforge/maven-metadata.xml
+
+QuiltMC:
+https://meta.quiltmc.org/v3/versions
+
+Azure Client ID
+56bb5bc5-ab86-4960-bf94-20e638adc063
+
+const CLIENT_ID: &str = "56bb5bc5-ab86-4960-bf94-20e638adc063";
+const CURSEFORGE_API_KEY: &str = "$2a$10$f16D31uQ7HXzyJ77NqA.kexdtUsRVNACnjisbhRa31xWRDg1DA/CS";

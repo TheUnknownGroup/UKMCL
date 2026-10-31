@@ -2,12 +2,16 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "description": "Capability for the main window",
-  "windows": ["main", "download-bar", "inst_creation", "instance-*", "offline", "mod-*", "shaders-*", "modpacks-*"],
+  "windows": ["main", "download-bar", "instance_creation", "instance-*", "offline", "mod-*", "shaders-*", "modpacks-*", "store"],
   "permissions": [
     "core:default",
     "opener:default",
     "core:webview:allow-create-webview-window",
     "core:window:allow-close",
-    "opener:allow-open-path"
+    "opener:allow-open-path",
+    "core:window:allow-minimize",
+    "core:window:allow-toggle-maximize",
+    "core:window:allow-start-dragging",
+    "core:window:allow-set-min-size"
   ]
 }

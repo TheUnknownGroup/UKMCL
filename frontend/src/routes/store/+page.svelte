@@ -1,15 +1,12 @@
-<script>
-     import PanelMods from '$lib/components/PanelMods.svelte';
+<script lang="ts">
+     import Panel from '$lib/components/Panel.svelte';
+     import MainText from '$lib/components/MainText.svelte';
+     
+     let { children } = $props();
 </script>
-
-<style>
-     :root {
-          background: #5F6066;
-     }
-
-     :root:before {
-          opacity: 0;
-     }
-</style>
-
-<PanelMods />
+<div class="flex">
+     <MainText>
+          <p></p>
+     </MainText>
+     {@render children?.()}
+</div>

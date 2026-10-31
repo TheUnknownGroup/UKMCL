@@ -1,0 +1,10 @@
+[package]
+name = "maker"
+authors.workspace = true
+edition.workspace = true
+version.workspace = true
+
+[dependencies]
+tauri = { workspace = true }
+utils = { workspace = true }
+json_minecraft = { workspace = true }
