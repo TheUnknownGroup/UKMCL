@@ -13,7 +13,9 @@ export async function loadInstance(container: any) {
 
           for (const n of name) {
                const card = document.createElement("div");
-               card.innerHTML = `<inst-card name="${n}"></inst-card>`;
+               const instanceCard = document.createElement("inst-card");
+               instanceCard.setAttribute("name", String(n));
+               card.appendChild(instanceCard);
                container.appendChild(card);
           }
           return { empty: false }
@@ -35,26 +37,33 @@ export async function setup(container: any, onRefresh: any) {
           await listen('created', refresh),
      ];
 
-     container?.addEventListener('click', async (e) => {
-          const btn = e.target.closest('.instance-card');
+     const click = async (e: Event) => {
+          const target = e.target;
+          if (!(target instanceof Element)) return;
+          const btn = target.closest<HTMLButtonElement>('.instance-card');
           if (!btn) return;
 
           const name = btn.dataset.name;
+          if (!name) return;
           const url = `/instance?name=${encodeURIComponent(name)}`;
           const labelReplace = name.replace(/[^a-zA-Z0-9_-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
           const label = `instance-${labelReplace}-${Date.now()}`;
 
           await invoke('spawn_instance_window', { label, url, name });
-     });
+     };
+     container?.addEventListener('click', click);
 
      await refresh();
-     return () => unlisten.forEach((fn) => fn());
+     return () => {
+          unlisten.forEach((fn) => fn());
+          container?.removeEventListener('click', click);
+     };
 }
 
 export async function load(loader: any) {     
-     await invoke('load_versions', { loader: loader });
-     const versions = await invoke('get_version_list', { loader: loader });
-     const loaders = (loader === "vanilla" || loader === "forge" || loader === "neoforge") ? [] : await invoke('get_loader_list', { loader: loader, mc: null });
+     await invoke('load_versions', { loader });
+     const versions = await invoke('get_version_list', { loader });
+     const loaders = (loader === "vanilla" || loader === "forge" || loader === "neoforge") ? [] : await invoke('get_loader_list', { loader, mc: null });
      return { versions , loaders };
 }
 

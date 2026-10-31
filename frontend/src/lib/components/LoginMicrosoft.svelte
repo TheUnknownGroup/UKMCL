@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount, onDestroy } from "svelte";
-    import { resolveAuth, createCount, format, copy, cancel } from "$lib/ts/settings";
+    import { resolveAuth, createCount, format, copy, cancel } from "#lib/ts/settings";
     import { invoke } from "@tauri-apps/api/core";
     import { listen } from "@tauri-apps/api/event";
     let open = $state(false);

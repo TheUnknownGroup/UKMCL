@@ -1,8 +1,8 @@
-use std::{collections::HashMap, path::Path, sync::{Arc, atomic::{AtomicU64, Ordering::Relaxed}}, time::Instant};
+use std::{collections::{HashMap, HashSet}, path::Path, sync::{Arc, atomic::{AtomicU64, Ordering::Relaxed}}, time::Instant};
 use futures_util::stream::{self, StreamExt};
 use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Emitter};
-use crate::minecraft::download::download_to;
+use crate::minecraft::download::{download_to_verified, file_match};
 
 #[derive(Deserialize, Debug)]
 pub struct AssetIndex {
@@ -24,22 +24,23 @@ struct DownloadProgress {
      file_total: u32,
 }
 
-pub async fn asset_index(url: &str, index_path: &Path, client: &reqwest::Client) -> anyhow::Result<AssetIndex> {
-     let bytes = client.get(url).send().await?.error_for_status()?.bytes().await?;
-     let index: AssetIndex = serde_json::from_slice(&bytes)?;
-     if let Some(dir) = index_path.parent() {
-          tokio::fs::create_dir_all(dir).await?;
-     }
-     tokio::fs::write(index_path, &bytes).await?;
-     Ok(index)
+pub async fn asset_index(url: &str, index_path: &Path, client: &reqwest::Client, size: Option<u64>, sha1: Option<&str>) -> anyhow::Result<AssetIndex> {
+     download_to_verified(client, url, index_path, size, sha1).await?;
+     let bytes = tokio::fs::read(index_path).await?;
+     Ok(serde_json::from_slice(&bytes)?)
 }
 
 pub async fn download_assets(app_handle: AppHandle, asset_path: &Path, index: &HashMap<String, AsObjects>, client: &reqwest::Client) -> anyhow::Result<()> {
      let obj_dir = asset_path.join("objects");
+     let mut seen = HashSet::new();
      let pending: Vec<(String, AsObjects)> = index.iter()
+          .filter(|(_, obj)| seen.insert(obj.hash.clone()))
           .filter(|(_, o)| {
+               if o.hash.len() != 40 || !o.hash.bytes().all(|b| b.is_ascii_hexdigit()) {
+                    return true;
+               }
                let dest = obj_dir.join(&o.hash[..2]).join(&o.hash);
-               std::fs::metadata(&dest).map_or(true, |m| m.len() != o.size)
+               !file_match(&dest, Some(o.size), Some(&o.hash))
           })
           .map(|(m, o)| (m.clone(), o.clone()))
           .collect();
@@ -56,10 +57,13 @@ pub async fn download_assets(app_handle: AppHandle, asset_path: &Path, index: &H
                let obj_dir = &obj_dir;
 
                async move {
+                    if obj.hash.len() != 40 || !obj.hash.bytes().all(|b| b.is_ascii_hexdigit()) {
+                         return Err(format!("{}: invalid SHA-1 asset hash", name));
+                    }
                     let pref = &obj.hash[..2];
                     let dest = obj_dir.join(pref).join(&obj.hash);
                     let url = format!("https://resources.download.minecraft.net/{}/{}", pref, obj.hash);
-                    let res = download_to(&client, &url, &dest, Some(obj.size)).await;
+                    let res = download_to_verified(&client, &url, &dest, Some(obj.size), Some(&obj.hash)).await;
                     if res.is_ok() {
                          let d = downloaded.fetch_add(obj.size, Relaxed) + obj.size;
                          let f = files.fetch_add(1, Relaxed) + 1;

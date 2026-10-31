@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use tauri::AppHandle;
 use utils::{client::base, folders::make_hub};
 
-use crate::{minecraft::{ClientInfo, Fabric, Quilt, assets::{asset_index, download_assets}, download::download_to, library::{fabric_libraries, fetch_libraries}, version::get_version_info}, request::{fabric::{fabric_loader, fabric_version}, quilt::{quilt_loader, quilt_version}, vanilla::fetch_vanilla_list}};
+use crate::{minecraft::{ClientInfo, Fabric, Quilt, assets::{asset_index, download_assets}, download::{download_to_verified}, library::{fabric_libraries, fetch_libraries}, version::get_version_info}, request::{fabric::{fabric_loader, fabric_version}, quilt::{quilt_loader, quilt_version}, vanilla::fetch_vanilla_list}};
 
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct ListEntry {
@@ -111,13 +111,15 @@ pub async fn fetch_all_minecraft(app: AppHandle, name: &str, loader: &str, loade
      let resp: ClientInfo = serde_json::from_slice(&raw)?;
      let assets_directory = home.join("assets");
      let index_path = assets_directory.join("indexes").join(format!("{}.json", resp.asset_index.id));
-     let index = asset_index(&resp.asset_index.url, &index_path, &client).await?;
+     let index = asset_index(
+          &resp.asset_index.url, &index_path, &client,
+          resp.asset_index.size, resp.asset_index.sha1.as_deref(),
+     ).await?;
      let version_directory = home.join("versions").join(&id).join(name);
      fs::create_dir_all(&version_directory)?;
      let client_jar = version_directory.join("client.jar");
      download_assets(app, &assets_directory, &index.objects, &client).await?;
-     download_to(&client, &resp.downloads.client.url, &client_jar, resp.downloads.client.size).await?;
-
+     download_to_verified(&client, &resp.downloads.client.url, &client_jar, resp.downloads.client.size, resp.downloads.client.sha1.as_deref()).await?;
      let resolved = match loader {
           "vanilla" => Resolved {
                main_class: resp.main_class.clone(),

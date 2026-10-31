@@ -1,6 +1,6 @@
 <script lang="ts">
      import { goto } from "$app/navigation";
-     import { account, microsoft, signOut } from "$lib/ts/settings";
+     import { account, microsoft, signOut } from "#lib/ts/settings";
      import { onMount } from "svelte";
      import { slide } from "svelte/transition";
      const SETTINGS = `/settings?title=${encodeURIComponent("Settings")}`

@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
-use std::io::{Error, ErrorKind, Result};
+use std::{io::{Error, ErrorKind, Result}, path::Path};
+use crate::atomic::atomic_write;
 
 #[derive(Debug)]
 pub struct AccountBuilder {
@@ -48,7 +49,7 @@ impl Default for JavaConfig {
 impl AccountStruct {
      pub fn save(&self, path: &str) -> Result<()> {
           let toml_str = toml::to_string_pretty(self).map_err(|e| Error::new(ErrorKind::InvalidData, e))?;
-          std::fs::write(path, toml_str)
+          atomic_write(Path::new(path), toml_str.as_bytes())
      }
      
      pub fn load(path: &str) -> Result<Self> {

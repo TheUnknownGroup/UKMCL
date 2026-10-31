@@ -1,5 +1,5 @@
 <script lang="ts">
-     import { setup } from "$lib/ts/instance";
+     import { setup } from "#lib/ts/instance";
      import { onMount } from "svelte";
      import CreateButton from "./CreateButton.svelte";
      let container: any;

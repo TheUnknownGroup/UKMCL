@@ -1,8 +1,8 @@
 <script lang="ts">
      import "../app.css";
-     import TitleBar from '$lib/components/TitleBar.svelte';
-     import GeneralToast from "$lib/components/GeneralToast.svelte";
-     import LoginMicrosoft from "$lib/components/LoginMicrosoft.svelte";
+     import TitleBar from '#lib/components/TitleBar.svelte';
+     import GeneralToast from "#lib/components/GeneralToast.svelte";
+     import LoginMicrosoft from "#lib/components/LoginMicrosoft.svelte";
      import { getCurrentWindow } from "@tauri-apps/api/window";
      import { onMount } from "svelte";
      const win = getCurrentWindow();

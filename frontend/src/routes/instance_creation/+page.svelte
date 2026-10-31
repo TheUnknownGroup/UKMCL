@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { load, create, close, loaderList, def } from "$lib/ts/instance";
+    import { load, create, close, loaderList, def } from "#lib/ts/instance";
     let versions: any = $state([]);
     let loaderVersions = $state([]);
     let selectedVersion = $state('');

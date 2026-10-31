@@ -39,6 +39,8 @@ pub struct Rules {
 pub struct AssetIn {
      pub id: String,
      pub url: String,
+     pub size: Option<u64>,
+     pub sha1: Option<String>,
 }
 
 #[derive(Deserialize, Debug)]
@@ -50,6 +52,7 @@ pub struct Downloads {
 pub struct ClientJar {
      pub url: String,
      pub size: Option<u64>,
+     pub sha1: Option<String>,
 }
 
 #[derive(Deserialize, Debug)]

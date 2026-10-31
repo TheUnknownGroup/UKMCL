@@ -2,7 +2,7 @@
      import { onMount } from "svelte";
      import { listen } from '@tauri-apps/api/event';
      import { fly } from 'svelte/transition';
-     import { toasts, pushToast, pauseToast, resumeToast, type ToastKind } from "$lib/toast.svelte";
+     import { toasts, pushToast, pauseToast, resumeToast, type ToastKind } from "#lib/toast.svelte";
      
      const colors: Record<ToastKind, string> = {
           success: 'bg-green-600',

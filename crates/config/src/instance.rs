@@ -1,6 +1,8 @@
-use std::io::Result;
+use std::{io::Result, path::Path};
 
 use serde::{Deserialize, Serialize};
+
+use crate::atomic::atomic_write;
 #[derive(Debug)]
 pub struct MainBuilder {
      instance: String,
@@ -63,7 +65,7 @@ pub struct DirectoryConfig {
 impl InstanceStruct {
      pub fn save(&self, path: &str) -> Result<()> {
           let toml_str = toml::to_string_pretty(self).unwrap();
-          std::fs::write(path, toml_str)
+          atomic_write(Path::new(path), toml_str.as_bytes())
      }
 
      pub fn load(path: &str) -> Result<Self> {

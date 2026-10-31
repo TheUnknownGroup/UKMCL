@@ -1,7 +1,7 @@
 <script lang="ts">
-     import Panel from '$lib/components/Panel.svelte';
-     import MainText from '$lib/components/MainText.svelte';
-     import { microsoft } from '$lib/ts/settings';
+     import Panel from '#lib/components/Panel.svelte';
+     import MainText from '#lib/components/MainText.svelte';
+     import { microsoft } from '#lib/ts/settings';
      
      let { children } = $props();
 </script>

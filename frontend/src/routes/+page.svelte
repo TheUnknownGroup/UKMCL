@@ -1,7 +1,7 @@
 <script lang="ts">
-     import Panel from '$lib/components/Panel.svelte';
-     import MainText from '$lib/components/MainText.svelte';
-     import Typewriter from '$lib/components/Typewriter.svelte';
+     import Panel from '#lib/components/Panel.svelte';
+     import MainText from '#lib/components/MainText.svelte';
+     import Typewriter from '#lib/components/Typewriter.svelte';
      import { onMount } from 'svelte';
      import { invoke } from '@tauri-apps/api/core';
      import { listen } from '@tauri-apps/api/event';
