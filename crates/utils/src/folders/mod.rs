@@ -3,6 +3,11 @@ use std::{fs, io::{Error, ErrorKind, Result}, path::PathBuf};
 pub fn make_hub() -> Result<PathBuf> {
      let hub = dirs::home_dir().ok_or_else(|| Error::new(ErrorKind::NotFound, "couldn't resolve home directory"))?;
      let base = hub.join(".ukmcl");
+
+     if base.exists() {
+          return Ok(base)
+     }
+     
      if !base.exists() {
           fs::create_dir_all(&base)?;
      }

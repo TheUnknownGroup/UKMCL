@@ -3,3 +3,17 @@ name = "java"
 edition.workspace = true
 authors.workspace = true
 version.workspace = true
+
+[dependencies]
+config = { workspace = true }
+utils = { workspace = true }
+toml.workspace = true
+dirs.workspace = true
+anyhow.workspace = true
+futures.workspace = true
+serde = { workspace = true }
+serde_json.workspace = true
+tokio = { workspace = true, features = ["process"] }
+sha1.workspace = true
+hex.workspace = true
+reqwest = { workspace = true, default-features = false, features = ["json", "rustls"] }

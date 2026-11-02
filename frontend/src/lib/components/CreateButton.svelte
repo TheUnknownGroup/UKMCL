@@ -10,4 +10,4 @@
      }
 </script>
 
-<button class="py-1.75 px-12.5 bg-black/30 rounded-[5px] border border-black ml-1.25 cursor-pointer" onclick={addInst}><img src="/assets/images/plus-square-fill.svg" width="25" alt="Creating" loading="lazy" decoding="async"></button>
+<button class="px-10 pt-1.25 pb-0.75 bg-black/30 rounded-[5px] border border-black ml-1.25 cursor-pointer text-white" onclick={addInst} aria-label="Create"><i class="bi bi-plus-square-fill text-[15px]"></i></button>

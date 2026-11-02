@@ -12,7 +12,8 @@ pub mod xsts;
 pub mod refresh;
 pub mod minecraft;
 
-pub const CLIENT_ID: &str = match option_env!("MC_CLIENT_ID") { Some(id) => id, None => "fallback-id" };
+// pub const CLIENT_ID: &str = match option_env!("MC_CLIENT_ID") { Some(id) => id, None => "fallback-id" };
+pub const CLIENT_ID: &str = "56bb5bc5-ab86-4960-bf94-20e638adc063";
 const DEVICE_URL: &str = "https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode";
 const TOKEN_URL: &str = "https://login.microsoftonline.com/consumers/oauth2/v2.0/token";
 const XBOX_URL: &str = "https://user.auth.xboxlive.com/user/authenticate";
@@ -35,9 +36,8 @@ pub async fn auth(app: AppHandle) -> anyhow::Result<Authenticated> {
      let client = base();
      let home = make_hub()?;
      let main = home.join("msa.toml").to_string_lossy().to_string();
-     let now = SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs();
      let device = request_code(&app, &client).await?;
-     AuthMSA::new(&device.verification_uri, &device.user_code, now + device.expires_in).save(&main)?;
+     AuthMSA::new(&device.verification_uri, &device.user_code, SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs() + device.expires_in).save(&main)?;
      app.emit("open_msa", ())?;
      let mico_token = match poll_for_token(&app, &client, &device).await {
           Ok(t) => {
@@ -62,7 +62,7 @@ pub async fn auth(app: AppHandle) -> anyhow::Result<Authenticated> {
                access_token: mc.access_token,
                user_type: "msa".into(),
                refresh_token: mico_token.refresh_token,
-               expires: now + 86400,
+               expires: SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs() + 86400,
           })
      }.await;
 
@@ -82,6 +82,5 @@ pub async fn start_refresh(app: AppHandle) -> anyhow::Result<(), String> {
      let ses = refresh(&app, &token).await.map_err(|e| format!("{e:#}"))?;
      let conf = AccountConfig::new(&ses.username, &ses.uuid, &ses.access_token, &ses.user_type, &ses.refresh_token, ses.expires);
      AccountStruct::update_acc(&main.to_string_lossy().as_ref(), conf).map_err(|e| e.to_string())?;
-     toast(&app, ToastKind::Info, "Refresh for minecraft auth was a success.");
      Ok(())
 }

@@ -1,6 +1,6 @@
 <script lang="ts">
      import { goto } from "$app/navigation";
-     import { account, microsoft, signOut } from "#lib/ts/settings";
+     import { account, microsoft, signOut } from "#lib/ts/settings.ts";
      import { onMount } from "svelte";
      import { slide } from "svelte/transition";
      const SETTINGS = `/settings?title=${encodeURIComponent("Settings")}`
@@ -11,7 +11,7 @@
      let uuid = $state('');
      let isMsa = $state(false);
      let imgFailed = $state(false);
-     let url = $derived(uuid ? `https://mc-heads.net/avatar/${uuid}/100` : '');
+     let url = $derived(uuid ? `https://tabavatars.net/avatar/?uuid=${uuid}&type=helm&size=512` : '');
      let showAvatar = $derived(isMsa && !!url && !imgFailed);
      let root: HTMLDivElement;
      const items = [
@@ -57,7 +57,7 @@
 <div bind:this={root} class="fixed bottom-12.25 w-[50px]">
      {#if open}
           <div class="absolute bottom-0 left-full ml-2 flex items-end gap-2">
-               <div id="account-menu" transition:slide={{ duration: 200 }} class="w-[160px] overflow-hidden rounded-md bg-alice-blue-950/95 shadow-lg">
+               <div id="account-menu" transition:slide={{ duration: 200 }} class="w-[160px] overflow-hidden rounded-md text-white light:bg-alice-blue-600/95 bg-alice-blue-950/95 shadow-lg">
                     <button class="flex items-center w-full px-3 py-2 text-left cursor-pointer hover:bg-white/10">
                          <img src={showAvatar ? url : '/assets/images/icon.png'} alt="Account" loading="lazy" decoding="async" width="25" class="rounded-sm mr-[5px]">{name}
                     </button>
@@ -67,7 +67,7 @@
                          </button>
                     {/each}
                </div>
-               <div inert={!switching} class="mb-10 w-[130px] overflow-hidden rounded-md bg-alice-blue-800 shadow-lg transition-[opacity,translate] duration-200 ease-in-out {switching ? 'translate-x-0 opacity-100' : '-translate-x-3 opacity-0 pointer-events-none'}">
+               <div inert={!switching} class="mb-10 w-[130px] overflow-hidden rounded-md text-white light:bg-alice-blue-500 bg-alice-blue-800 shadow-lg transition-[opacity,translate] duration-200 ease-in-out {switching ? 'translate-x-0 opacity-100' : '-translate-x-3 opacity-0 pointer-events-none'}">
                     <button class="block w-full whitespace-nowrap text-left px-2 py-2 cursor-pointer hover:bg-white/10">Offline</button>
                     <button class="block w-full whitespace-nowrap text-left px-2 py-2 cursor-pointer hover:bg-white/10" onclick={() => { open = false; microsoft(); }}>Microsoft</button>
                </div>

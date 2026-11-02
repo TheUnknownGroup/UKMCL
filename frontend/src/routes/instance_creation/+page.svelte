@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { load, create, close, loaderList, def } from "#lib/ts/instance";
+    import { load, create, close, loaderList, def } from "#lib/ts/instance.ts";
     let versions: any = $state([]);
     let loaderVersions = $state([]);
     let selectedVersion = $state('');
@@ -83,7 +83,7 @@
 </script>
 
 <div class="absolute items-center justify-center flex select-none top-[30%] left-[16%]">
-     <div class="bg-creation border border-white rounded-lg p-8.75 h-50 w-140">
+     <div class="transition-[background] duration-300 ease-in-out light:bg-celadon-600 bg-celadon-900 border border-white rounded-lg p-8.75 h-50 w-140">
           <form onsubmit={onSubmit}>
                <h3 class="text-[30px] text-creation-2 pb-4">Instance Name</h3>
                <input type="text" class="bg-creation-2 text-black rounded-md p-1.75 mb-1.75 mr-1.75 text-[16px]" placeholder="Instance" required bind:value={name}>
@@ -126,8 +126,8 @@
                     <label for="neoforge">Neoforge</label>
                     <div class="float-right pl-3"><img src="/assets/images/neoforged.svg" alt="Neoforged" width="24" loading="lazy" decoding="async"></div>
                </div>
-               <button type="button" onclick={() => close(200)} class="rounded-[5px] px-[6px] pt-[5px] pb-[4px] text-[14px] shadow-[0_0_10px_rgba(0,0,0,0.7)] bg-scarlet-rush-600 hover:bg-scarlet-rush-400 cursor-pointer">Cancel</button>
-               <button type="submit" class="rounded-[5px] px-[6px] pt-[5px] pb-[4px] text-[14px] shadow-[0_0_10px_rgba(0,0,0,0.7)] bg-fern-600 hover:bg-fern-400 cursor-pointer" disabled={creating}>Create</button>
+               <button type="button" onclick={() => close(200)} class="rounded-[5px] px-[6px] pt-[5px] pb-[4px] text-[14px] shadow-[0_0_10px_rgba(0,0,0,0.7)] light:bg-scarlet-rush-400 light:hover:bg-scarlet-rush-200 bg-scarlet-rush-600 hover:bg-scarlet-rush-400 cursor-pointer">Cancel</button>
+               <button type="submit" class="rounded-[5px] px-[6px] pt-[5px] pb-[4px] text-[14px] shadow-[0_0_10px_rgba(0,0,0,0.7)] light:bg-fern-400 light:hover:bg-fern-200 bg-fern-600 hover:bg-fern-400 cursor-pointer" disabled={creating}>Create</button>
           </form>
      </div>
 </div>

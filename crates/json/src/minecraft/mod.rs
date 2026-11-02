@@ -70,7 +70,9 @@ pub struct Rule {
 
 #[derive(Deserialize, Debug)]
 pub struct Os {
-     pub name: Option<String>
+     pub name: Option<String>,
+     pub version: Option<String>,
+     pub arch: Option<String>,
 }
 
 #[derive(Deserialize, Debug)]
@@ -82,6 +84,8 @@ pub struct Artifact {
 pub struct JarDownload {
      pub path: String,
      pub url: String,
+     pub size: Option<u64>,
+     pub sha1: Option<String>,
 }
 
 #[derive(Deserialize, Debug)]
@@ -148,7 +152,7 @@ impl ClientInfo {
      pub fn supports(&self, feature: &str) -> bool {
          self.arguments.as_ref().is_some_and(|a| {
              a.game.iter().any(|arg| match arg {
-                 Arg::Conditional { rules } => rules.iter().any(|r| r.features.contains_key(feature)),
+                 Arg::Conditional { rules } => rules.iter().any(|r| r.features.get(feature) == Some(&true)),
                  _ => false,
              })
          })

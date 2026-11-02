@@ -1,15 +1,16 @@
 use std::{
-     fs::{self, OpenOptions},
-     io::{self, Write},
-     path::{Path, PathBuf},
-     time::{SystemTime, UNIX_EPOCH},
+     fs::{self, OpenOptions}, io::{self, Write}, path::{Path, PathBuf}, sync::atomic::{AtomicU64, Ordering}, time::{SystemTime, UNIX_EPOCH},
 };
+
+static TEMP_COUNTER: AtomicU64 = AtomicU64::new(0);
+
 pub(crate) fn atomic_write(path: &Path, contents: &[u8]) -> io::Result<()> {
      let parent = path.parent().filter(|p| !p.as_os_str().is_empty()).unwrap_or(Path::new("."));
      fs::create_dir_all(parent)?;
      let stamp = SystemTime::now().duration_since(UNIX_EPOCH).unwrap_or_default().as_millis();
+     let counter = TEMP_COUNTER.fetch_add(1, Ordering::Relaxed);
      let mut temp_name = path.as_os_str().to_owned();
-     temp_name.push(format!(".{}.{}.tmp", std::process::id(), stamp));
+     temp_name.push(format!(".{}.{}.{}.tmp", std::process::id(), stamp, counter));
      let temp = PathBuf::from(temp_name);
      let result = (|| {
           let mut opts = OpenOptions::new();
@@ -31,7 +32,7 @@ pub(crate) fn atomic_write(path: &Path, contents: &[u8]) -> io::Result<()> {
      })();
 
      if result.is_err() {
-          let _ =fs::remove_dir(&temp);
+          let _ =fs::remove_file(&temp);
      }
      result
 }

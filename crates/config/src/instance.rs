@@ -1,4 +1,4 @@
-use std::{io::Result, path::Path};
+use std::{io::{Error, ErrorKind, Result}, path::Path};
 
 use serde::{Deserialize, Serialize};
 
@@ -16,8 +16,8 @@ pub struct MainBuilder {
      loader: String,
      version: String,
      component: String,
-     ram_min: u32,
-     ram_max: u32,
+     min: u32,
+     max: u32,
      jvm_args: Vec<String>,
      game_args: Vec<String>,
      supports_quick_play_single: bool,
@@ -38,14 +38,19 @@ pub struct LoaderConfig {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
+pub struct InstanceJava {
+     pub max: u32,
+     pub min: u32,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
 pub struct InstanceConfig {
      pub instance: String,
      pub minecraft_version: String,
      pub assets_index: String,
      pub main_class: String,
      pub component: String,
-     pub ram_min: u32,
-     pub ram_max: u32,
+     pub java: InstanceJava,
      #[serde(default)]
      pub jvm_args: Vec<String>,
      #[serde(default)]
@@ -64,14 +69,13 @@ pub struct DirectoryConfig {
 
 impl InstanceStruct {
      pub fn save(&self, path: &str) -> Result<()> {
-          let toml_str = toml::to_string_pretty(self).unwrap();
+          let toml_str = toml::to_string_pretty(self).map_err(|e| Error::new(ErrorKind::InvalidData, e))?;
           atomic_write(Path::new(path), toml_str.as_bytes())
      }
 
      pub fn load(path: &str) -> Result<Self> {
           let data = std::fs::read_to_string(path)?;
-          let config: Self = toml::from_str(&data).expect("Failed to parse");
-          Ok(config)
+          toml::from_str(&data).map_err(|e| Error::new(ErrorKind::InvalidData, e))
      }
 }
 
@@ -89,8 +93,8 @@ impl MainBuilder {
                loader: String::new(),
                version: String::new(),
                component: String::new(),
-               ram_min: 2048,
-               ram_max: 4096,
+               min: 1024,
+               max: 4096,
                jvm_args: Vec::new(),
                game_args: Vec::new(),
                supports_quick_play_multi: false,
@@ -112,8 +116,8 @@ impl MainBuilder {
      }
 
      pub fn ram(mut self, max: u32, min: u32) -> Self {
-          self.ram_max = max;
-          self.ram_min = min;
+          self.max = max;
+          self.min = min;
           self
      }
 
@@ -156,17 +160,23 @@ impl MainBuilder {
                     main_class: self.main_class,
                     component: self.component,
                     classpath: self.classpath,
-                    ram_max: self.ram_max,
-                    ram_min: self.ram_min,
+                    java: InstanceJava {
+                         min: self.min,
+                         max: self.max,
+                    },
                     jvm_args: self.jvm_args,
                     game_args: self.game_args,
                     supports_quick_play_multi: self.supports_quick_play_multi,
                     supports_quick_play_single: self.supports_quick_play_single,
                }, 
-               loader: Some(LoaderConfig {
+               loader: if self.loader.is_empty() {
+                    None
+               } else {
+                    Some(LoaderConfig {
                          loader: self.loader,
-                         version: self.version,
-               }), 
+                         version: self.version
+                    })
+               }, 
                directory: DirectoryConfig {
                     game_dir: self.game_dir,
                     lib_dir: self.lib_dir,

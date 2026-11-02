@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount, onDestroy } from "svelte";
-    import { resolveAuth, createCount, format, copy, cancel } from "#lib/ts/settings";
+    import { createCount, format, copy, cancel } from "#lib/ts/settings.ts";
     import { invoke } from "@tauri-apps/api/core";
     import { listen } from "@tauri-apps/api/event";
     let open = $state(false);
@@ -17,7 +17,6 @@
               data = await invoke("get_auth_info");
          } catch (e) {
               console.error(e);
-              resolveAuth(null);
               return;
          }
 
@@ -25,15 +24,14 @@
          code = data.user_code;
          open = true;
          stops?.();
-         stops = createCount(data.expires_in, (r: any) => { rem = r; }, () => hide(null));
+         stops = createCount(data.expires_in, (r: any) => { rem = r; }, () => hide());
     }
 
-    function hide(result: any) {
+    function hide() {
          stops?.();
          stops = null;
          open = false;
          visible = false;
-         resolveAuth(result);
     }
 
     $effect(() => {
@@ -50,7 +48,7 @@
          let cancelled = false;
          const add = (p: Promise<() => void>) => p.then((fn) => (cancelled ? fn() : unlisteners.push(fn)));
          add(listen('open_msa', () => show()));
-         add(listen('close_msa', () => hide('done')))
+         add(listen('close_msa', () => hide()))
          return () => {
               cancelled = true;
               unlisteners.forEach((fn: any) => fn());
@@ -73,7 +71,7 @@
                     <p class="mb-[1.1rem]">Time left: <span>{format(rem)}</span></p>
                </div>
                <div class="flex justify-center gap-3">
-                    <button class="p-1.25 pt-[8px] pb-[5px] rounded-[5px] shadow-[0_0_10px] shadow-black/40 cursor-pointer text-white text-[15px] bg-[#dc2626] hover:bg-[#f26363]" onclick={() => {hide(null); cancel(); }}>Cancel</button>
+                    <button class="p-1.25 pt-[8px] pb-[5px] rounded-[5px] shadow-[0_0_10px] shadow-black/40 cursor-pointer text-white text-[15px] bg-[#dc2626] hover:bg-[#f26363]" onclick={() => {hide(); cancel(); }}>Cancel</button>
                     <a href={link} target="_blank" class="p-1.25 pt-[8px] pb-[5px] rounded-[5px] shadow-[0_0_10px] shadow-black/40 cursor-pointer text-white text-[15px] bg-[#238510] hover:bg-[#3b9e2c]">Auth Me</a>
                     <button class="p-1.25 pt-[8px] pb-[5px] rounded-[5px] shadow-[0_0_10px] shadow-black/40 cursor-pointer text-white text-[15px] bg-[#297999] hover:bg-[#3aafde]" onclick={() => copy(code)}>Copy Code</button>
                </div>

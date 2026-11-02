@@ -56,10 +56,10 @@ fn unique_name(i: &Path, d: &str) -> io::Result<(String, PathBuf)> {
      unreachable!("u32 instance-name counter exhaused")
 }
 
-pub async fn setup_instance(app_handle: AppHandle, name: String, id: String, loader: String, loader_version: String) -> Result<(), Box<dyn Error>> {
+pub async fn setup_instance(app_handle: &AppHandle, name: String, id: String, loader: String, loader_version: String) -> Result<(), Box<dyn Error>> {
      validate(&name, &app_handle)?;
      validate_version_id(&id, &app_handle)?;
-     if !matches!(loader.as_str(), "vanilla" | "fabric" | "quilt") {
+     if !matches!(loader.as_str(), "vanilla" | "fabric" | "quilt" | "neoforge") {
           return Err(io::Error::new(io::ErrorKind::InvalidInput, "unsupported Minecraft loader").into())
      }
      if loader != "vanilla" && (loader_version.is_empty() || loader_version.len() > 128 || !loader_version.bytes().all(|b| b.is_ascii_alphanumeric() || matches!(b, b'.' | b'_' | b'-' | b'+'))) {
@@ -69,7 +69,7 @@ pub async fn setup_instance(app_handle: AppHandle, name: String, id: String, loa
      let directory = home.join("instances");
      let (name_i, path) = unique_name(&directory, name.as_str())?;
      fs::create_dir_all(path.join("minecraft"))?;
-     if let Err(err) = fetch_all_minecraft(app_handle, &name_i, &loader, &loader_version, &id).await {
+     if let Err(err) = fetch_all_minecraft(&app_handle, &name_i, &loader, &loader_version, &id).await {
           let _ = fs::remove_dir_all(&path);
           let vers_path = home.join("versions").join(&id).join(name_i);
           let _ = fs::remove_dir_all(vers_path);

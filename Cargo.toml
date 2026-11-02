@@ -36,9 +36,12 @@ sha1 = "0.11"
 hex = "0.4"
 urlencoding = "2"
 notify = "8"
+discord-rich-presence = "1"
+fastnbt = "2"
 
 utils = { path = "./crates/utils" }
 auth = { path = "./crates/auth" }
 config = { path = "./crates/config" }
 json_minecraft = { path = "./crates/json" }
 maker = { path = "./crates/maker" }
+java = { path = "./crates/java" }

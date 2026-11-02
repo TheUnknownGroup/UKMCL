@@ -50,6 +50,6 @@ pub async fn refresh(app: &AppHandle, token: &str) -> Result<Authenticated> {
           access_token: mc.access_token,
           user_type: "msa".into(),
           refresh_token: ms.refresh_token.or_else(|| Some(token.to_string())),
-          expires: now + ms.expires_in,
+          expires: now + mc.expires_in,
      })
 }

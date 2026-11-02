@@ -46,7 +46,7 @@ pub async fn spawn_instance_creation(app_handle: &AppHandle) -> Result<(), Box<d
      Ok(())
 }
 
-const WIDTH: f64 = 1320.0;
+const WIDTH: f64 = 1020.0;
 const HEIGHT: f64 = 600.0;
 
 pub async fn spawn_instance(app_handle: &AppHandle, label: &str, url: &str, name: &str) -> Result<(), Box<dyn std::error::Error>> {
@@ -62,6 +62,27 @@ pub async fn spawn_instance(app_handle: &AppHandle, label: &str, url: &str, name
      ).title(format!("Instance: {}", name))
      .inner_size(WIDTH, HEIGHT).center().transparent(true).shadow(true)
      .resizable(false).decorations(false).build()?;
+     
+     Ok(())
+}
+
+const PROGRESS_WIDTH: f64 = 500.0;
+const PROGRESS_HEIGHT: f64 = 200.0;
+
+pub async fn spawn_progress(app_handle: &AppHandle, url: &str) -> Result<(), Box<dyn std::error::Error>> {
+     if let Some(win) = app_handle.get_webview_window("progress") {
+          win.show()?;
+          win.unminimize()?;
+          win.set_focus()?;
+          app_handle.emit("progress-ready", ())?;
+          return Ok(())
+     }
+     WebviewWindowBuilder::new(app_handle, "progress", WebviewUrl::App(url.into()))
+        .title("Download Progress")
+        .inner_size(PROGRESS_WIDTH, PROGRESS_HEIGHT)
+        .center()
+        .resizable(false).decorations(false).transparent(true).shadow(true)
+        .build()?;
      
      Ok(())
 }

@@ -4,6 +4,7 @@ pub mod client;
 pub mod folders;
 pub mod toasts;
 pub mod windows;
+pub mod progress;
 
 pub fn offline(username: &str) -> Uuid {
      let hash = format!("Offline:{}", username);

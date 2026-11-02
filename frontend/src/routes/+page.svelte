@@ -22,7 +22,7 @@
 <div class="flex">
      <Panel />
      <MainText>
-          <div class="select-none bg-alice-blue-950/80 pt-1.25 pr-[45px] text-center m-1 rounded-sm text-[23px]">
+          <div class="select-none transition-[background] duration-300 ease-in-out light:bg-alice-blue-500/80 text-white bg-alice-blue-950/80 pt-1.25 pr-[45px] text-center m-1 rounded-sm text-[23px]">
                <Typewriter text={name ? `Welcome, ${name}!`: 'Welcome!'} speed={100} />
           </div>
      </MainText>

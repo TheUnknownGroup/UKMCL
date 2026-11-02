@@ -15,6 +15,7 @@ pub struct MinecraftAuth {
 #[derive(Debug, Deserialize)]
 pub struct MinecraftToken {
      pub access_token: String,
+     pub expires_in: u64,
 }
 
 #[derive(Debug, Deserialize)]

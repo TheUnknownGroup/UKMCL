@@ -1,7 +1,8 @@
-use std::{collections::{HashMap, HashSet}, path::Path, sync::{Arc, atomic::{AtomicU64, Ordering::Relaxed}}, time::Instant};
+use std::{collections::{HashMap, HashSet}, path::Path, sync::{Arc, atomic::{AtomicU64, Ordering::Relaxed}}};
 use futures_util::stream::{self, StreamExt};
-use serde::{Deserialize, Serialize};
-use tauri::{AppHandle, Emitter};
+use serde::{Deserialize};
+use tauri::{AppHandle};
+use utils::progress::emit_progress;
 use crate::minecraft::download::{download_to_verified, file_match};
 
 #[derive(Deserialize, Debug)]
@@ -13,15 +14,6 @@ pub struct AssetIndex {
 pub struct AsObjects {
      pub hash: String,
      pub size: u64,
-}
-
-#[derive(Clone, Serialize)]
-struct DownloadProgress {
-     downloaded: u64,
-     total: u64,
-     current: String,
-     files: u32,
-     file_total: u32,
 }
 
 pub async fn asset_index(url: &str, index_path: &Path, client: &reqwest::Client, size: Option<u64>, sha1: Option<&str>) -> anyhow::Result<AssetIndex> {
@@ -47,14 +39,16 @@ pub async fn download_assets(app_handle: AppHandle, asset_path: &Path, index: &H
 
      let totals: u64 = pending.iter().map(|(_, obj)| obj.size).sum();
      let totalf = pending.len() as u32;
-     
-     let (downloaded, files, last_emit) = (Arc::new(AtomicU64::new(0)), Arc::new(AtomicU64::new(0)), Arc::new(AtomicU64::new(0)));
-     let started = Instant::now();
+     let downloaded = Arc::new(AtomicU64::new(0));
+     let files = Arc::new(AtomicU64::new(0));
+     emit_progress(&app_handle, "assets", 0, totals, "Preparing assets", 0, totalf)?;
      let result: Vec<Result<(), String>> = stream::iter(pending)
           .map(|(name, obj)| {
-               let (client, app) = (client.clone(), app_handle.clone());
-               let (downloaded, files, last_emit) = (downloaded.clone(), files.clone(), last_emit.clone());
-               let obj_dir = &obj_dir;
+               let client = client.clone();
+               let app = app_handle.clone();
+               let downloaded = downloaded.clone();
+               let files = files.clone();
+               let obj_dir = obj_dir.clone();
 
                async move {
                     if obj.hash.len() != 40 || !obj.hash.bytes().all(|b| b.is_ascii_hexdigit()) {
@@ -67,13 +61,7 @@ pub async fn download_assets(app_handle: AppHandle, asset_path: &Path, index: &H
                     if res.is_ok() {
                          let d = downloaded.fetch_add(obj.size, Relaxed) + obj.size;
                          let f = files.fetch_add(1, Relaxed) + 1;
-                         let now = started.elapsed().as_millis() as u64;
-                         let prev = last_emit.load(Relaxed);
-                         if now.saturating_sub(prev) >= 100 && last_emit.compare_exchange(prev, now, Relaxed, Relaxed).is_ok() {
-                              let _ = app.emit("progress", DownloadProgress {
-                                   downloaded: d, total: totals, current: name.clone(), files: f as u32, file_total: totalf,
-                              });
-                         }
+                         let _ = emit_progress(&app, "assets", d, totals, name.clone(), f as u32, totalf);
                     }
 
                     res.map_err(|e| format!("{}: {e:#}", name))
@@ -82,12 +70,9 @@ pub async fn download_assets(app_handle: AppHandle, asset_path: &Path, index: &H
 
      let failed: Vec<_> = result.into_iter().filter_map(Result::err).collect();
      if !failed.is_empty() {
-          anyhow::bail!("{} asset download failed, first: {}", failed.len(), failed[0])
+          anyhow::bail!("{} asset download failed, first: {}", failed.len(), failed[0]);
      }
-     app_handle.emit("progress", DownloadProgress {
-          downloaded: totals, total: totals, current: String::new(), files: totalf, file_total: totalf
-     })?;
-     app_handle.emit("complete", ())?;
+     emit_progress(&app_handle, "assets", totals, totals, "Assets complete", totalf, totalf)?;
      
      Ok(())
 }

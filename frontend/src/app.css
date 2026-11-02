@@ -7,8 +7,17 @@
 .app {
      color: var(--color-rich-cerulean-100);
      font-family: "A Pompadour", sans-serif;
-     background-color: var(--color-alice-blue-900);
+     background: var(--color-alice-blue-800);
+     transition: background 300ms ease-in-out, color 300ms ease-in-out;
 }
+
+:root.light .app {
+     color: var(--color-rich-cerulean-800);
+     background: var(--color-alice-blue-300);
+     transition: background 300ms ease-in-out, color 300ms ease-in-out;
+}
+
+@custom-variant light (&:where(.light, .light *));
 
 @font-face {
      font-family: "Alata";
@@ -159,7 +168,17 @@
      --color-creation-2: #D9D9D9;
      --color-creation-3: #2e302f;
 
-     --color-instance-button: #264210;
+     --color-evergreen-50: #f2f6ee;
+     --color-evergreen-100: #e4eedd;
+     --color-evergreen-200: #caddbb;
+     --color-evergreen-300: #afcc99;
+     --color-evergreen-400: #95bb77;
+     --color-evergreen-500: #7aaa55;
+     --color-evergreen-600: #628844;
+     --color-evergreen-700: #496633;
+     --color-evergreen-800: #314422;
+     --color-evergreen-900: #182211;
+     --color-evergreen-950: #11180c;
 
      --color-scarlet-rush-50: #fbe9eb;
      --color-scarlet-rush-100: #f7d4d6;
@@ -198,13 +217,26 @@
      }
 }
 
-@utility corner-cutout {
+@utility dark-corner-cutout {
      --r: 8px;
      width: var(--r);
      height: var(--r);
+     transition: background 150ms ease-in-out;
      background: radial-gradient(
           circle at 100% 100%,
           transparent var(--r),
           var(--color-rich-cerulean-850) var(--r)
+     );
+}
+
+@utility corner-cutout {
+     --r: 8px;
+     width: var(--r);
+     height: var(--r);
+     transition: background 150ms ease-in-out;
+     background: radial-gradient(
+          circle at 100% 100%,
+          transparent var(--r),
+          var(--color-rich-cerulean-500) var(--r)
      );
 }

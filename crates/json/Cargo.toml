@@ -15,3 +15,6 @@ tokio = { workspace = true }
 futures-util.workspace = true
 config = { workspace = true }
 sha1 = "0.10"
+regex = "1"
+zip.workspace = true
+java.workspace = true

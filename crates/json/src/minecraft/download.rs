@@ -10,6 +10,9 @@ pub async fn download_to(client: &Client, url: &str, destination: &Path, expecte
 }
 
 pub async fn download_to_verified(client: &Client, url: &str, dest: &Path, size: Option<u64>, sha1: Option<&str>) -> Result<()> {
+     if let Some(hash) = sha1 && (hash.len() != 40 || !hash.bytes().all(|b| b.is_ascii_hexdigit())) {
+          bail!("invalid expected SHA-1 digest for {url}");
+     }
      if file_match(dest, size, sha1) {
           return Ok(());
      }

@@ -1,9 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
 import { emit } from "@tauri-apps/api/event";
-
-export async function spawn_offline_window(): Promise<void> {
-     await invoke("spawn_offline");
-}
+import { writeText } from "@tauri-apps/plugin-clipboard-manager";
 
 export async function java_minimum(): Promise<number> {
      return await invoke("get_java_minimum");
@@ -19,15 +16,8 @@ export async function set_ram_usage(args: Record<string, unknown>): Promise<void
 
 let resolver: ((result: unknown) => void) | null = null;
 
-export function auth() {
-     console.trace("auth() called");
-     return new Promise((resolve) => {
-          resolver = resolve;
-          invoke("microsoft_auth").catch((e) => {
-               console.error(e);
-               resolveAuth(null);
-          });
-     })
+export async function auth() {
+     await invoke('microsoft_auth');
 }
 
 export function resolveAuth(result: unknown) {
@@ -57,10 +47,10 @@ export function format(secs: number): string {
 
 export async function copy(text: string): Promise<boolean> {
      try {
-          await navigator.clipboard.writeText(text);
+          await writeText(text);
           return true;
      } catch (e) {
-          console.error(e);
+          console.error("Failed to copy to clipboard: ", e);
           return false;
      }
 }
@@ -77,10 +67,13 @@ export async function account() {
 }
 
 export async function microsoft() {
-     if (resolver) return;
-     await auth();
-     setTimeout(() => {}, 500);
-     return emit('authed');
+     try {
+          await auth();
+          setTimeout(() => { }, 500);
+          await emit("authed");
+     } catch (e) {
+          console.error("Microsoft auth failed: ", e);
+     }
 }
 
 export async function signOut() {

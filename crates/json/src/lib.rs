@@ -4,11 +4,12 @@ pub mod minecraft;
 use std::{error::Error, fs, path::Path};
 
 use config::write::{InstanceCfg, instance_config};
+use java::manager::ensure;
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use tauri::AppHandle;
-use utils::{client::base, folders::make_hub};
+use utils::{client::base, folders::make_hub, progress::emit_progress};
 
-use crate::{minecraft::{ClientInfo, Fabric, Quilt, assets::{asset_index, download_assets}, download::{download_to_verified}, library::{fabric_libraries, fetch_libraries}, version::get_version_info}, request::{fabric::{fabric_loader, fabric_version}, quilt::{quilt_loader, quilt_version}, vanilla::fetch_vanilla_list}};
+use crate::{minecraft::{ClientInfo, Fabric, Quilt, assets::{asset_index, download_assets}, download::download_to_verified, library::{fabric_libraries, fetch_libraries}, version::get_version_info}, request::{fabric::{fabric_loader, fabric_version}, install::{install, merge, read}, neoforge::neo, quilt::{quilt_loader, quilt_version}, vanilla::fetch_vanilla_list}};
 
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct ListEntry {
@@ -55,7 +56,7 @@ pub async fn make_version_json(loader: &str) -> Result<(), Box<dyn Error>> {
           "vanilla" => None,
           "fabric" => Some(fabric_loader().await?.into_iter().map(|g| g.version).collect()),
           "quilt" => Some(quilt_loader().await?.into_iter().map(|g| g.version).collect()),
-          "neoforge" => None,
+          "neoforge" => Some(neo().await?),
           "forge" => None,
           other => return Err(format!("Unknown loader found: {}", other).into())
      };
@@ -78,7 +79,7 @@ pub fn file_find(loader: &str) -> Result<&'static str, String> {
           "vanilla" => Err("Vanilla is it's own loader".to_string()),
           "fabric" => Ok("fabric_loader.json"),
           "quilt" => Ok("quilt_loader.json"),
-          "neoforge" => Err("Neoforge currently unavailable".to_string()),
+          "neoforge" => Ok("neo_load.json"),
           "forge" => Err("Forge currently unavailable".to_string()),
           other => Err(format!("unknown loader: {}", other)),
      }
@@ -103,7 +104,7 @@ pub struct Resolved {
      game_args: Vec<String>,
 }
 
-pub async fn fetch_all_minecraft(app: AppHandle, name: &str, loader: &str, loader_version: &str, id: &str) -> Result<ClientInfo, Box<dyn Error>> {
+pub async fn fetch_all_minecraft(app: &AppHandle, name: &str, loader: &str, loader_version: &str, id: &str) -> Result<ClientInfo, Box<dyn Error>> {
      let client = base();
      let home = make_hub()?;
      let url = get_version_info(id).await?.url;
@@ -118,17 +119,32 @@ pub async fn fetch_all_minecraft(app: AppHandle, name: &str, loader: &str, loade
      let version_directory = home.join("versions").join(&id).join(name);
      fs::create_dir_all(&version_directory)?;
      let client_jar = version_directory.join("client.jar");
-     download_assets(app, &assets_directory, &index.objects, &client).await?;
+     download_assets(app.clone(), &assets_directory, &index.objects, &client).await?;
      download_to_verified(&client, &resp.downloads.client.url, &client_jar, resp.downloads.client.size, resp.downloads.client.sha1.as_deref()).await?;
      let resolved = match loader {
           "vanilla" => Resolved {
                main_class: resp.main_class.clone(),
-               classpath: fetch_libraries(&resp.libraries, &home).await?,
+               classpath: fetch_libraries(&app, &resp.libraries, &home).await?,
                jvm_args: Vec::new(),
                game_args: Vec::new(),
           },
-          "fabric" => fab(&resp, loader_version, &home).await?,
-          "quilt" => qui(&resp, loader_version, &home).await?,
+          "fabric" => fab(app.clone(), &resp, loader_version, &home).await?,
+          "quilt" => qui(app.clone(), &resp, loader_version, &home).await?,
+          "neoforge" => {
+               emit_progress(app, "neoforge", 0, 1, "Preparing Java runtime", 0, 1)?;
+               let java = ensure(&resp.java_version.component).await?;
+               let version_id = install(app, &java, &home, id, &raw, &client_jar, loader_version).await?;
+               let profile = read(&home, &version_id, "client")?;
+               let vanilla = fetch_libraries(app, &resp.libraries, &home).await?;
+               let classpath = merge(&vanilla, &profile.libraries);
+               let _ = fs::remove_dir_all(home.join("installers"));
+               Resolved {
+                    main_class: profile.main_class,
+                    classpath,
+                    jvm_args: profile.jvm_args,
+                    game_args: profile.game_args,
+               }
+          }
           other => return Err(format!("couldn't find launcher: {}", other).into())
      };
 
@@ -151,12 +167,12 @@ pub async fn fetch_all_minecraft(app: AppHandle, name: &str, loader: &str, loade
      Ok(resp)
 }
 
-pub async fn fab(resp: &ClientInfo, loader_version: &str, home: &Path) -> Result<Resolved, Box<dyn Error>> {
+pub async fn fab(app: AppHandle, resp: &ClientInfo, loader_version: &str, home: &Path) -> Result<Resolved, Box<dyn Error>> {
      let url = format!("https://meta.fabricmc.net/v2/versions/loader/{}/{}", resp.id, loader_version);
      let body = base().get(url).send().await?.error_for_status()?.text().await?;
      let meta: Fabric = serde_json::from_str(&body).map_err(|e| format!("decode failed: {}", e))?;
 
-     let classpath = fabric_libraries(&meta.launcher_meta.libraries.common, &meta.loader.maven, home, &meta.intermediary.maven, &resp.libraries, "fabric").await?;
+     let classpath = fabric_libraries(&app, &meta.launcher_meta.libraries.common, &meta.loader.maven, home, &meta.intermediary.maven, &resp.libraries, "fabric").await?;
      Ok(Resolved {
           main_class: meta.launcher_meta.main_class.client,
           classpath,
@@ -165,12 +181,12 @@ pub async fn fab(resp: &ClientInfo, loader_version: &str, home: &Path) -> Result
      })
 }
 
-pub async fn qui(resp: &ClientInfo, loader_version: &str, home: &Path) -> Result<Resolved, Box<dyn Error>> {
+pub async fn qui(app: AppHandle, resp: &ClientInfo, loader_version: &str, home: &Path) -> Result<Resolved, Box<dyn Error>> {
      let url = format!("https://meta.quiltmc.org/v3/versions/loader/{}/{}", resp.id, loader_version);
      let body = base().get(url).send().await?.error_for_status()?.text().await?;
      let meta: Quilt = serde_json::from_str(&body).map_err(|e| format!("decode failed: {}", e))?;
 
-     let classpath = fabric_libraries(&meta.launcher_meta.libraries.common, &meta.loader.maven, home, "", &resp.libraries, "quilt").await?;
+     let classpath = fabric_libraries(&app, &meta.launcher_meta.libraries.common, &meta.loader.maven, home, "", &resp.libraries, "quilt").await?;
      Ok(Resolved {
           main_class: meta.launcher_meta.main_class.client,
           classpath,

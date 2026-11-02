@@ -1,6 +1,6 @@
 use std::fs;
 
-use json_minecraft::{ListEntry, file_find, make_version_json};
+use json_minecraft::{ListEntry, file_find, make_version_json, request::neoforge::for_mc};
 use utils::folders::make_hub;
 
 #[tauri::command]
@@ -19,13 +19,18 @@ pub async fn get_version_list(loader: String) -> Result<Vec<ListEntry>, String> 
 }
 
 #[tauri::command]
-pub async fn get_loader_list(loader: String) -> Result<Vec<String>, String> {
+pub async fn get_loader_list(loader: String, mc: Option<String>) -> Result<Vec<String>, String> {
      let list = file_find(&loader)?;
      let home = make_hub().map_err(|e| e.to_string())?;
      let all_dir = home.join("jsons").join(list);
      let contents = fs::read_to_string(&all_dir).map_err(|e| e.to_string())?;
      let ids: Vec<String> = serde_json::from_str(&contents).map_err(|e| e.to_string())?;
-     Ok(ids)
+     if loader == "neoforge" {
+          let mc = mc.ok_or_else(|| "Minecraft version is required for Neoforge versions".to_string())?;
+          Ok(for_mc(&ids, &mc))
+     } else {
+          Ok(ids)
+     }
 }
 
 #[tauri::command]

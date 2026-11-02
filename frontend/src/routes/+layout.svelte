@@ -1,10 +1,13 @@
 <script lang="ts">
      import "../app.css";
+     import 'bootstrap-icons/font/bootstrap-icons.css';
      import TitleBar from '#lib/components/TitleBar.svelte';
      import GeneralToast from "#lib/components/GeneralToast.svelte";
      import LoginMicrosoft from "#lib/components/LoginMicrosoft.svelte";
      import { getCurrentWindow } from "@tauri-apps/api/window";
      import { onMount } from "svelte";
+     import ConfirmDeletePopup from "#lib/components/ConfirmDeletePopup.svelte";
+     
      const win = getCurrentWindow();
      let maxed = $state(false);
      let focused = $state(true);
@@ -39,6 +42,7 @@
           <TitleBar/>
           <GeneralToast />
           <LoginMicrosoft/>
+          <ConfirmDeletePopup />
           {@render children?.()}
      </div>
 </div>
