@@ -30,3 +30,6 @@ If you choose to download the [macOS](https://github.com/TheUnknownGroup/UKMCL/r
 
 ### Legend
 1. In the case you're on Debian / Ubuntu-based distros, it most likely will use dpkg to install the app.
+
+# Disclaimer
+This launcher is not affiliated with Microsoft, Mojang, or Minecraft services.
