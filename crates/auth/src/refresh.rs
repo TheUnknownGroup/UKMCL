@@ -1,10 +1,8 @@
 use std::time::{SystemTime, UNIX_EPOCH};
-
 use anyhow::{Context, Result, bail};
 use reqwest::Client;
 use serde::Deserialize;
-use tauri::AppHandle;
-use utils::{client::base, toasts::{ToastKind, toast}};
+use utils::base;
 
 use crate::{Authenticated, CLIENT_ID, TOKEN_URL, minecraft::{get_minecraft, get_profile}, xbox::get_xbox, xsts::get_xsts};
 
@@ -15,7 +13,7 @@ pub struct RefreshToken {
      pub expires_in: u64,
 }
 
-async fn refresh_microsoft(app: &AppHandle, client: &Client, token: &str) -> Result<RefreshToken> {
+async fn refresh_microsoft(client: &Client, token: &str) -> Result<RefreshToken> {
      let params = [
           ("client_id", CLIENT_ID),
           ("refresh_token", token),
@@ -26,22 +24,20 @@ async fn refresh_microsoft(app: &AppHandle, client: &Client, token: &str) -> Res
      if !resp.status().is_success() {
           let text = resp.text().await?;
           if text.contains("invalid_grant") {
-               toast(app, ToastKind::Error, "Refresh token failed expired");
                bail!("Refresh token failed expired");
           }
-          toast(app, ToastKind::Error, format!("refresh token failed: {}", text));
           bail!("refresh token failed: {}", text);
      }
      resp.json().await.context("failed to parse refresh req")
 }
 
-pub async fn refresh(app: &AppHandle, token: &str) -> Result<Authenticated> {
+pub async fn refresh(token: &str) -> Result<Authenticated> {
      let client = base();
-     let ms = refresh_microsoft(app, &client, token).await?;
-     let (xbox, uhs) = get_xbox(app, &client, &ms.access_token).await?;
-     let xsts = get_xsts(app, &client, &xbox).await?;
-     let mc = get_minecraft(app, &client, &uhs, &xsts).await?;
-     let profile = get_profile(app, &client, &mc.access_token).await?;
+     let ms = refresh_microsoft(&client, token).await?;
+     let (xbox, uhs) = get_xbox(&client, &ms.access_token).await?;
+     let xsts = get_xsts(&client, &xbox).await?;
+     let mc = get_minecraft(&client, &uhs, &xsts).await?;
+     let profile = get_profile(&client, &mc.access_token).await?;
      let now = SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs();
      
      Ok(Authenticated { 

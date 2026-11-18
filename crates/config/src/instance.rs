@@ -1,5 +1,4 @@
 use std::{io::{Error, ErrorKind, Result}, path::Path};
-
 use serde::{Deserialize, Serialize};
 
 use crate::atomic::atomic_write;

@@ -3,9 +3,7 @@ use std::{sync::Arc, time::Duration};
 use anyhow::{bail, Result, Context};
 use reqwest::Client;
 use serde::Deserialize;
-use tauri::{AppHandle, Listener};
 use tokio::{sync::Notify, time::sleep};
-use utils::toasts::{ToastKind, toast};
 
 use crate::{CLIENT_ID, TOKEN_URL, device_code::DeviceResp};
 
@@ -20,7 +18,7 @@ pub struct OAuthErr {
      pub error: String,
 }
 
-pub async fn poll_for_token(app: &AppHandle, client: &Client, device_code: &DeviceResp) -> Result<MicrosoftToken> {
+pub async fn poll_for_token(client: &Client, device_code: &DeviceResp) -> Result<MicrosoftToken> {
      let params = [
           ("grant_type", "urn:ietf:params:oauth:grant-type:device_code"),
           ("client_id", CLIENT_ID),
@@ -29,12 +27,6 @@ pub async fn poll_for_token(app: &AppHandle, client: &Client, device_code: &Devi
 
      let mut inte = Duration::from_secs(device_code.interval);
      let cancel = Arc::new(Notify::new());
-     let listener = {
-          let cancel = cancel.clone();
-          app.listen("cancels", move |_| cancel.notify_one())
-     };
-
-     toast(app, ToastKind::Info, "starting sign in loop");
 
      let result = async {
           loop {
@@ -63,6 +55,5 @@ pub async fn poll_for_token(app: &AppHandle, client: &Client, device_code: &Devi
           }
      }
      .await;
-     app.unlisten(listener);
      result
 }

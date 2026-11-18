@@ -1,8 +1,6 @@
 use anyhow::{Context, Result, bail};
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
-use tauri::AppHandle;
-use utils::toasts::{ToastKind, toast};
 
 use crate::XBOX_URL;
 
@@ -39,7 +37,7 @@ pub struct Xui {
      pub uhs: String,
 }
 
-pub async fn get_xbox(app: &AppHandle, client: &Client, token: &str) -> Result<(String, String)> {
+pub async fn get_xbox(client: &Client, token: &str) -> Result<(String, String)> {
      let body = XboxReq {
           properties: XboxProps {
                auth_method: "RPS".to_string(),
@@ -57,7 +55,6 @@ pub async fn get_xbox(app: &AppHandle, client: &Client, token: &str) -> Result<(
 
      if !resp.status().is_success() {
           let text = resp.text().await?;
-          toast(app, ToastKind::Error, format!("Xbox auth failed: {}", text));
           bail!("Xbox auth failed: {}", text);
      }
 

@@ -1,7 +1,5 @@
 use std::{error::Error, path::{Path, PathBuf}};
-
-use utils::{folders::make_hub, offline};
-
+use utils::*;
 use crate::{account::{AccountBuilder, AccountStruct}, instance::MainBuilder};
 
 pub struct InstanceCfg<'a> {
@@ -49,7 +47,7 @@ pub fn instance_config(c: &InstanceCfg) -> Result<(), Box<dyn Error>> {
 }
 
 pub async fn offline_account(name: &str, min: u32, max: u32) -> Result<(), Box<dyn Error>> {
-     let home = make_hub()?;
+     let home = check()?;
      if home.join("account.toml").exists() {
           return Ok(())
      }

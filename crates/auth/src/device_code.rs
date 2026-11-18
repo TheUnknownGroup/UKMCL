@@ -1,8 +1,6 @@
 use reqwest::Client;
 use serde::Deserialize;
 use anyhow::{bail, Result, Context};
-use utils::toasts::{ToastKind, toast};
-use tauri::AppHandle;
 
 use crate::{CLIENT_ID, DEVICE_URL};
 
@@ -15,7 +13,7 @@ pub struct DeviceResp {
      pub interval: u64
 }
 
-pub async fn request_code(app: &AppHandle, client: &Client) -> Result<DeviceResp> {
+pub async fn request_code(client: &Client) -> Result<DeviceResp> {
      let params = [
           ("client_id", CLIENT_ID),
           ("scope", "XboxLive.signin offline_access")
@@ -23,7 +21,6 @@ pub async fn request_code(app: &AppHandle, client: &Client) -> Result<DeviceResp
      let resp = client.post(DEVICE_URL).form(&params).send().await.context("failed to get device code")?;
      if !resp.status().is_success() {
           let text = resp.text().await?;
-          toast(app, ToastKind::Error, &text);
           bail!("device code request failed: {}", text);
      }
 

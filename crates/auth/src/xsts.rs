@@ -1,8 +1,6 @@
 use anyhow::{Context, Result, bail};
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
-use tauri::AppHandle;
-use utils::toasts::{ToastKind, toast};
 
 use crate::XSTS_URL;
 
@@ -27,7 +25,7 @@ pub struct XstsToken {
      pub token: String,
 }
 
-pub async fn get_xsts(app: &AppHandle, client: &Client, token: &str) -> Result<String> {
+pub async fn get_xsts(client: &Client, token: &str) -> Result<String> {
      let body = XstsAuth {
           properties: XstsProps {
                sandbox_id: "RETAIL".to_string(),
@@ -41,15 +39,12 @@ pub async fn get_xsts(app: &AppHandle, client: &Client, token: &str) -> Result<S
      if !resp.status().is_success() {
           let text = resp.text().await?;
           if text.contains("2148916233") {
-               toast(app, ToastKind::Error, "This account doesn't own Minecraft.");
                bail!("This account doesn't own Minecraft");
           }
 
           if text.contains("2148916238") {
-               toast(app, ToastKind::Error, "Xbox live is not avaiable in your country");
                bail!("Xbox live is not avaiable in your country");
           }
-          toast(app, ToastKind::Error, format!("XSTS auth failed: {}", text));
           bail!("XSTS auth failed: {}", text);
      }
 

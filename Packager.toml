@@ -1,0 +1,19 @@
+name = "ukmcl"
+product-name = "UKMCL"
+identifier = "xyz.theunknowngroup.ukmcl"
+version = "3.0.0"
+formats = ["default"]
+icons = [
+    "frontend/assets/icons/*.png",
+    "frontend/assets/icons/*.ico",
+    "frontend/assets/icons/*.icns",
+]
+authors = ["devonk15"]
+license-file = "./LICENSE"
+category = "Game"
+description = "UKMCL, a Minecraft Launcher."
+long-description = "The Unknown Group's Official launcher, UKMCL. You can create, modify, and delete instances. Play Minecraft. Add mods. Enjoy!"
+
+[[binaries]]
+path = "ukmcl"
+main = true

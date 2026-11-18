@@ -1,0 +1,21 @@
+[package]
+name = "view"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[dependencies]
+reqwest.workspace = true
+serde.workspace = true
+anyhow.workspace = true
+futures-util.workspace = true
+tokio.workspace = true
+regex.workspace = true
+zip.workspace = true
+serde_json.workspace = true
+sha1 = "0.10"
+
+utils.workspace = true
+config.workspace = true
+java.workspace = true

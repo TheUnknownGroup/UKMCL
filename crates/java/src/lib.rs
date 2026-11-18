@@ -1,20 +1,20 @@
 use std::process::Stdio;
 use anyhow::{Context, Result, bail};
-use config::{account::AccountStruct, instance::InstanceStruct};
+use config::*;
 use tokio::process::Command;
-use utils::folders::make_hub;
+use utils::*;
 use crate::manager::ensure;
 
 pub mod manager;
 
 pub async fn launch(name: &str, world: Option<&str>, server: Option<&str>) -> Result<()> {
-     let home = make_hub()?;
+     let home = check()?;
      let instance = home.join("instances").join(name).join("config.toml").to_string_lossy().to_string();
      let account = home.join("account.toml").to_string_lossy().to_string();
-     let file = InstanceStruct::load(&instance).unwrap();
+     let file = InstanceStruct::load(&instance).context("failed to load instance cfg")?;
      let instance_main = &file.main;
      let instance_directory = &file.directory;
-     let account_file = AccountStruct::load(&account).unwrap();
+     let account_file = AccountStruct::load(&account).context("failed to load account cfg")?;
      let account_info = account_file.account;
      let instance_java = &file.main.java;
 

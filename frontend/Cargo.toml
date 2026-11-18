@@ -1,0 +1,11 @@
+[package]
+name = "ukmcl"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+categories.workspace = true
+license.workspace = true
+
+[dependencies]
+iced.workspace = true
+utils.workspace = true

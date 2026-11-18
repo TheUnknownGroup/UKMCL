@@ -1,6 +1,6 @@
 use std::{collections::HashMap, env::consts::{ARCH, OS}, path::{Component, Path, PathBuf}, time::Duration, sync::atomic::{AtomicU64, Ordering}};
 use futures::{stream, StreamExt};
-use utils::{client::base, folders::make_hub};
+use utils::*;
 use anyhow::{Context, Result, anyhow, bail};
 use serde::{Deserialize, de::DeserializeOwned};
 use sha1::{Digest, Sha1};
@@ -65,6 +65,7 @@ pub struct Manifest {
 
 #[derive(Deserialize)]
 pub struct FileEntry {
+    #[serde(rename = "type")]
      pub kind: String,
      pub downloads: Option<Downloads>,
      pub executable: bool,
@@ -112,7 +113,7 @@ pub async fn ensure(component: &str) -> Result<PathBuf> {
      if !valid_component(component) {
           bail!("invalid Java runtime component: {}", component);
      }
-     let home = make_hub()?;
+     let home = check()?;
      let dir = home.join("java").join(component);
      let java = dir.join(java_rel());
      let marker = dir.join(MARKER);

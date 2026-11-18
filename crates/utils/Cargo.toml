@@ -1,17 +1,14 @@
 [package]
 name = "utils"
-version.workspace = true
 edition.workspace = true
+version.workspace = true
 authors.workspace = true
+license.workspace = true
 
 [dependencies]
-reqwest = { workspace = true }
+hex_rgb_converter.workspace = true
+iced.workspace = true
+reqwest.workspace = true
 dirs.workspace = true
-serde = { workspace = true }
-toml.workspace = true 
-serde_json.workspace = true
-anyhow.workspace = true
-tauri = { workspace = true }
-urlencoding.workspace = true
 md5.workspace = true
 uuid.workspace = true
