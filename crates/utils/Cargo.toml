@@ -1,14 +1,13 @@
 [package]
 name = "utils"
-edition.workspace = true
 version.workspace = true
+edition.workspace = true
 authors.workspace = true
 license.workspace = true
 
 [dependencies]
-hex_rgb_converter.workspace = true
-iced.workspace = true
 reqwest.workspace = true
 dirs.workspace = true
 md5.workspace = true
 uuid.workspace = true
+freya.workspace = true

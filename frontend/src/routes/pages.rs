@@ -1,13 +1,14 @@
-use iced::{widget::container, *};
+use crate::*;
 
-use crate::{Message, Page, routes::{instances::instances, main_page::home, settings::settings, store::store}};
-
-pub fn pages(page: Page, shown_text: String) -> Element<'static, Message> {
-    let page: Element<'static, Message> = match page {
-        Page::Home => home(shown_text),
-        Page::Instances => instances(),
-        Page::Store => store(),
-        Page::Settings => settings(),
-    };
-    container(page).width(Fill).height(Fill).padding(4).into()
+#[derive(Routable, Clone, PartialEq)]
+pub enum Pages {
+    #[layout(AppLayout)]
+        #[route("/")]
+        Home,
+        #[route("/instances")]
+        Instances,
+        #[route("/store")]
+        Store,
+        #[route("/settings")]
+        Settings,
 }

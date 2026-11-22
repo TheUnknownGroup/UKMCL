@@ -4,9 +4,8 @@ members = [
     "crates/utils",
     "crates/auth",
     "crates/config",
-    "crates/atom",
+    "crates/java",
     "crates/view",
-    "crates/java"
 ]
 
 default-members = ["frontend/"]
@@ -15,34 +14,34 @@ resolver = "3"
 [workspace.package]
 version = "3.0.0"
 edition = "2024"
-authors = ["devonk15"]
 license = "MIT"
 categories = ["Game"]
+authors = ["devonk15"]
 
 [workspace.dependencies]
-iced = { version = "0.14.0", features = ["image", "svg", "tokio"] }
-hex_rgb_converter = "1"
+freya = { version = "0.5.3", features = ["gif", "router", "borderless"] }
 reqwest = { version = "0.13", features = ["json", "form"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 md5 = "0.8"
 uuid = "1"
 tokio = { version = "1", features = ["full"] }
-dirs = "6"
+dirs = "7"
 toml = "1"
 anyhow = "1"
 futures = "0.3"
 futures-util = "0.3"
 zip = "9"
-sha1 = "0.11"
+sha1 = "0.10"
 hex = "0.4"
 notify = "8"
 discord-rich-presence = "1"
 fastnbt = "2"
 regex = "1"
+open = "5"
 
-utils = { path = "./crates/utils" }
-auth = { path = "./crates/auth" }
-config = { path = "./crates/config" }
-view = { path = "./crates/view" }
-java = { path = "./crates/java" }
+utils = { path = "./crates/utils"}
+auth = { path = "./crates/auth"}
+config = { path = "./crates/config"}
+view = { path = "./crates/view"}
+java = { path = "./crates/java"}

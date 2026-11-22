@@ -1,36 +1,102 @@
-use iced::{widget::{button, container, mouse_area, row, text}, window::Id, *};
+use freya::{prelude::*, router::RouterContext};
+use utils::C;
 
-use crate::{Message, Page, WinMsg, WindowKind, style::*};
+use crate::routes::Pages;
 
-pub fn title_bar(id: Id, max: bool, p: Page, win_kind: WindowKind) -> Element<'static, Message> {
-    let l = 20.0;
+pub fn title_bar() -> impl IntoElement {
+    let mini_icon: ImageSource = ("minimize_icon", include_bytes!("../../assets/icons/minimize.svg")).into();
+    let full_screen: ImageSource = ("full_screen_icon", include_bytes!("../../assets/icons/fullscreen.svg")).into();
+    let full_screen_exit: ImageSource = ("fullscreen_exit_icon", include_bytes!("../../assets/icons/fullscreen-exit.svg")).into();
+    let close: ImageSource = ("close", include_bytes!("../../assets/icons/close.svg")).into();
 
-    let m = match max {
-        true => fullexit_i::<Message>(IconSize { w: l, h: l}),
-        false => full_i::<Message>(IconSize { w: l, h: l}),
-    };
+    let maximized = use_state(|| false);
 
-    let title = match win_kind {
-        WindowKind::CreateInstance => "UKMCL | Create an Instance",
-        WindowKind::Main => match p {
-            Page::Home => "UKMCL",
-            Page::Instances => "UKMCL | Instances",
-            Page::Store => "UKMCL | Store",
-            Page::Settings => "UKMCL | Settings",
-        }
+    let current_page: Pages = RouterContext::get().current();
+
+    let title = match current_page {
+        Pages::Home => "UKMCL",
+        Pages::Instances => "UKMCL | Instances",
+        Pages::Settings => "UKMCL | Settings",
+        Pages::Store => "UKMCL | Store",
     };
     
-    container(
-        mouse_area(
-            row![
-                container(text("")).width(120),
-                text(title).color(Color::WHITE).width(Fill).align_x(Center).size(16),
-                button(mini_i::<Message>(IconSize { w: l, h: l})).padding([5, 10]).on_press(Message::TitleBar(id, WinMsg::Minimize)).style(mini_max_btn),
-                button(m).padding([5, 10]).on_press(Message::TitleBar(id, WinMsg::Maximize)).style(mini_max_btn),
-                button(close_i::<Message>(IconSize { w: l, h: l})).padding([5, 10]).on_press(Message::TitleBar(id, WinMsg::Close)).style(close_btn),
-            ].align_y(Center).width(Fill)
-        ).on_press(Message::TitleBar(id, WinMsg::DragWindow))
-    )
-    .style(titlebar_style)
-    .into()
+    rect()
+        .background(C::TB.value())
+        .corner_radius(CornerRadius::new(8., 8., 0., 0.))
+        .width(Size::Fill)
+        .child(rect()
+            .width(Size::Fill)
+            .height(Size::Fill)
+            .horizontal()
+            .child(label()
+                .text(title)
+                .color(C::W.value())
+                .text_align(TextAlign::Center).line_height(1.6)
+            )
+            .main_align(Alignment::SpaceBetween)
+            .child(rect()
+                .horizontal()
+                .child(minimize_btn(mini_icon))
+                .child(Button::new()
+                    .height(Size::Fill)
+                    .background(Color::TRANSPARENT)
+                    .border_fill(Color::TRANSPARENT)
+                    .cursor(Some(CursorIcon::Pointer))
+                    .rounded_none()
+                    .on_press({
+                        let mut maximized = maximized.clone();
+                        move |_| {
+                            let next = !maximized();
+                            Platform::get().with_window(Platform::window_id(), move |w| {
+                                w.set_maximized(next);
+                            });
+
+                            maximized.set(next);
+                        }
+                    })
+                    .child(SvgViewer::new(
+                        if *maximized.read() {
+                            full_screen_exit
+                        } else {
+                            full_screen
+                        }
+                    ))
+                    .hover_background(C::W.with_opacity(0.10))
+                )
+                .child(close_btn(close))
+            )
+        )
+        .height(Size::px(30.))
+        .window_drag()
+}
+
+fn close_btn(close: ImageSource) -> impl IntoElement {
+    Button::new()
+        .child(SvgViewer::new(close))
+        .height(Size::Fill)
+        .background(Color::TRANSPARENT)
+        .border_fill(Color::TRANSPARENT)
+        .rounded_none()
+        .cursor(Some(CursorIcon::Pointer))
+        .corner_radius(CornerRadius::new(0., 8., 0., 0.))
+        .on_press(|_| {
+            Platform::get().close_window(Platform::window_id());
+        })
+        .hover_background(C::VC.with_opacity(0.50))
+}
+
+fn minimize_btn(mini_icon: ImageSource) -> impl IntoElement {
+    Button::new()
+        .child(SvgViewer::new(mini_icon))
+        .height(Size::Fill)
+        .background(Color::TRANSPARENT)
+        .border_fill(Color::TRANSPARENT)
+        .cursor(Some(CursorIcon::Pointer))
+        .rounded_none()
+        .on_press(|_| {
+            Platform::get().with_window(Platform::window_id(), |w| {
+                w.set_minimized(true);
+            });
+        })
+        .hover_background(C::W.with_opacity(0.10))
 }

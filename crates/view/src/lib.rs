@@ -11,6 +11,7 @@ pub use minecraft::assets::*;
 pub use minecraft::download::*;
 pub use minecraft::library::*;
 pub use minecraft::version::*;
+pub use crate::ListEntry as VersionList;
 
 use std::{error::Error, fs, path::Path};
 

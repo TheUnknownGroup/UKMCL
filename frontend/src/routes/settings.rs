@@ -1,7 +1,5 @@
-use iced::{widget::row, *};
+use freya::{prelude::*};
 
-use crate::Message;
-
-pub fn settings() -> Element<'static, Message> {
-    row![].into()
+pub fn settings() -> impl IntoElement {
+    rect()
 }
